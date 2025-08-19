@@ -50,4 +50,9 @@
         <item>@drawable/ic_note</item>
         <item>@drawable/ic_add</item>
     </integer-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tab_1">Quality Control</string>
+    <string name="tab_2">Volume Control</string>
+    <string name="remain_refeuller">Sisa produk dalam tangki</string>
 </resources>

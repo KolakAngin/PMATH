@@ -99,7 +99,7 @@
                 android:id="@+id/refeuller_volume"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/remain"
+                android:hint="@string/remain_refeuller"
                 android:inputType="numberDecimal" />
 
         </com.google.android.material.textfield.TextInputLayout>

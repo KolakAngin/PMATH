@@ -62,6 +62,8 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     ksp(libs.androidx.room.compiler)
 
+    implementation(libs.androidx.viewpager2)
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
