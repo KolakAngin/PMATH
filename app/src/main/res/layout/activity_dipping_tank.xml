@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.dipping_tank.DippingTankActivity">
+
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/appBarLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/colorPrimary"
+        app:layout_constraintTop_toTopOf="parent"
+
+        >
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            app:titleTextColor="@color/white"
+            app:navigationIconTint="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:menu="@menu/help_menu"
+            app:iconTint="@color/white"
+            app:title="@string/app_name" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+        app:layout_constraintStart_toStartOf="parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tank_selection"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rg_tangki"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <RadioButton
+                android:layout_weight="1"
+                android:id="@+id/rb_tangki9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_margin="7dp"
+                android:button="@android:color/transparent"
+                android:background="@drawable/radio_selector"
+                android:textColor="@drawable/text_radio_selector"
+                android:elevation="4dp"
+                android:padding="16dp"
+                android:text="Tangki 9"/>
+            <RadioButton
+                android:layout_weight="1"
+                android:gravity="center"
+                android:id="@+id/rb_tangki10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="7dp"
+                android:button="@android:color/transparent"
+                android:background="@drawable/radio_selector"
+                android:textColor="@drawable/text_radio_selector"
+                android:elevation="4dp"
+                android:padding="16dp"
+                android:text="Tangki 10"/>
+            <RadioButton
+                android:layout_weight="1"
+                android:gravity="center"
+                android:id="@+id/rb_tangki11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@android:color/transparent"
+                android:background="@drawable/radio_selector"
+                android:textColor="@drawable/text_radio_selector"
+                android:elevation="4dp"
+                android:layout_margin="7dp"
+                android:padding="16dp"
+                android:text="Tangki 11"/>
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/status_selection"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rg_session"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <RadioButton
+                android:layout_weight="1"
+                android:id="@+id/rb_receiving_tank"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_margin="7dp"
+                android:button="@android:color/transparent"
+                android:background="@drawable/radio_selector"
+                android:textColor="@drawable/text_radio_selector"
+                android:elevation="4dp"
+                android:padding="16dp"
+                android:text="Receiving"/>
+            <RadioButton
+                android:layout_weight="1"
+                android:gravity="center"
+                android:id="@+id/rb_distribution_tank"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="7dp"
+                android:button="@android:color/transparent"
+                android:background="@drawable/radio_selector"
+                android:textColor="@drawable/text_radio_selector"
+                android:elevation="4dp"
+                android:padding="16dp"
+                android:text="Distribution"/>
+            <RadioButton
+                android:layout_weight="1"
+                android:gravity="center"
+                android:id="@+id/rb_settle_tank"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@android:color/transparent"
+                android:background="@drawable/radio_selector"
+                android:textColor="@drawable/text_radio_selector"
+                android:elevation="4dp"
+                android:layout_margin="7dp"
+                android:padding="16dp"
+                android:text="Settle"/>
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Nilai MM"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextMm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Masukkan nilai mm"
+                android:inputType="numberDecimal" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/buttonSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:enabled="false"
+            android:text="Cari Data" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="50dp"
+            android:paddingBottom="20dp"
+            app:cardElevation="10dp"
+            app:cardBackgroundColor="@color/whiteOf">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/linearLayoutResult"
+                android:orientation="vertical"
+                android:layout_margin="5dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/img_result_icon"
+                    android:layout_height="250dp"
+                    android:src="@drawable/find_s"
+                    android:visibility="visible"/>
+
+                <TableLayout
+                    android:id="@+id/table_view_result"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:gravity="center">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        >
+                        <TextView
+                            android:id="@+id/row_1_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textSize="20sp"
+                            android:text="@string/death_stock_tank"
+                            android:gravity="start"
+                            android:padding="10dp"
+                            android:textStyle="bold"/>
+                        <TextView
+                            android:id="@+id/row_1_body"
+                            android:gravity="start"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="20sp"
+                            android:padding="10dp"
+                            android:layout_weight="1"
+                            tools:text="@string/dummy_liter"
+                            android:textStyle="bold"/>
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        >
+                        <TextView
+                            android:id="@+id/row_2_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="20sp"
+                            android:layout_weight="1"
+                            android:text="@string/dipping_result_tank"
+                            android:gravity="start"
+                            android:padding="10dp"
+                            android:textStyle="bold"/>
+                        <TextView
+
+                            android:id="@+id/row_2_body"
+                            android:gravity="start"
+                            android:textSize="20sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:layout_weight="1"
+                            tools:text="@string/dummy_liter"
+                            android:textStyle="bold"/>
+                    </TableRow>
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        >
+                        <TextView
+                            android:id="@+id/row_3_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/ullage_tank"
+                            android:gravity="start"
+                            android:textSize="20sp"
+                            android:padding="10dp"
+                            android:textStyle="bold"/>
+                        <TextView
+                            android:id="@+id/row_3_body"
+                            android:gravity="start"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:textSize="20sp"
+                            android:layout_weight="1"
+                            tools:text="@string/dummy_liter"
+                            android:textStyle="bold"/>
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        >
+                        <TextView
+                            android:id="@+id/row_4_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/pumpable_stock_tank"
+                            android:gravity="start"
+                            android:textSize="20sp"
+                            android:padding="10dp"
+                            android:textStyle="bold"/>
+                        <TextView
+                            android:id="@+id/row_4_body"
+                            android:gravity="start"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:textSize="20sp"
+                            android:layout_weight="1"
+                            tools:text="@string/dummy_liter"
+                            android:textStyle="bold"/>
+                    </TableRow>
+
+                </TableLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

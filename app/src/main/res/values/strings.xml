@@ -1,0 +1,53 @@
+<resources>
+    <string name="app_name">PMATH</string>
+    <string name="dummy_holder_name">Ini adalah nama menu\n</string>
+    <string name="search_hint">Temukan disini...</string>
+    <string name="tank_selection">Pilih Tangki</string>
+    <string name="status_selection">Pilih Status</string>
+    <string name="refeuller_selection">Pilih Nomor Refeuller</string>
+    <string name="database_not_found">Data tidak ditemukan</string>
+    <string name="recomendation_tank">Max Kapasita Tangki : %1$s L.&#10; Hasil Dipping : %2$s L.&#10; Rekomendasi Pengisian : %3$s L.</string>
+    <string name="dummy_liter">100000 L</string>
+    <string name="max_capacity_tank">Max Capacity</string>
+    <string name="dipping_result_tank">Volume Produk</string>
+    <string name="receiving_capacity_tank">Receiving Capacity</string>
+    <string name="pumpable_stock_tank">Pumpable Stock</string>
+    <string name="death_stock_tank">Death Stock</string>
+    <string name="is_pumpable_tank">Is Pumpable</string>
+    <string name="ullage_tank">Ullage</string>
+    <string name="liter_holder">%1$s</string>
+    <string name="aircraft_request_final">Masukan Request Final</string>
+    <string name="mm_value">Masukkan nilai mm</string>
+    <string name="request_final">Request Final</string>
+    <string name="remain_value">Masukan Nilai Sisa</string>
+    <string name="remain">Remain</string>
+    <string name="refeuller_value">Masukan sisa referuller</string>
+    <string name="oke_stock_aircraft">Hasil perkiraan yang dibutuhkan dalam pengisian ini adalah %1$s liter, dengan stock sisa %2$s liter pengisian dapat dilakukan.</string>
+    <string name="oke_stock_aircraft_warning">Hasil Perkiraan yang dibutuhkan dalam pengisian ini adalah %1$s liter, dengan total stock %2$s liter pengisian dapat dilakukan, pertimbangkan untuk topping up setelah pengisian selesai dilakukan.</string>
+    <string name="not_oke_stock_aircraft">Hasil Perkiraan yang dibutuhkan dalam pengisian ini adalah %1$s liter, dengan total stock %2$s liter pengisian tidak dapat dilakukan. Segera lakukan topping up.</string>
+    <string name="decision_topping_up">Topping Up</string>
+
+    <string-array name="holder_name">
+        <item>Penerimaan Bridger</item>
+        <item>Dipping Tank</item>
+        <item>Topping Up Refeuller</item>
+        <item>Aircraft Fuel Remain</item>
+        <item>Calculator</item>
+        <item>Timer</item>
+        <item>Stopwatch</item>
+        <item>Note</item>
+        <item>Tambah Fitur</item>
+    </string-array>
+
+    <integer-array name="holder_image">
+        <item>@drawable/celcius</item>
+        <item>@drawable/dipping_icon</item>
+        <item>@drawable/refeuller_truck</item>
+        <item>@drawable/airplane</item>
+        <item>@drawable/calculator</item>
+        <item>@drawable/stopwatch</item>
+        <item>@drawable/chronometer</item>
+        <item>@drawable/ic_note</item>
+        <item>@drawable/ic_add</item>
+    </integer-array>
+</resources>
