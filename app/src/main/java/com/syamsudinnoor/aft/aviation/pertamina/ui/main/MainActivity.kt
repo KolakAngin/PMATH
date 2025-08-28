@@ -43,7 +43,6 @@ class MainActivity : AppCompatActivity() {
         menuAdapter = MainAdapter(getItemMenu())
         binding.rvHolder.adapter = menuAdapter
         menuAdapter.adapterPassItemCallback { itemMenu ->
-            Toast.makeText(this,"Menu Clicked : ${itemMenu.name}", Toast.LENGTH_SHORT).show()
             when(itemMenu.name){
                 "Penerimaan Bridger" -> {
                     val intent = Intent(this, DensityActivity::class.java)
@@ -94,7 +93,7 @@ class MainActivity : AppCompatActivity() {
         searchView?.isSubmitButtonEnabled = true
         val c = object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
-                TODO("Not yet implemented")
+                return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {

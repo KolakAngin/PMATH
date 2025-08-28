@@ -54,5 +54,40 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tab_1">Quality Control</string>
     <string name="tab_2">Volume Control</string>
+    <string name="tab_3">Quality Control Data Collection</string>
     <string name="remain_refeuller">Sisa produk dalam tangki</string>
+    <string name="choice_tank">Pilih tangki</string>
+    <string name="choice_refeuller">Pilih Refeuller</string>
+    <string name="insert_mm">Masukkan nilai mm</string>
+    <string name="inset_liter">Masukan dalam format liter</string>
+    <string name="operator">Operator</string>
+    <string name="bridger_npr">Masukkan plat Bridger</string>
+    <string name="masukan_bpp">Masukan BPP</string>
+    <string name="liter_volume">Masukkan Volume Liter</string>
+    <string name="seal">Masukkan Seal</string>
+    <string name="test_report_no">Masukkan Nomor Test Report</string>
+
+
+    <string-array name="tangks_choice">
+        <item>Tangki 9</item>
+        <item>Tangki 10</item>
+        <item>Tangki 11</item>
+    </string-array>
+
+
+    <string-array name="refeullers_choice">
+        <item>SNR 17</item>
+        <item>SNR 19</item>
+        <item>SNR 20</item>
+        <item>SNR 21</item>
+        <item>SNR 22</item>
+    </string-array>
+
+    <string-array name="operator_choice">
+        <item>Operator 1</item>
+        <item>Operator 2</item>
+        <item>Operator 3</item>
+        <item>Operator 4</item>
+        <item>Operator 5</item>
+    </string-array>
 </resources>

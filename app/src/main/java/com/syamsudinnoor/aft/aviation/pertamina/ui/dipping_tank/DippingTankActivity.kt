@@ -6,6 +6,8 @@ import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -15,18 +17,21 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.VIEW_MODEL_STORE_OWNER_KEY
 import com.syamsudinnoor.aft.aviation.pertamina.R
-import com.syamsudinnoor.aft.aviation.pertamina.ViewModelFactory
+import com.syamsudinnoor.aft.aviation.pertamina.factoryviewmodel.ViewModelFactory
 import com.syamsudinnoor.aft.aviation.pertamina.databinding.ActivityDippingTankBinding
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.SnoorRoomDatabase
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.repository.SNoorRepository
+import com.syamsudinnoor.aft.aviation.pertamina.utility.helperSettingEditText
+
 import com.syamsudinnoor.aft.aviation.pertamina.utility.numberFormatter
 
 class DippingTankActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDippingTankBinding
-    private  var statusTank : String? = null
     private  var statusSection : String? = null
 
     private var literOnTank : Double? = null
+
+    private var statusTankSpinner : String? = null
 
     private val viewModel: DippingTankViewModel by viewModels {
         val database = SnoorRoomDatabase.getDatabase(application)
@@ -56,6 +61,9 @@ class DippingTankActivity : AppCompatActivity() {
         }
 
         binding.buttonSearch.setOnClickListener {
+            binding.editTextMm.clearFocus()
+            val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(binding.editTextMm.windowToken, 0)
             searchDippingTank()
             binding.cardViewResult.setBackgroundResource(R.drawable.normal_card_background)
         }
@@ -66,7 +74,7 @@ class DippingTankActivity : AppCompatActivity() {
     private fun searchDippingTank() {
 
         val mm = binding.editTextMm.text.toString().toDouble()
-        when(statusTank){
+        when(statusTankSpinner){
             "Tangki 9" -> viewModel.searchTangki9(mm)
             "Tangki 10" -> viewModel.searchTangki10(mm)
             "Tangki 11" -> viewModel.searchRangki11(mm)
@@ -80,7 +88,7 @@ class DippingTankActivity : AppCompatActivity() {
         viewModel.tangki9Result.observe(this) { result ->
             if (result != null) {
                 literOnTank = result.liter
-                simplifyHolderViewModel(literOnTank,statusTank)
+                simplifyHolderViewModel(literOnTank,statusTankSpinner)
 
             } else {
                 binding.imgResultIcon.setImageResource(R.drawable.not_found)
@@ -92,7 +100,7 @@ class DippingTankActivity : AppCompatActivity() {
         viewModel.tangki10Result.observe(this) { result ->
             if (result != null) {
                 literOnTank = result.liter ?: 0.0
-                simplifyHolderViewModel(literOnTank,statusTank)
+                simplifyHolderViewModel(literOnTank,statusTankSpinner)
             } else {
                 binding.imgResultIcon.setImageResource(R.drawable.not_found)
                 binding.tableViewResult.visibility = View.GONE
@@ -103,7 +111,7 @@ class DippingTankActivity : AppCompatActivity() {
         viewModel.tangki11Result.observe(this) { result ->
             if (result != null) {
                 literOnTank = result.liter
-                simplifyHolderViewModel(literOnTank,statusTank)
+                simplifyHolderViewModel(literOnTank,statusTankSpinner)
             } else {
                 binding.imgResultIcon.setImageResource(R.drawable.not_found)
                 binding.imgResultIcon.visibility = View.VISIBLE
@@ -118,13 +126,13 @@ class DippingTankActivity : AppCompatActivity() {
         binding.imgResultIcon.visibility = View.GONE
         when(statusSection){
             "Receiving Tank" -> {
-                statusReceiving(literOnTank ?: 0.0, statusTank ?: "")
+                statusReceiving(literOnTank ?: 0.0, statusTankSpinner ?: "")
             }
             "Distribution Tank" -> {
-                statusDistribution(literOnTank ?: 0.0, statusTank ?: "")
+                statusDistribution(literOnTank ?: 0.0, statusTankSpinner ?: "")
             }
             "Settle Tank" -> {
-                statusSettle(literOnTank ?: 0.0, statusTank ?: "")
+                statusSettle(literOnTank ?: 0.0, statusTankSpinner ?: "")
             }
             else -> {
                 binding.tableViewResult.visibility = View.GONE
@@ -134,24 +142,32 @@ class DippingTankActivity : AppCompatActivity() {
 
 
     private fun inputValidation(){
-        binding.rgTangki.setOnCheckedChangeListener { _, checkedId ->
-            when(checkedId){
-                R.id.rb_tangki9 -> {
-                    viewModel.onTankSelected(true)
-                    this.statusTank = "Tangki 9"
-                }
-                R.id.rb_tangki10 -> {
-                    viewModel.onTankSelected(true)
-                    this.statusTank = "Tangki 10"
-                }
-                R.id.rb_tangki11 -> {
-                    viewModel.onTankSelected(true)
-                    this.statusTank = "Tangki 11"
+        binding.spinnerTank.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(s: Editable?) {}
 
-                }else -> viewModel.onTankSelected(false)
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {}
+
+            override fun onTextChanged(
+                s: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
+               if (s.toString().isNotEmpty()){
+                   statusTankSpinner = s.toString()
+                   viewModel.onTankSelected(true)
+               }else{
+                   viewModel.onTankSelected(false)
+               }
+
             }
-        }
 
+        })
         binding.rgSession.setOnCheckedChangeListener { _, checkedId ->
             when(checkedId){
                 R.id.rb_receiving_tank -> {
@@ -169,33 +185,12 @@ class DippingTankActivity : AppCompatActivity() {
             }
         }
 
-        binding.editTextMm.addTextChangedListener(object : TextWatcher{
-            override fun afterTextChanged(s: Editable?) {
-
+        binding.editTextMm.addTextChangedListener(helperSettingEditText { text ->
+            if (text.isNotEmpty()){
+                viewModel.onMMInputValid(true)
+            }else{
+                viewModel.onMMInputValid(false)
             }
-
-            override fun beforeTextChanged(
-                s: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int
-            ) {
-
-            }
-
-            override fun onTextChanged(
-                s: CharSequence?,
-                start: Int,
-                before: Int,
-                count: Int
-            ) {
-                if (s.toString().isNotEmpty()){
-                 viewModel.onMMInputValid(true)
-                }else{
-                    viewModel.onMMInputValid(false)
-                }
-            }
-
         })
     }
 
@@ -348,6 +343,13 @@ class DippingTankActivity : AppCompatActivity() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        val listOfTank = resources.getStringArray(R.array.tangks_choice)
+        val adapterTank = ArrayAdapter(this,R.layout.spinner_item_holder,listOfTank)
+        binding.spinnerTank.setAdapter(adapterTank)
+
+    }
 
     companion object{
         const val APP_NAME = "APP_NAME"

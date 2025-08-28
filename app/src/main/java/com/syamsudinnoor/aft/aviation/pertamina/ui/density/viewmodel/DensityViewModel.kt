@@ -1,4 +1,4 @@
-package com.syamsudinnoor.aft.aviation.pertamina.ui.density
+package com.syamsudinnoor.aft.aviation.pertamina.ui.density.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -6,8 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.switchMap
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.Density_15
-import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.Tangki_10
-import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.Tangki_9
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.repository.SNoorRepository
 
 class DensityViewModel(private val repository: SNoorRepository) : ViewModel() {
@@ -32,6 +30,10 @@ class DensityViewModel(private val repository: SNoorRepository) : ViewModel() {
     private val _isFormValid = MediatorLiveData<Boolean>()
     val isFormValid: LiveData<Boolean> = _isFormValid
 
+
+    private val _joinChecking = MutableLiveData<Boolean>()
+    val joinChecking: LiveData<Boolean> get() = _joinChecking
+
     init {
         // Tambahkan sumber yang ingin diawasi
         _isFormValid.addSource(_isDensityValid) {
@@ -39,6 +41,10 @@ class DensityViewModel(private val repository: SNoorRepository) : ViewModel() {
         }
         _isFormValid.addSource(_isTemperatureValid) {
             validateForm() // Panggil validasi setiap kali temperatur berubah
+        }
+
+        _isFormValid.addSource(_joinChecking) {
+            validateForm()
         }
     }
 
@@ -51,13 +57,18 @@ class DensityViewModel(private val repository: SNoorRepository) : ViewModel() {
         _isTemperatureValid.value = isValid
     }
 
+    fun onJoinChecking(isValid: Boolean) {
+        _joinChecking.value = isValid
+    }
+
     // Fungsi validasi terpusat
     private fun validateForm() {
         val densityValid = _isDensityValid.value ?: false
         val tempValid = _isTemperatureValid.value ?: false
+        val joinValid = _joinChecking.value ?: false
 
         // Atur nilai MediatorLiveData berdasarkan gabungan kondisi
-        _isFormValid.value = densityValid && tempValid
+        _isFormValid.value = densityValid && tempValid && joinValid
     }
 
 }

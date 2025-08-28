@@ -7,17 +7,21 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.syamsudinnoor.aft.aviation.pertamina.R
-import com.syamsudinnoor.aft.aviation.pertamina.ViewModelFactory
+import com.syamsudinnoor.aft.aviation.pertamina.factoryviewmodel.ViewModelFactory
 import com.syamsudinnoor.aft.aviation.pertamina.databinding.ActivityToppingUpBinding
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.SnoorRoomDatabase
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.repository.SNoorRepository
 import com.syamsudinnoor.aft.aviation.pertamina.utility.numberFormatter
+
+
 
 class ToppingUpActivity : AppCompatActivity() {
 
@@ -55,20 +59,30 @@ class ToppingUpActivity : AppCompatActivity() {
 
         viewModel.isValid.observe(this){ it ->
             binding.buttonSearch.isEnabled  = it
-            Log.d("Check Button","Button Is : " + it)
+
         }
 
     }
 
     private fun searchToppingUp() {
         binding.buttonSearch.setOnClickListener {
+            val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(binding.editTextMm.windowToken, 0)
             binding.cardViewResult.setBackgroundResource(R.drawable.normal_card_background)
             val value = binding.editTextMm.text.toString().toDouble()
             Log.d("TAG", "searchToppingUp: $value Status $statusRefeuller : $statusRefeuller")
             when(statusRefeuller){
-                "Snr20" -> viewModel.getSnr20(value)
-                "Snr21" -> viewModel.getSnr21(value)
-                "Snr22" -> viewModel.getSnr22(value)
+                "SNR 17" -> {
+                    statusLiter = binding.editTextMm.text.toString().toDouble()
+                    simplifySetupToppingUp(this.statusSession)
+                }
+                "SNR 19" -> {
+                    statusLiter = binding.editTextMm.text.toString().toDouble()
+                    simplifySetupToppingUp(this.statusSession)
+                }
+                "SNR 20" -> viewModel.getSnr20(value)
+                "SNR 21" -> viewModel.getSnr21(value)
+                "SNR 22" -> viewModel.getSnr22(value)
                 else -> {}
             }
         }
@@ -188,26 +202,39 @@ class ToppingUpActivity : AppCompatActivity() {
 
 
     fun validateInput(){
-        binding.rgRefeuller.setOnCheckedChangeListener { _, checkedId ->
-            when(checkedId){
-                R.id.rb_snr20 ->{
-                    this.statusRefeuller = "Snr20"
-                    viewModel.onRefeullerSelected(true)
-                }
-                R.id.rb_snr21 ->{
-                    this.statusRefeuller = "Snr21"
-                    viewModel.onRefeullerSelected(true)
-                }
-                R.id.rb_snr22 ->{
-                    this.statusRefeuller = "Snr22"
-                    viewModel.onRefeullerSelected(true)
-                }
-                else -> {
-                    viewModel.onRefeullerSelected(false)
-                }
-            }
 
-        }
+        binding.spinnerRefeuller.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(s: Editable?) {}
+
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {}
+
+            override fun onTextChanged(
+                s: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
+                val watching = s.toString()
+               if (watching.isNotEmpty()){
+                   statusRefeuller = watching
+                   viewModel.onRefeullerSelected(true)
+                   if(watching == "SNR 17" || watching == "SNR 19"){
+                       binding.containterMM.hint = getString(R.string.inset_liter)
+                   }
+                   else{
+                       binding.containterMM.hint = getString(R.string.insert_mm)
+                   }
+               }else{
+                   viewModel.onRefeullerSelected(false)
+               }
+            }
+        })
+
 
         binding.rgSession.setOnCheckedChangeListener { _, checkedId ->
             when(checkedId){
@@ -253,6 +280,13 @@ class ToppingUpActivity : AppCompatActivity() {
 
         })
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val refeullers = resources.getStringArray(R.array.refeullers_choice)
+        val adapter = ArrayAdapter(this, R.layout.spinner_item_holder, refeullers)
+        binding.spinnerRefeuller.setAdapter(adapter)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

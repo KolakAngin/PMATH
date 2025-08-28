@@ -1,9 +1,9 @@
-package com.syamsudinnoor.aft.aviation.pertamina
+package com.syamsudinnoor.aft.aviation.pertamina.factoryviewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.repository.SNoorRepository
-import com.syamsudinnoor.aft.aviation.pertamina.ui.density.DensityViewModel
+import com.syamsudinnoor.aft.aviation.pertamina.ui.density.viewmodel.DensityViewModel
 import com.syamsudinnoor.aft.aviation.pertamina.ui.dipping_tank.DippingTankViewModel
 import com.syamsudinnoor.aft.aviation.pertamina.ui.topping_up.ToppingUpViewModel
 
@@ -18,7 +18,7 @@ class ViewModelFactory(private val repository: SNoorRepository) : ViewModelProvi
         }else if(modelClass.isAssignableFrom(DippingTankViewModel::class.java)){
             @Suppress("UNCHECKED_CAST")
             return DippingTankViewModel(repository) as T
-        }
+        }else
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

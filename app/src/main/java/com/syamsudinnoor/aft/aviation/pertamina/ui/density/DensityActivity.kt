@@ -1,13 +1,9 @@
 package com.syamsudinnoor.aft.aviation.pertamina.ui.density
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -15,11 +11,12 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.syamsudinnoor.aft.aviation.pertamina.R
-import com.syamsudinnoor.aft.aviation.pertamina.ViewModelFactory
+import com.syamsudinnoor.aft.aviation.pertamina.factoryviewmodel.ViewModelFactory
 import com.syamsudinnoor.aft.aviation.pertamina.databinding.ActivityDensityBinding
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.SnoorRoomDatabase
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.repository.SNoorRepository
 import com.syamsudinnoor.aft.aviation.pertamina.ui.density.adapter.SectionPagerAdapter
+import com.syamsudinnoor.aft.aviation.pertamina.ui.density.viewmodel.DensityViewModel
 import kotlin.getValue
 
 class DensityActivity : AppCompatActivity() {
@@ -56,6 +53,8 @@ class DensityActivity : AppCompatActivity() {
             tab.text = resources.getString(tabsOfArray[position])
         }.attach()
 
+
+
     }
 
         override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -74,7 +73,9 @@ class DensityActivity : AppCompatActivity() {
         const val APP_NAME = "APP_NAME"
         private val tabsOfArray = intArrayOf(
             R.string.tab_1,
+            R.string.tab_3,
             R.string.tab_2
+
         )
     }
 }

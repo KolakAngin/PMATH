@@ -6,254 +6,279 @@
     android:layout_height="match_parent"
     tools:context=".ui.density.fragment.QualityControlFragment">
 
-
+    <!-- PERBAIKAN 1: Mengubah width dan height menjadi 0dp agar lebih robust -->
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-        <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- PERBAIKAN 2: Mengatur padding secara spesifik untuk memberi ruang di bawah -->
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-            android:orientation="vertical"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginBottom="50dp"
-            android:layout_margin="20dp">
+            android:paddingHorizontal="20dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="40dp">
 
+            <!-- ID untuk elemen interaktif (AutoCompleteTextView, TextInputEditText) dikembalikan seperti semula -->
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout_operator_name"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp">
-
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
                 <AutoCompleteTextView
                     android:id="@+id/spinner_operator_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Name Sign"
-                    android:inputType="none"/>
-
+                    android:inputType="none" />
             </com.google.android.material.textfield.TextInputLayout>
 
-
-
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:id="@+id/layout_bridger_no"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp">
-
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_operator_name">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_bridger_no"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Bridger No"
-                    android:inputType="text"
-                />
-
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp">
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_bridger_no">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Time"
                     android:editable="false"
-                    android:inputType="none"
-                    />
-
+                    android:hint="Time"
+                    android:inputType="none" />
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:id="@+id/layout_bpp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp">
-
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_time">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_bpp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="BPP No"
-                    android:inputType="text"
-                    />
-
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:id="@+id/layout_liter"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp">
-
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_bpp">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_liter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Liter"
-                    android:inputType="numberDecimal"/>
-
+                    android:inputType="numberDecimal" />
             </com.google.android.material.textfield.TextInputLayout>
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp">
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout_seal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_liter">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_seal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Seal / Segel"
-                    android:inputType="text"
-                    />
-
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp">
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout_test_report"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_seal">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_test_report"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Test Report No"
                     android:inputType="text" />
-
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:id="@+id/layout_dens_15_from_distributor"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp">
-
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_test_report">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_dens_15_from_distributor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Density 15 Distributor"
                     android:inputType="numberDecimal"
-                    android:maxLength="6"/>
-
+                    android:maxLength="6" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:id="@+id/layout_afrn_no"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp">
-
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_dens_15_from_distributor">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/afrn_no"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="AFRN No"
                     android:inputType="text" />
-
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:id="@+id/layout_density_rec_doc"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp">
-
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_afrn_no">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_density_rec_doc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Density OBDS (Rec. Document)"
                     android:inputType="text" />
-
             </com.google.android.material.textfield.TextInputLayout>
 
-
-
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:id="@+id/layout_temp_rec_doc"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp">
-
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_density_rec_doc">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_temp_rec_doc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Temperature (Rec. Document)"
                     android:inputType="numberDecimal"
-                    android:maxLength="6"/>
+                    android:maxLength="6" />
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:id="@+id/layout_result_density_rec_doc"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp">
-
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_temp_rec_doc">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_result_density_rec_doc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Result Density (Rec. Document)"
-                    android:maxLength="4"
-                    android:inputType="none" />
-
+                    android:inputType="none"
+                    android:maxLength="4" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:id="@+id/layout_text_density"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp">
-
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_result_density_rec_doc">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_text_density"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Density OBSD"
-                    android:maxLength="6"
-                    android:inputType="numberDecimal" />
-
+                    android:inputType="numberDecimal"
+                    android:maxLength="6" />
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:id="@+id/layout_text_temp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp">
-
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_text_density">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_text_temp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Temperature"
-                    android:maxLength="4"
-                    android:inputType="numberDecimal" />
-
+                    android:inputType="numberDecimal"
+                    android:maxLength="4" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:id="@+id/layout_density_rsult"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp">
-
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_text_temp">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_density_rsult"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Density 15 result"
                     android:editable="false"
+                    android:hint="Density 15 result"
                     android:inputType="none" />
-
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:id="@+id/layout_diff_max"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp">
-
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_density_rsult">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_diff_max"
                     android:layout_width="match_parent"
@@ -261,15 +286,16 @@
                     android:editable="false"
                     android:hint="DIFF. (max 0,003 kg/l)*"
                     android:inputType="numberDecimal" />
-
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:id="@+id/layout_app"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp">
-
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_diff_max">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_app"
                     android:layout_width="match_parent"
@@ -277,103 +303,100 @@
                     android:editable="false"
                     android:hint="APP"
                     android:inputType="numberDecimal" />
-
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:id="@+id/layout_cu_psm"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp">
-
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_app">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_cu_psm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="CU  pS/m)"
+                    android:hint="CU pS/m)"
                     android:inputType="numberDecimal" />
-
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout_spinner_tank_qc"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp">
-
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_cu_psm">
                 <AutoCompleteTextView
                     android:id="@+id/spinner_tank_qc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="To Tangki"
-                    android:inputType="none"/>
-
+                    android:inputType="none" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/buttonSearch"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:text="Cari Data"
+                app:layout_constraintEnd_toStartOf="@+id/buttonSave"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_spinner_tank_qc" />
 
-                <Button
-                    android:id="@+id/buttonSearch"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_weight="1"
-                    android:text="Cari Data" />
-
-                <Button
-                    android:id="@+id/buttonSave"
-                    android:enabled="false"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_weight="1"
-                    android:text="Simpan Data" />
-            </LinearLayout>
+            <Button
+                android:id="@+id/buttonSave"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:enabled="false"
+                android:text="Simpan Data"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/buttonSearch"
+                app:layout_constraintTop_toTopOf="@+id/buttonSearch" />
 
             <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
+                android:id="@+id/card_view_result"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                app:cardBackgroundColor="@color/whiteOf"
                 app:cardCornerRadius="20dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="100dp"
                 app:cardElevation="10dp"
-                app:cardBackgroundColor="@color/whiteOf">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/buttonSearch">
                 <LinearLayout
+                    android:id="@+id/linearLayoutResult"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/linearLayoutResult"
-                    android:orientation="vertical"
-
-                    android:layout_margin="20dp">
-
+                    android:layout_margin="20dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
                     <ImageView
-                        android:layout_width="wrap_content"
                         android:id="@+id/img_result_icon"
+                        android:layout_width="wrap_content"
                         android:layout_height="250dp"
                         android:src="@drawable/find_s"
-                        android:visibility="visible"/>
-
+                        android:visibility="visible" />
                     <TextView
+                        android:id="@+id/textViewResult"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/textViewResult"
-                        android:text="Temukan Nilai Density"
                         android:gravity="center"
-                        android:layout_gravity="center"
+                        android:text="Temukan Nilai Density"
                         android:textSize="20sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-        </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

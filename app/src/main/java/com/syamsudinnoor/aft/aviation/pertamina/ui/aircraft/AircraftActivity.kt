@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.Layout
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -15,7 +16,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.syamsudinnoor.aft.aviation.pertamina.R
-import com.syamsudinnoor.aft.aviation.pertamina.ViewModelFactory
+import com.syamsudinnoor.aft.aviation.pertamina.factoryviewmodel.ViewModelFactory
 import com.syamsudinnoor.aft.aviation.pertamina.databinding.ActivityAircraftBinding
 import com.syamsudinnoor.aft.aviation.pertamina.utility.numberFormatter
 
@@ -46,6 +47,8 @@ class AircraftActivity : AppCompatActivity() {
 
         validateInput()
         binding.buttonCalculate.setOnClickListener {
+            val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(binding.refeullerVolume.windowToken, 0)
             binding.cardViewResult.setBackgroundResource(R.drawable.normal_card_background)
             calculateAircraft()
         }

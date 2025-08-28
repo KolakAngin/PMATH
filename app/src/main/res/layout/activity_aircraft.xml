@@ -124,7 +124,7 @@
             app:cardCornerRadius="20dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="100dp"
             android:paddingBottom="20dp"
             app:cardElevation="10dp"
             app:cardBackgroundColor="@color/whiteOf">

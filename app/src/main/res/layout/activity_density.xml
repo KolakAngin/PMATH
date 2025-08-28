@@ -29,17 +29,23 @@
 
     <com.google.android.material.tabs.TabLayout
         android:layout_width="match_parent"
+        app:tabIndicatorFullWidth="true"
         android:layout_height="50dp"
+        app:tabMode="fixed"
         app:layout_constraintTop_toBottomOf="@id/appBarLayout"
-        android:background="?attr/colorPrimary"
-        app:tabTextColor="@android:color/white"
-        app:tabIndicatorAnimationMode="elastic"
-        app:tabSelectedTextColor="@android:color/darker_gray"
+        android:background="?attr/colorOnPrimary"
+        app:tabTextColor="@android:color/darker_gray"
+       app:tabIndicatorGravity="stretch"
+        app:tabIndicator="@drawable/tab_indicator_shape"
+        app:tabIndicatorColor="@null"
+        app:tabIndicatorAnimationMode="linear"
+        app:tabSelectedTextColor="@android:color/white"
         android:id="@+id/tabs"/>
     
     <androidx.viewpager2.widget.ViewPager2
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tabs"
         android:id="@+id/view_pager"/>
 

@@ -12,14 +12,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PMATH">
         <activity
+            android:name=".ui.density.BridgerDataShowActivty"
+            android:exported="false" />
+        <activity
             android:name=".ui.calculator.CalculatorActivity"
             android:exported="false"
             android:parentActivityName=".ui.main.MainActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.aircraft.AircraftActivity"
             android:exported="false"
-            android:parentActivityName=".ui.main.MainActivity"/>
+            android:parentActivityName=".ui.main.MainActivity" />
         <activity
             android:name=".ui.dipping_tank.DippingTankActivity"
             android:exported="false"
