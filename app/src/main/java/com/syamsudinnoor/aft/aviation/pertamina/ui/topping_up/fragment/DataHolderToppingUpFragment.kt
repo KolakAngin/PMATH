@@ -31,6 +31,7 @@ import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.MainDatabase
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.BridgerQualityControl
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.ToppingUp
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.repository.MainRepository
+import com.syamsudinnoor.aft.aviation.pertamina.ui.topping_up.DataShowToppingUp
 import com.syamsudinnoor.aft.aviation.pertamina.ui.topping_up.viewmodel.DataToppingUpViewModel
 import com.syamsudinnoor.aft.aviation.pertamina.utility.BridgerQualityPDFGenerator
 import com.syamsudinnoor.aft.aviation.pertamina.utility.DialogHolder.dateDialog
@@ -83,6 +84,11 @@ class DataHolderToppingUpFragment : Fragment() {
         binding.buttonSave.setOnClickListener {
             checkPermissionAndGeneratePdf()
         }
+
+        binding.fabAdd.setOnClickListener {
+            viewmodel.loadData()
+        }
+
 
         return binding.root
     }
@@ -138,8 +144,10 @@ class DataHolderToppingUpFragment : Fragment() {
 
 
     private fun setupRecyclerView() {
-        adapter = ToppingUpAdapter({
-            Toast.makeText(requireContext(), "${it.snr_no}", Toast.LENGTH_SHORT).show()
+        adapter = ToppingUpAdapter({ it ->
+            val intent = Intent(requireContext(), DataShowToppingUp::class.java)
+            intent.putExtra(DataShowToppingUp.APP_NAME,it)
+            startActivity(intent)
         }){
             settingDialog("Apakah anda yakin ingin menghapus data ini?",it)
         }
@@ -155,7 +163,7 @@ class DataHolderToppingUpFragment : Fragment() {
         dialog.setContentView(R.layout.costum_delete_quality_control)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         val titleText : TextView = dialog.findViewById(R.id.txt_title)
-        titleText.text = "Hapus Data : ${dataReport.totalisator_awal?.uppercase()}"
+        titleText.text = getString(R.string.hapus_data, dataReport.totalisator_akhir?.uppercase())
         val massageText  : TextView = dialog.findViewById(R.id.txt_massage)
         massageText.text = massage
 

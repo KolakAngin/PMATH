@@ -45,8 +45,9 @@ class BridgerQualityControlActivity : AppCompatActivity() {
 
 
     }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.help_menu, menu)
+        menuInflater.inflate(R.menu.help_menu,menu)
         return super.onCreateOptionsMenu(menu)
     }
 

@@ -11,8 +11,19 @@
         <item name="colorOnTertiary">@color/colorOnTernary</item>
         <item name="iconTint">@color/colorOnPrimary</item>
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+
     </style>
 
-    <style name="Theme.PMATH" parent="Base.Theme.PMATH" />
+    <style name="Theme.MyApp.Splash" parent="Theme.SplashScreen">
+        <!-- Icon aplikasi yang akan muncul di splash -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_item_background</item>
+        <!-- Background splash -->
+        <item name="windowSplashScreenBackground">@color/white</item>
+
+        <!-- Tema utama setelah splash -->
+        <item name="postSplashScreenTheme">@style/Base.Theme.PMATH</item>
+    </style>
+
+
 
 </resources>

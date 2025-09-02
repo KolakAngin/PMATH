@@ -7,4 +7,46 @@
     android:layout_height="match_parent"
     tools:context=".ui.density.volume_control.activity_holder.VolumeControlActivity">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/appBarLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/colorPrimary"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            app:titleTextColor="@color/white"
+            app:navigationIconTint="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:iconTint="@color/white"
+            app:menu="@menu/help_menu"
+            app:title="@string/app_name" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:layout_width="match_parent"
+        app:tabIndicatorFullWidth="true"
+        android:layout_height="50dp"
+        app:tabMode="fixed"
+        app:layout_constraintTop_toBottomOf="@id/appBarLayout"
+        android:background="?attr/colorOnPrimary"
+        app:tabTextColor="@android:color/darker_gray"
+        app:tabIndicatorGravity="stretch"
+        app:tabIndicator="@drawable/tab_indicator_shape"
+        app:tabIndicatorColor="@null"
+        app:tabIndicatorAnimationMode="linear"
+        app:tabSelectedTextColor="@android:color/white"
+        android:id="@+id/tabs"/>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabs"
+        android:id="@+id/view_pager"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

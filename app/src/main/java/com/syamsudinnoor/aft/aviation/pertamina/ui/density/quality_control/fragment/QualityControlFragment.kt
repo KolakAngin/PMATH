@@ -1,11 +1,15 @@
 package com.syamsudinnoor.aft.aviation.pertamina.ui.density.quality_control.fragment
 
+import android.content.Context.INPUT_METHOD_SERVICE
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.syamsudinnoor.aft.aviation.pertamina.R
@@ -19,7 +23,9 @@ import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.repository.MainR
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.repository.SNoorRepository
 import com.syamsudinnoor.aft.aviation.pertamina.ui.density.viewmodel.DensityViewModel
 import com.syamsudinnoor.aft.aviation.pertamina.ui.density.viewmodel.QualityControlViewModel
+import com.syamsudinnoor.aft.aviation.pertamina.utility.DialogHolder.timeDialog
 import com.syamsudinnoor.aft.aviation.pertamina.utility.TimeConverter
+import java.util.Date
 
 class QualityControlFragment : Fragment() {
 
@@ -37,7 +43,7 @@ class QualityControlFragment : Fragment() {
         MainViewModelFactory(repository)
     }
 
-    private var currentTime = System.currentTimeMillis()
+    private var currentTime : Long? = null
     private var density15 : Double? = null
     private var resultByDensity15 : Double? = null
 
@@ -67,6 +73,7 @@ class QualityControlFragment : Fragment() {
     private var cuPSM : String? = null
     private var toTank : String? = null
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -75,7 +82,13 @@ class QualityControlFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentQualityControlBinding.inflate(inflater, container, false)
 
-        binding.editTime.setText(TimeConverter.toReadableTime(currentTime))
+        binding.buttonTimeFrom.setOnClickListener {
+            timeDialog(requireContext(),"Start Time") { hour, minute ->
+                val date = Date()
+                currentTime = TimeConverter.concatenateStringDate(date, hour.toString(),minute.toString())
+                binding.buttonTimeFrom.setText(TimeConverter.toReadableTime(currentTime!!))
+            }
+        }
 
         //setupDensity()
         binding.buttonSearch.isEnabled = true
@@ -89,9 +102,13 @@ class QualityControlFragment : Fragment() {
         }
 
         binding.buttonSave.setOnClickListener {
+            val wasUpper = when{
+                bridgerNo == null -> ""
+                else -> bridgerNo?.uppercase()
+            }
             val reportData = BridgerQualityControl(
                 dateTime = currentTime,
-                bridger_no = bridgerNo,
+                bridger_no = wasUpper,
                 bpp = BppNo,
                 volume_liter = liter,
                 seal = sealOrSegel,
@@ -113,7 +130,6 @@ class QualityControlFragment : Fragment() {
             mainViewModel.insert(reportData)
             viewModel.onJoinChecking(false)
             currentTime = System.currentTimeMillis()
-            binding.editTime.setText(TimeConverter.toReadableTime(currentTime))
             Toast.makeText(requireContext(), "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
         }
 
@@ -121,6 +137,7 @@ class QualityControlFragment : Fragment() {
     }
 
     private fun checkInput(){
+        binding.cardViewResult.setBackgroundResource(R.drawable.normal_card_background)
         operatorName = binding.spinnerOperatorName.text.toString()
         bridgerNo = binding.editBridgerNo.text.toString()
         BppNo = binding.editBpp.text.toString()
@@ -197,6 +214,15 @@ class QualityControlFragment : Fragment() {
                 status = "OKE"
             } else {
                 status = "NOT OKE"
+            }
+
+            when (status) {
+                "OKE" -> {
+                    binding.cardViewResult.setBackgroundResource(R.drawable.green_card_background)
+                }
+                "NOT OKE" -> {
+                    binding.cardViewResult.setBackgroundResource(R.drawable.red_card_background)
+                }
             }
 
             binding.apply {

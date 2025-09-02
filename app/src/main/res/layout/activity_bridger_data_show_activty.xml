@@ -6,397 +6,518 @@
     android:layout_height="match_parent"
     tools:context=".ui.density.quality_control.activity_holder.BridgerDataShowActivty">
 
-    <!-- PERBAIKAN 1: Mengubah width dan height menjadi 0dp agar lebih robust -->
-    <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/appBarLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:background="@color/colorPrimary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        >
 
-        <!-- PERBAIKAN 2: Mengatur padding secara spesifik untuk memberi ruang di bawah -->
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            app:titleTextColor="@color/white"
+            app:navigationIconTint="@color/white"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="20dp"
-            android:paddingTop="20dp"
-            android:paddingBottom="40dp">
+            android:layout_height="?attr/actionBarSize"
+            app:iconTint="@color/white"
+            app:menu="@menu/help_menu"
+            app:title="@string/app_name" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-            <!-- ID untuk elemen interaktif (AutoCompleteTextView, TextInputEditText) dikembalikan seperti semula -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_operator_name"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:orientation="vertical">
+
+            <TableLayout
+                android:layout_marginTop="10dp"
+                android:id="@+id/table_view_result"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-                <AutoCompleteTextView
-                    android:id="@+id/spinner_operator_name"
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="visible"
+                android:gravity="top">
+
+                <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Name Sign"
-                    android:inputType="none" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_bridger_no"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_operator_name">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_bridger_no"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Bridger No"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_time"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_bridger_no">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_time"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:editable="false"
-                    android:hint="Time"
-                    android:inputType="none" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_bpp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_time">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_bpp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="BPP No"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_liter"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_bpp">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_liter"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Liter"
-                    android:inputType="numberDecimal" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_seal"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_liter">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_seal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Seal / Segel"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_test_report"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_seal">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_test_report"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Test Report No"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_dens_15_from_distributor"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_test_report">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_dens_15_from_distributor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Density 15 Distributor"
-                    android:inputType="numberDecimal"
-                    android:maxLength="6" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_afrn_no"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_dens_15_from_distributor">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/afrn_no"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="AFRN No"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_density_rec_doc"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_afrn_no">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_density_rec_doc"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Density OBDS (Rec. Document)"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_temp_rec_doc"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_density_rec_doc">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_temp_rec_doc"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Temperature (Rec. Document)"
-                    android:inputType="numberDecimal"
-                    android:maxLength="6" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_result_density_rec_doc"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_temp_rec_doc">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_result_density_rec_doc"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Result Density (Rec. Document)"
-                    android:inputType="none"
-                    android:maxLength="4" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_text_density"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_result_density_rec_doc">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_text_density"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Density OBSD"
-                    android:inputType="numberDecimal"
-                    android:maxLength="6" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_text_temp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_text_density">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_text_temp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Temperature"
-                    android:inputType="numberDecimal"
-                    android:maxLength="4" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_density_rsult"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_text_temp">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_density_rsult"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:editable="false"
-                    android:hint="Density 15 result"
-                    android:inputType="none" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_diff_max"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_density_rsult">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_diff_max"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:editable="false"
-                    android:hint="DIFF. (max 0,003 kg/l)*"
-                    android:inputType="numberDecimal" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_app"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_diff_max">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_app"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:editable="false"
-                    android:hint="APP"
-                    android:inputType="numberDecimal" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_cu_psm"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_app">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_cu_psm"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="CU pS/m)"
-                    android:inputType="numberDecimal" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_spinner_tank_qc"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_cu_psm">
-                <AutoCompleteTextView
-                    android:id="@+id/spinner_tank_qc"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="To Tangki"
-                    android:inputType="none" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Button
-                android:id="@+id/buttonSearch"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:text="Cari Data"
-                app:layout_constraintEnd_toStartOf="@+id/buttonSave"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_spinner_tank_qc" />
-
-            <Button
-                android:id="@+id/buttonSave"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:enabled="false"
-                android:text="Simpan Data"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/buttonSearch"
-                app:layout_constraintTop_toTopOf="@+id/buttonSearch" />
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_view_result"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                app:cardBackgroundColor="@color/whiteOf"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/buttonSearch">
-                <LinearLayout
-                    android:id="@+id/linearLayoutResult"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="20dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
-                    <ImageView
-                        android:id="@+id/img_result_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="250dp"
-                        android:src="@drawable/find_s"
-                        android:visibility="visible" />
+                    android:layout_height="match_parent">
                     <TextView
-                        android:id="@+id/textViewResult"
+                        android:id="@+id/row_1_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Temukan Nilai Density"
+                        android:layout_weight="1"
                         android:textSize="20sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                        android:text="Tanggal"
+                        android:gravity="start"
+                        android:padding="10dp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/row_1_body"
+                        android:gravity="start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:padding="10dp"
+                        android:layout_weight="1"
+                        android:textStyle="bold"/>
+                </TableRow>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/row_2_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:layout_weight="1"
+                        android:text="No. Bridger"
+                        android:gravity="start"
+                        android:padding="10dp"
+                        android:textStyle="bold"/>
+                    <TextView
+
+                        android:id="@+id/row_2_body"
+                        android:gravity="start"
+                        android:textSize="20sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:layout_weight="1"
+                        android:textStyle="bold"/>
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+                    <TextView
+                        android:id="@+id/row_3_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="BPP"
+                        android:gravity="start"
+                        android:textSize="20sp"
+                        android:padding="10dp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/row_3_body"
+                        android:gravity="start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:textSize="20sp"
+                        android:layout_weight="1"
+
+                        android:textStyle="bold"/>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+                    <TextView
+                        android:id="@+id/row_5_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Volume Liter"
+                        android:gravity="start"
+                        android:textSize="20sp"
+                        android:padding="10dp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/row_5_body"
+                        android:gravity="start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:textSize="20sp"
+                        android:layout_weight="1"
+                        android:textStyle="bold"/>
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+                    <TextView
+                        android:id="@+id/row_6_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Seal / Segel"
+                        android:gravity="start"
+                        android:textSize="20sp"
+                        android:padding="10dp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/row_6_body"
+                        android:gravity="start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:textSize="20sp"
+                        android:layout_weight="1"
+                        android:textStyle="bold"/>
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+                    <TextView
+                        android:id="@+id/row_7_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Test Report No"
+                        android:gravity="start"
+                        android:textSize="20sp"
+                        android:padding="10dp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/row_7_body"
+                        android:gravity="start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:textSize="20sp"
+                        android:layout_weight="1"
+                        android:textStyle="bold"/>
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+                    <TextView
+                        android:id="@+id/row_8_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Density 15 Distributor"
+                        android:gravity="start"
+                        android:textSize="20sp"
+                        android:padding="10dp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/row_8_body"
+                        android:gravity="start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:textSize="20sp"
+                        android:layout_weight="1"
+                        android:textStyle="bold"/>
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+                    <TextView
+                        android:id="@+id/row_9_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="AFRN No"
+                        android:gravity="start"
+                        android:textSize="20sp"
+                        android:padding="10dp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/row_9_body"
+                        android:gravity="start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:textSize="20sp"
+                        android:layout_weight="1"
+                        android:textStyle="bold"/>
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+                    <TextView
+                        android:id="@+id/row_10_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Density OBSD Rec Doc"
+                        android:gravity="start"
+                        android:textSize="20sp"
+                        android:padding="10dp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/row_10_body"
+                        android:gravity="start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:textSize="20sp"
+                        android:layout_weight="1"
+                        android:textStyle="bold"/>
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+                    <TextView
+                        android:id="@+id/row_12_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Temp Rec Doc"
+                        android:gravity="start"
+                        android:textSize="20sp"
+                        android:padding="10dp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/row_12_body"
+                        android:gravity="start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:textSize="20sp"
+                        android:layout_weight="1"
+                        android:textStyle="bold"/>
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+                    <TextView
+                        android:id="@+id/row_13_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Density 15 Rec Doc"
+                        android:gravity="start"
+                        android:textSize="20sp"
+                        android:padding="10dp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/row_14_body"
+                        android:gravity="start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:textSize="20sp"
+                        android:layout_weight="1"
+                        android:textStyle="bold"/>
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+                    <TextView
+                        android:id="@+id/row_15_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Density OBSVD"
+                        android:gravity="start"
+                        android:textSize="20sp"
+                        android:padding="10dp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/row_15_body"
+                        android:gravity="start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:textSize="20sp"
+                        android:layout_weight="1"
+                        android:textStyle="bold"/>
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+                    <TextView
+                        android:id="@+id/row_16_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Temp"
+                        android:gravity="start"
+                        android:textSize="20sp"
+                        android:padding="10dp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/row_16_body"
+                        android:gravity="start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:textSize="20sp"
+                        android:layout_weight="1"
+                        android:textStyle="bold"/>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+                    <TextView
+                        android:id="@+id/row_17_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Density 15"
+                        android:gravity="start"
+                        android:textSize="20sp"
+                        android:padding="10dp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/row_17_body"
+                        android:gravity="start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:textSize="20sp"
+                        android:layout_weight="1"
+                        android:textStyle="bold"/>
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+                    <TextView
+                        android:id="@+id/row_18_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="APP"
+                        android:gravity="start"
+                        android:textSize="20sp"
+                        android:padding="10dp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/row_18_body"
+                        android:gravity="start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:textSize="20sp"
+                        android:layout_weight="1"
+                        android:textStyle="bold"/>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+                    <TextView
+                        android:id="@+id/row_24_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Diff. (Max. 0.003)"
+                        android:gravity="start"
+                        android:textSize="20sp"
+                        android:padding="10dp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/row_24_body"
+                        android:gravity="start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:textSize="20sp"
+                        android:layout_weight="1"
+                        android:textStyle="bold"/>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+                    <TextView
+                        android:id="@+id/row_19_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Cu PSM"
+                        android:gravity="start"
+                        android:textSize="20sp"
+                        android:padding="10dp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/row_19_body"
+                        android:gravity="start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:textSize="20sp"
+                        android:layout_weight="1"
+                        android:textStyle="bold"/>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+                    <TextView
+                        android:id="@+id/row_20_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Tangki"
+                        android:gravity="start"
+                        android:textSize="20sp"
+                        android:padding="10dp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/row_20_body"
+                        android:gravity="start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:textSize="20sp"
+                        android:layout_weight="1"
+                        android:textStyle="bold"/>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="30dp"
+                    >
+                    <TextView
+                        android:id="@+id/row_21_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Operator Name"
+                        android:gravity="start"
+                        android:textSize="20sp"
+                        android:padding="10dp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/row_21_body"
+                        android:gravity="start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:textSize="20sp"
+                        android:layout_weight="1"
+                        android:textStyle="bold"/>
+                </TableRow>
+
+            </TableLayout>
+
+        </LinearLayout>
     </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

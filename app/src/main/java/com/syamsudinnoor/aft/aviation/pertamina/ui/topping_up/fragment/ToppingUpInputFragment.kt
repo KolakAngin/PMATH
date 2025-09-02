@@ -15,14 +15,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.NumberPicker
 import android.widget.TimePicker
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.viewModels
 import com.syamsudinnoor.aft.aviation.pertamina.R
+import com.syamsudinnoor.aft.aviation.pertamina.databinding.CardViewHolderBinding
 import com.syamsudinnoor.aft.aviation.pertamina.databinding.FragmentToppingUpInputBinding
 import com.syamsudinnoor.aft.aviation.pertamina.factoryviewmodel.MainViewModelFactory
 import com.syamsudinnoor.aft.aviation.pertamina.factoryviewmodel.ViewModelFactory
@@ -31,12 +34,15 @@ import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.SnoorRoomDatabas
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.ToppingUp
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.repository.MainRepository
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.repository.SNoorRepository
+import com.syamsudinnoor.aft.aviation.pertamina.ui.dipping_tank.fragment.FragmentDippingRefeuller
 import com.syamsudinnoor.aft.aviation.pertamina.ui.topping_up.viewmodel.DataToppingUpViewModel
 
 import com.syamsudinnoor.aft.aviation.pertamina.ui.topping_up.viewmodel.ToppingUpViewModel
 import com.syamsudinnoor.aft.aviation.pertamina.utility.TimeConverter
 import com.syamsudinnoor.aft.aviation.pertamina.utility.numberFormatter
 import com.syamsudinnoor.aft.aviation.pertamina.utility.DialogHolder.timeDialog
+import com.syamsudinnoor.aft.aviation.pertamina.utility.formatterNumber
+import com.syamsudinnoor.aft.aviation.pertamina.utility.helperSettingEditText
 import java.sql.Time
 import java.util.Date
 import kotlin.getValue
@@ -49,9 +55,10 @@ class ToppingUpInputFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var statusRefeuller : String? = null
-    private var statusSession : String? = null
 
-    private var statusLiter : Double = 0.0
+    private var statusLiterBefore : Double = 0.0
+    private var statusLiterAfter : Double = 0.0
+
     private val viewModel: ToppingUpViewModel by viewModels {
         val database = SnoorRoomDatabase.getDatabase(requireContext())
         val repository = SNoorRepository(database.sNoorDao())
@@ -73,6 +80,8 @@ class ToppingUpInputFragment : Fragment() {
     private var hasilDipstik : Double? = 0.0
     private var mVariabel : String? = ""
     private var totalisatorAwal : String? = ""
+
+    private var totalisatorAkhir : String? = ""
     private var tangki : String? = ""
     private var operator : String? = ""
 
@@ -88,7 +97,6 @@ class ToppingUpInputFragment : Fragment() {
 
 
         validateInput()
-        setupToppingUp()
         searchToppingUp()
 
         binding.buttonStartTime.setOnClickListener {
@@ -104,23 +112,32 @@ class ToppingUpInputFragment : Fragment() {
             pickupTime(requireContext())
         }
 
-        viewModel.isValid.observe(viewLifecycleOwner){ isValid ->
+        viewModel.isValid.observe(viewLifecycleOwner) { isValid ->
             binding.buttonSearch.isEnabled = isValid
         }
+
+        viewModel.isMM2Valid.observe(viewLifecycleOwner){isValid ->
+            binding.buttonSarch2.isEnabled = isValid
+        }
+
 
         binding.buttonSave.setOnClickListener {
             insertData()
         }
 
+
         return binding.root
     }
+
+
 
     private fun insertData(){
         tangki = binding.spinnerTankQc.text.toString()
         operator = binding.spinnerOperatorName.text.toString()
         salesRef = binding.editRef.text.toString().toIntOrNull()
         jumlahTopping = binding.editToppingVolume.text.toString().toIntOrNull()
-        totalisatorAwal = binding.editTotalisator.text.toString()
+        totalisatorAwal = binding.editTotalisatorAwal.text.toString()
+        totalisatorAkhir = binding.editTotalisatorAkhir.text.toString()
         mVariabel = binding.spinnerM.text.toString()
 
 
@@ -136,7 +153,8 @@ class ToppingUpInputFragment : Fragment() {
             m_number = mVariabel,
             totalisator_awal = totalisatorAwal,
             tanki = tangki,
-            operator = operator
+            operator = operator,
+            totalisator_akhir = totalisatorAkhir
             )
 
         toppingUpViewModel.insert(data)
@@ -151,13 +169,13 @@ class ToppingUpInputFragment : Fragment() {
         val minutePicker = dialogView.findViewById<NumberPicker>(com.syamsudinnoor.aft.aviation.pertamina.R.id.minutePicker)
 
         hourPicker.minValue = 0
-        hourPicker.maxValue = 23
+        hourPicker.maxValue = 2
 
         minutePicker.minValue = 0
         minutePicker.maxValue = 60
 
         AlertDialog.Builder(context)
-            .setTitle("Pilih Waktu")
+            .setTitle("Total Waktu Pengisian")
             .setView(dialogView)
             .setPositiveButton("OK"){_,_ ->
 
@@ -185,224 +203,247 @@ class ToppingUpInputFragment : Fragment() {
     }
 
     private fun searchToppingUp() {
+
+
         binding.buttonSearch.setOnClickListener {
 
             val imm = requireContext().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(binding.editTextMm.windowToken, 0)
-            binding.cardViewResult.setBackgroundResource(R.drawable.normal_card_background)
+
+            val cardView = binding.cardView1
+            cardView.cardViewResult.setBackgroundResource(R.drawable.normal_card_background)
+
             val value = binding.editTextMm.text.toString().toDouble()
             sisaDipping = value.toInt()
-            when(statusRefeuller){
-                "SNR 17" -> {
-                    statusLiter = binding.editTextMm.text.toString().toDouble()
-                    hasilDipstik = statusLiter
-                    simplifySetupToppingUp(this.statusSession)
+
+            val status = "before"
+            searchForToppingUp(value,status,cardView)
+            binding.viewHide.visibility = View.VISIBLE
+        }
+        binding.buttonSarch2.setOnClickListener {
+            val imm = requireContext().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(binding.editDippingAfterTopping.windowToken, 0)
+            val cardView = binding.cardView2
+            cardView.cardViewResult.setBackgroundResource(R.drawable.normal_card_background)
+            val value = binding.editDippingAfterTopping.text.toString().toDouble()
+            hasilDipstik = value
+
+            val status = "after"
+            searchForToppingUp(value,status,cardView)
+        }
+    }
+
+    private fun searchForToppingUp(value : Double ,status: String,cardView: CardViewHolderBinding){
+
+        when(statusRefeuller){
+            "SNR 17" -> {
+                if (status == "before"){
+                    statusLiterBefore = binding.editTextMm.text.toString().toDouble()
+                    sisaDipping = statusLiterBefore.toInt()
+
+
+                }else{
+                    statusLiterAfter = binding.editDippingAfterTopping.text.toString().toDouble()
+                    hasilDipstik = statusLiterAfter
                 }
-                "SNR 19" -> {
-                    hasilDipstik = statusLiter
-                    statusLiter = binding.editTextMm.text.toString().toDouble()
-                    simplifySetupToppingUp(this.statusSession)
-                }
-                "SNR 20" -> viewModel.getSnr20(value)
-                "SNR 21" -> viewModel.getSnr21(value)
-                "SNR 22" -> viewModel.getSnr22(value)
-                else -> {}
+
             }
+            "SNR 19" -> {
+                if (status == "before"){
+                    statusLiterBefore = binding.editTextMm.text.toString().toDouble()
+                    sisaDipping = statusLiterBefore.toInt()
+
+                }else{
+                    statusLiterAfter = binding.editDippingAfterTopping.text.toString().toDouble()
+                    hasilDipstik = statusLiterAfter
+                }
+            }
+            "SNR 20" -> when{status == "before" -> viewModel.getSnr20(value) else -> viewModel.getSnr20After(value)}
+            "SNR 21" -> when{status == "before" -> viewModel.getSnr21(value) else -> viewModel.getSnr21After(value)}
+            "SNR 22" -> when{status == "before" -> viewModel.getSnr22(value) else -> viewModel.getSnr22After(value)}
+            else -> {}
+        }
+        if (status == "before"){
+            setupToppingUp(cardView)
+            statusToppingUp(cardView,status)
+            binding.viewHide.visibility = View.VISIBLE
+        }
+        else{
+            setupToppingUpAfter(cardView)
+            statusToppingUp(cardView,status)
             binding.buttonSave.isEnabled = true
         }
+
     }
 
-
-
-
+    
     fun validateInput() {
 
-        binding.spinnerRefeuller.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {}
-
-            override fun beforeTextChanged(
-                s: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int
-            ) {
-            }
-
-            override fun onTextChanged(
-                s: CharSequence?,
-                start: Int,
-                before: Int,
-                count: Int
-            ) {
-                val watching = s.toString()
-                if (watching.isNotEmpty()) {
-                    statusRefeuller = watching
-                    viewModel.onRefeullerSelected(true)
-                    if (watching == "SNR 17" || watching == "SNR 19") {
-                        binding.containterMM.hint = getString(R.string.inset_liter)
-                    } else {
-                        binding.containterMM.hint = getString(R.string.insert_mm)
-                    }
+        binding.spinnerRefeuller.addTextChangedListener(helperSettingEditText { s ->
+            if (s.isNotEmpty()) {
+                statusRefeuller = s
+                viewModel.onRefeullerSelected(true)
+                if (s == "SNR 17" || s == "SNR 19") {
+                    binding.containterMM.hint = getString(R.string.inset_liter)
                 } else {
-                    viewModel.onRefeullerSelected(false)
+                    binding.containterMM.hint = getString(R.string.insert_mm)
                 }
+            } else {
+                viewModel.onRefeullerSelected(false)
             }
         })
 
-        binding.rgSession.setOnCheckedChangeListener { _, checkedId ->
-            when(checkedId){
-                R.id.rb_topping_up ->{
-                    this.statusSession = "Topping Up"
-                    viewModel.onSessionSelected(true)
-                }
-                R.id.rb_settle_refeuller ->{
-                    this.statusSession = "Settle"
-                    viewModel.onSessionSelected(true)
-                }
-                else -> {
-                    viewModel.onSessionSelected(false)
-                }
+        binding.editTextMm.addTextChangedListener(helperSettingEditText { s ->
+            if (s.isNotEmpty()){
+                viewModel.onMMValid(true)
+                viewModel.onSessionSelected(true)
+            }else{
+                viewModel.onMMValid(false)
+                viewModel.onSessionSelected(false)
             }
-        }
+        })
 
-                binding.editTextMm.addTextChangedListener(object : TextWatcher{
-            override fun afterTextChanged(s: Editable?) {}
-
-            override fun beforeTextChanged(
-                s: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int
-            ) {}
-
-            override fun onTextChanged(
-                s: CharSequence?,
-                start: Int,
-                before: Int,
-                count: Int
-            ) {
-                if (s.toString().isNotEmpty()){
-                    viewModel.onMMValid(true)
-                }else{
-                    viewModel.onMMValid(false)
-                }
+        binding.editDippingAfterTopping.addTextChangedListener(helperSettingEditText { s ->
+            if (s.isNotEmpty()){
+                viewModel.onMM2Valid(true)
+            }else{
+                viewModel.onMM2Valid(false)
             }
-
         })
 
     }
 
-    private fun setupToppingUp() {
+    private fun setupToppingUp(cardView : CardViewHolderBinding) {
 
         viewModel.snr20.observe(viewLifecycleOwner){ liter ->
             if(liter != null){
-                this.statusLiter = liter.liter ?: 0.0
-                hasilDipstik = this.statusLiter
-                simplifySetupToppingUp(this.statusSession)
+                statusLiterBefore = liter.liter!!
+                //sisaDipping = statusLiterBefore.toInt()
+                statusToppingUp(cardView)
             }else{
-                binding.imgResultIcon.visibility = View.VISIBLE
-                binding.tableViewResult.visibility = View.GONE
-                binding.imgResultIcon.setImageResource(R.drawable.not_found)
+                cardView.imgResultIcon.visibility = View.VISIBLE
+                cardView.tableViewResult.visibility = View.GONE
+                cardView.imgResultIcon.setImageResource(R.drawable.not_found)
             }
 
         }
 
         viewModel.snr21.observe(viewLifecycleOwner){liter ->
             if (liter != null){
-                this.statusLiter = liter.liter ?: 0.0
-                hasilDipstik = this.statusLiter
-                simplifySetupToppingUp(this.statusSession)
+                statusLiterBefore = liter.liter!!
+                //sisaDipping = statusLiterBefore.toInt()
+                statusToppingUp(cardView)
             }else{
-                binding.imgResultIcon.visibility = View.VISIBLE
-                binding.tableViewResult.visibility = View.GONE
-                binding.imgResultIcon.setImageResource(R.drawable.not_found)
+                cardView.imgResultIcon.visibility = View.VISIBLE
+                cardView.tableViewResult.visibility = View.GONE
+                cardView.imgResultIcon.setImageResource(R.drawable.not_found)
             }
         }
 
         viewModel.snr22.observe(viewLifecycleOwner){liter ->
             if (liter != null){
-                this.statusLiter = liter.liter ?: 0.0
-                hasilDipstik = this.statusLiter
-                simplifySetupToppingUp(this.statusSession)
+                statusLiterBefore = liter.liter!!
+               // sisaDipping = statusLiterBefore.toInt()
+                statusToppingUp(cardView)
             }else{
-                binding.imgResultIcon.visibility = View.VISIBLE
-                binding.tableViewResult.visibility = View.GONE
-                binding.imgResultIcon.setImageResource(R.drawable.not_found)
+                cardView.imgResultIcon.visibility = View.VISIBLE
+                cardView.tableViewResult.visibility = View.GONE
+                cardView.imgResultIcon.setImageResource(R.drawable.not_found)
             }
         }
 
     }
 
-    private fun simplifySetupToppingUp(status: String?){
-        when(status){
-            "Topping Up" -> statusToppingUp()
-            "Settle" -> statusSettle()
+    private fun setupToppingUpAfter(cardView : CardViewHolderBinding) {
+
+        viewModel.snr20After.observe(viewLifecycleOwner){ liter ->
+            if(liter != null){
+                statusLiterAfter = liter.liter!!
+                //hasilDipstik = statusLiterAfter
+                statusToppingUp(cardView,"after")
+            }else{
+                cardView.imgResultIcon.visibility = View.VISIBLE
+                cardView.tableViewResult.visibility = View.GONE
+                cardView.imgResultIcon.setImageResource(R.drawable.not_found)
+            }
+
         }
+
+        viewModel.snr21After.observe(viewLifecycleOwner){liter ->
+            if (liter != null){
+                statusLiterAfter = liter.liter!!
+                //hasilDipstik = statusLiterAfter
+                statusToppingUp(cardView,"after")
+            }else{
+                cardView.imgResultIcon.visibility = View.VISIBLE
+                cardView.tableViewResult.visibility = View.GONE
+                cardView.imgResultIcon.setImageResource(R.drawable.not_found)
+            }
+        }
+
+        viewModel.snr22After.observe(viewLifecycleOwner){liter ->
+            if (liter != null){
+                statusLiterAfter = liter.liter!!
+                //hasilDipstik = statusLiterAfter
+                statusToppingUp(cardView,"after")
+            }else{
+                cardView.imgResultIcon.visibility = View.VISIBLE
+                cardView.tableViewResult.visibility = View.GONE
+                cardView.imgResultIcon.setImageResource(R.drawable.not_found)
+            }
+        }
+
     }
 
-    private fun statusToppingUp(){
-        binding.imgResultIcon.visibility = View.GONE
-        binding.tableViewResult.visibility = View.VISIBLE
+    private fun statusToppingUp(cardView : CardViewHolderBinding,status : String = "before"){
+        cardView.imgResultIcon.visibility = View.GONE
+        cardView.tableViewResult.visibility = View.VISIBLE
+
+        val maxCaps = when{
+            statusRefeuller == "SNR 17" || statusRefeuller == "SNR 21" || statusRefeuller == "SNR 22" -> CONST_17_21_22
+            else -> CONST_19_20
+        }
+
+        val usesLiter = when{ status == "before" -> statusLiterBefore else -> statusLiterAfter}
+
+        val ullage : Double = maxCaps - usesLiter
 
 
-        val decision = (statusLiter / CONSTANTA) * 100
+        val decision = (usesLiter / maxCaps) * 100
         val textDecision = when{
             decision >= 50 ->"Belum butuh Topping Up"
             decision >= 25 -> "Akan butuh Topping Up"
             else -> "Secepatnya Topping Up"
         }
 
-        binding.row1Header.text = resources.getString(R.string.dipping_result_tank)
-        binding.row1Body.text = getString(R.string.liter_holder, numberFormatter(statusLiter))
-        binding.row2Header.text = getString(R.string.max_capacity_tank)
-        binding.row2Body.text = getString(R.string.liter_holder, numberFormatter(CONSTANTA))
-        binding.row3Header.text = resources.getString(R.string.decision_topping_up)
-        binding.row3Body.text = textDecision
-        binding.row4Header.visibility = View.GONE
-        binding.row4Body.visibility = View.GONE
+        cardView.row1Header.text = resources.getString(R.string.dipping_result_tank)
+        cardView.row1Body.text = getString(R.string.liter_holder, numberFormatter(usesLiter))
+        cardView.row2Header.text = getString(R.string.max_capacity_tank)
+        cardView.row2Body.text = getString(R.string.liter_holder, numberFormatter(maxCaps))
+
+
+        if (status == "before"){
+            cardView.row3Header.text = resources.getString(R.string.decision_topping_up)
+            cardView.row3Body.text = textDecision
+            cardView.row4Header.text = getString(R.string.recomendation)
+        }else{
+            cardView.row3Header.visibility = View.GONE
+            cardView.row3Body.visibility = View.GONE
+            cardView.row4Header.text = getString(R.string.ullage_tank)
+        }
+        cardView.row4Body.text = formatterNumber(ullage)
 
 
         when{
-            decision >= 50 -> binding.cardViewResult.setBackgroundResource(R.drawable.green_card_background)
+            decision >= 50 -> cardView.cardViewResult.setBackgroundResource(R.drawable.green_card_background)
 
-            decision >= 25 -> binding.cardViewResult.setBackgroundResource(R.drawable.yellow_card_background)
+            decision >= 25 -> cardView.cardViewResult.setBackgroundResource(R.drawable.yellow_card_background)
 
-            else -> binding.cardViewResult.setBackgroundResource(R.drawable.red_card_background)
+            else -> cardView.cardViewResult.setBackgroundResource(R.drawable.red_card_background)
         }
 
     }
 
-    private fun statusSettle(){
-        binding.imgResultIcon.visibility = View.GONE
-        binding.tableViewResult.visibility = View.VISIBLE
-
-
-        val ullage = CONSTANTA - statusLiter
-        val ullagePercent = (ullage / CONSTANTA) * 100
-
-
-        binding.row1Header.text = resources.getString(R.string.dipping_result_tank)
-        binding.row1Body.text = getString(R.string.liter_holder, numberFormatter(statusLiter))
-
-        binding.row2Header.text = resources.getString(R.string.max_capacity_tank)
-        binding.row2Body.text = getString(R.string.liter_holder, numberFormatter(CONSTANTA))
-
-        binding.row3Header.text = resources.getString(R.string.ullage_tank)
-        binding.row3Body.text = getString(R.string.liter_holder, numberFormatter(ullage))
-
-        binding.row4Header.visibility = View.GONE
-        binding.row4Body.visibility = View.GONE
-
-
-        when{
-            ullagePercent >= 75 -> binding.cardViewResult.setBackgroundResource(R.drawable.red_card_background)
-
-            ullagePercent >= 50 -> binding.cardViewResult.setBackgroundResource(R.drawable.yellow_card_background)
-
-            else -> binding.cardViewResult.setBackgroundResource(R.drawable.green_card_background)
-        }
-
-    }
 
         override fun onResume() {
             super.onResume()
@@ -425,7 +466,10 @@ class ToppingUpInputFragment : Fragment() {
 
 
     companion object {
-        private const val CONSTANTA = 25000.0
+        const val APP_NAME = "APP_NAME"
+        private const val CONST_17_21_22 = 24500.0
+        private const val CONST_19_20 = 25000.0
+
     }
 
 

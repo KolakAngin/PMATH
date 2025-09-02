@@ -1,0 +1,360 @@
+package com.syamsudinnoor.aft.aviation.pertamina.ui.dipping_tank.fragment
+
+import android.content.Context.INPUT_METHOD_SERVICE
+import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import com.syamsudinnoor.aft.aviation.pertamina.R
+import com.syamsudinnoor.aft.aviation.pertamina.databinding.ActivityDippingTankBinding
+import com.syamsudinnoor.aft.aviation.pertamina.databinding.FragmentDippingTankBinding
+import com.syamsudinnoor.aft.aviation.pertamina.factoryviewmodel.ViewModelFactory
+import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.SnoorRoomDatabase
+import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.repository.SNoorRepository
+import com.syamsudinnoor.aft.aviation.pertamina.ui.dipping_tank.DippingTankViewModel
+import com.syamsudinnoor.aft.aviation.pertamina.utility.helperSettingEditText
+import com.syamsudinnoor.aft.aviation.pertamina.utility.numberFormatter
+import kotlin.getValue
+
+class FragmentDippingTank : Fragment(){
+
+
+    private var _binding : FragmentDippingTankBinding? = null
+    private val binding get() = _binding!!
+
+    private  var statusSection : String? = null
+
+    private var literOnTank : Double? = null
+
+    private var statusTankSpinner : String? = null
+
+    private val viewModel: DippingTankViewModel by viewModels {
+        val database = SnoorRoomDatabase.getDatabase(requireContext())
+        val repository = SNoorRepository(database.sNoorDao())
+        ViewModelFactory(repository)
+    }
+
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        _binding = FragmentDippingTankBinding.inflate(inflater, container, false)
+
+
+        viewModel.isAllItemValid.observe(viewLifecycleOwner){isValid ->
+            binding.buttonSearch.isEnabled = isValid
+        }
+
+        inputValidation()
+        setupDippingTank()
+        binding.buttonSearch.setOnClickListener {
+            binding.editTextMm.clearFocus()
+            val imm = requireContext().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(binding.editTextMm.windowToken, 0)
+            searchDippingTank()
+            binding.cardViewResult.setBackgroundResource(R.drawable.normal_card_background)
+        }
+
+
+        return binding.root
+    }
+
+
+    private fun searchDippingTank() {
+
+        val mm = binding.editTextMm.text.toString().toDouble()
+        when(statusTankSpinner){
+            "Tangki 9" -> viewModel.searchTangki9(mm)
+            "Tangki 10" -> viewModel.searchTangki10(mm)
+            "Tangki 11" -> viewModel.searchRangki11(mm)
+            else -> {}
+        }
+
+    }
+
+    fun setupDippingTank() {
+
+        viewModel.tangki9Result.observe(viewLifecycleOwner) { result ->
+            if (result != null) {
+                literOnTank = result.liter
+                simplifyHolderViewModel(literOnTank,statusTankSpinner)
+
+            } else {
+                binding.imgResultIcon.setImageResource(R.drawable.not_found)
+                binding.imgResultIcon.visibility = View.VISIBLE
+                binding.tableViewResult.visibility = View.GONE
+            }
+        }
+
+        viewModel.tangki10Result.observe(viewLifecycleOwner) { result ->
+            if (result != null) {
+                literOnTank = result.liter ?: 0.0
+                simplifyHolderViewModel(literOnTank,statusTankSpinner)
+            } else {
+                binding.imgResultIcon.setImageResource(R.drawable.not_found)
+                binding.tableViewResult.visibility = View.GONE
+                binding.imgResultIcon.visibility = View.VISIBLE
+            }
+        }
+
+        viewModel.tangki11Result.observe(viewLifecycleOwner) { result ->
+            if (result != null) {
+                literOnTank = result.liter
+                simplifyHolderViewModel(literOnTank,statusTankSpinner)
+            } else {
+                binding.imgResultIcon.setImageResource(R.drawable.not_found)
+                binding.imgResultIcon.visibility = View.VISIBLE
+                binding.tableViewResult.visibility = View.GONE
+            }
+        }
+
+    }
+
+
+    private fun simplifyHolderViewModel(liter : Double?, tangkiName : String?){
+        binding.imgResultIcon.visibility = View.GONE
+        when(statusSection){
+            "Receiving Tank" -> {
+                statusReceiving(literOnTank ?: 0.0, statusTankSpinner ?: "")
+            }
+            "Distribution Tank" -> {
+                statusDistribution(literOnTank ?: 0.0, statusTankSpinner ?: "")
+            }
+            "Settle Tank" -> {
+                statusSettle(literOnTank ?: 0.0, statusTankSpinner ?: "")
+            }
+            else -> {
+                binding.tableViewResult.visibility = View.GONE
+            }
+        }
+    }
+
+
+    private fun inputValidation(){
+        binding.spinnerTank.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(s: Editable?) {}
+
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {}
+
+            override fun onTextChanged(
+                s: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
+                if (s.toString().isNotEmpty()){
+                    statusTankSpinner = s.toString()
+                    viewModel.onTankSelected(true)
+                }else{
+                    viewModel.onTankSelected(false)
+                }
+
+            }
+
+        })
+        binding.rgSession.setOnCheckedChangeListener { _, checkedId ->
+            when(checkedId){
+                R.id.rb_receiving_tank -> {
+                    viewModel.onSessionSelected(true)
+                    this.statusSection = "Receiving Tank"
+                }
+                R.id.rb_distribution_tank -> {
+                    viewModel.onSessionSelected(true)
+                    this.statusSection = "Distribution Tank"
+                }
+                R.id.rb_settle_tank -> {
+                    viewModel.onSessionSelected(true)
+                    this.statusSection = "Settle Tank"
+                }else -> viewModel.onSessionSelected(false)
+            }
+        }
+
+        binding.editTextMm.addTextChangedListener(helperSettingEditText { text ->
+            if (text.isNotEmpty()){
+                viewModel.onMMInputValid(true)
+            }else{
+                viewModel.onMMInputValid(false)
+            }
+        })
+    }
+
+
+    private fun statusReceiving(liter: Double, tangkiName : String){
+        val maxCapsByTank = maxCapDecider(tangkiName)
+
+        val capacityRecomendation = maxCapsByTank - liter
+
+        binding.imgResultIcon.visibility = View.GONE
+        binding.tableViewResult.visibility = View.VISIBLE
+
+        binding.row1Header.text = getString(R.string.max_capacity_tank)
+        binding.row1Body.text = getString(R.string.liter_holder, numberFormatter(maxCapsByTank))
+
+        binding.row2Header.text = getString(R.string.dipping_result_tank)
+        binding.row2Body.text = getString(R.string.liter_holder, numberFormatter(liter))
+
+        binding.row3Header.text = getString(R.string.receiving_capacity_tank)
+        binding.row3Body.text = getString(R.string.liter_holder, numberFormatter(capacityRecomendation))
+
+        binding.row4Header.visibility = View.GONE
+        binding.row4Body.visibility = View.GONE
+
+        val percentage = (liter / maxCapsByTank) * 100
+        when{
+            percentage >= 75.0 ->{
+                binding.cardViewResult.setBackgroundResource(R.drawable.red_card_background)
+            }
+            percentage >= 50.0 ->{
+                binding.cardViewResult.setBackgroundResource(R.drawable.yellow_card_background)
+            }else ->{
+            binding.cardViewResult.setBackgroundResource(R.drawable.green_card_background)
+        }
+        }
+
+    }
+
+    private fun maxCapDecider(tangkName : String) : Double{
+        return when(tangkName){
+            "Tangki 9" -> MAX_CAP_T9
+            "Tangki 10" -> MAX_CAP_T10
+            "Tangki 11" -> MAX_CAP_T11
+            else -> 0.0
+        }
+    }
+
+    private fun deathStockDecider(tangkName : String) : Double{
+        return  when(tangkName){
+            "Tangki 9" -> D_STOCK_T9
+            "Tangki 10" -> D_STOCK_T10
+            "Tangki 11" -> D_STOCK_T11
+            else -> 0.0
+        }
+    }
+
+    private fun statusDistribution(liter: Double, tangkiName : String){
+        val dStockByTank = deathStockDecider(tangkiName)
+
+        val maxDistribution = liter - dStockByTank
+        val isDistribution = when{
+            maxDistribution > 0.0 -> maxDistribution
+            else -> 0.0
+        }
+        val isPumpable = maxDistribution > 0.0
+
+        binding.imgResultIcon.visibility = View.GONE
+        binding.tableViewResult.visibility = View.VISIBLE
+        binding.row4Header.visibility = View.VISIBLE
+        binding.row4Body.visibility = View.VISIBLE
+
+        binding.row1Header.text = getString(R.string.death_stock_tank)
+        binding.row1Body.text = getString(R.string.liter_holder, numberFormatter(dStockByTank))
+
+        binding.row2Header.text = getString(R.string.dipping_result_tank)
+        binding.row2Body.text = getString(R.string.liter_holder, numberFormatter(liter))
+
+        binding.row3Header.text = getString(R.string.is_pumpable_tank)
+        binding.row3Body.text = isPumpable.toString()
+
+        binding.row4Header.text = getString(R.string.pumpable_stock_tank)
+        binding.row4Body.text = getString(R.string.liter_holder, numberFormatter(isDistribution))
+
+
+        when{
+            maxDistribution <= 0.0 ->{
+                binding.cardViewResult.setBackgroundResource(R.drawable.red_card_background)
+            }
+
+            maxDistribution <= dStockByTank ->{
+                binding.cardViewResult.setBackgroundResource(R.drawable.yellow_card_background)
+            }
+            else ->{
+                binding.cardViewResult.setBackgroundResource(R.drawable.green_card_background)
+            }
+
+        }
+    }
+
+    private fun statusSettle(liter: Double, tangkiName : String){
+
+        val maxCaps = maxCapDecider(tangkiName)
+        val ullage = maxCaps - liter
+        val ullageLevel = ullage / maxCaps * 100
+
+
+        binding.imgResultIcon.visibility = View.GONE
+        binding.tableViewResult.visibility = View.VISIBLE
+
+
+        binding.row1Header.text = getString(R.string.max_capacity_tank)
+        binding.row1Body.text = getString(R.string.liter_holder, numberFormatter(maxCaps))
+
+        binding.row2Header.text = getString(R.string.dipping_result_tank)
+        binding.row2Body.text = getString(R.string.liter_holder, numberFormatter(liter))
+
+        binding.row3Header.text = getString(R.string.ullage_tank)
+        binding.row3Body.text = getString(R.string.liter_holder, numberFormatter(ullage))
+
+        binding.row4Header.visibility = View.GONE
+        binding.row4Body.visibility = View.GONE
+
+        when{
+            ullageLevel >= 75.0 ->{
+                binding.cardViewResult.setBackgroundResource(R.drawable.red_card_background)
+            }
+            ullageLevel >= 50.0 ->{
+                binding.cardViewResult.setBackgroundResource(R.drawable.yellow_card_background)
+            }else ->{
+            binding.cardViewResult.setBackgroundResource(R.drawable.green_card_background)
+        }
+        }
+
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        val listOfTank = resources.getStringArray(R.array.tangks_choice)
+        val adapterTank = ArrayAdapter(requireContext(),R.layout.spinner_item_holder,listOfTank)
+        binding.spinnerTank.setAdapter(adapterTank)
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+
+    }
+
+    companion object{
+
+        private const val MAX_CAP_T9 : Double = 98000.0
+        private const val MAX_CAP_T10 : Double = 499000.0
+        private const val MAX_CAP_T11 : Double = 1000000.0
+
+        private const val D_STOCK_T9 : Double = 5000.0
+        private const val D_STOCK_T10 : Double = 10000.0
+        private const val D_STOCK_T11 : Double = 30000.0
+
+
+    }
+
+
+}

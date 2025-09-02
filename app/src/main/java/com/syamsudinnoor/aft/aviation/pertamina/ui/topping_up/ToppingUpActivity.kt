@@ -52,7 +52,7 @@ class ToppingUpActivity : AppCompatActivity() {
 
         //basic setting actionbar
         setSupportActionBar(binding.topAppBar)
-        supportActionBar?.title = intent.getStringExtra(APP_NAME)
+        supportActionBar?.title = APP_NAME
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
 
@@ -70,10 +70,14 @@ class ToppingUpActivity : AppCompatActivity() {
 
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.help_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
 
 
     companion object {
-        const val APP_NAME = "APP_NAME"
+        const val APP_NAME = "Topping Up Refueller"
         private const val CONSTANTA = 25000.0
     }
 }

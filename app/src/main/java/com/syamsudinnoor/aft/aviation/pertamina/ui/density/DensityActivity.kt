@@ -24,6 +24,7 @@ import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.repository.SNoor
 import com.syamsudinnoor.aft.aviation.pertamina.ui.density.adapter.SectionPagerAdapter
 import com.syamsudinnoor.aft.aviation.pertamina.ui.density.quality_control.activity_holder.BridgerQualityControlActivity
 import com.syamsudinnoor.aft.aviation.pertamina.ui.density.viewmodel.DensityViewModel
+import com.syamsudinnoor.aft.aviation.pertamina.ui.density.volume_control.activity_holder.VolumeControlActivity
 import kotlin.getValue
 
 class DensityActivity : AppCompatActivity() {
@@ -67,12 +68,26 @@ class DensityActivity : AppCompatActivity() {
                     val intent = Intent(this, BridgerQualityControlActivity::class.java)
                     startActivity(intent)
                 }
+
+                "Volume Control" -> {
+                    val intent = Intent(this, VolumeControlActivity::class.java)
+                    startActivity(intent)
+                }
             }
         }
 
     }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.help_menu,menu)
+        return true
+    }
 
-
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.help_menu -> Toast.makeText(this,"Ini adalah laman bantuan", Toast.LENGTH_SHORT).show()
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
     private fun getItemMenu(): ArrayList<ItemMenu> {
         val menuName = resources.getStringArray(R.array.holder_name_density)

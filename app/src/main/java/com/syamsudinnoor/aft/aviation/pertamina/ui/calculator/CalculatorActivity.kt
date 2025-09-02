@@ -6,16 +6,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.syamsudinnoor.aft.aviation.pertamina.R
+import com.syamsudinnoor.aft.aviation.pertamina.databinding.ActivityCalculatorBinding
 
 class CalculatorActivity : AppCompatActivity() {
+    private lateinit var binding : ActivityCalculatorBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_calculator)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        //enableEdgeToEdge()
+        binding = ActivityCalculatorBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
     }
 }

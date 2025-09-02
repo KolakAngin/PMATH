@@ -1,7 +1,10 @@
 package com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.dao.SNoorDao
+import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.CorrFactor
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.Density_15
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.Snr_20
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.Snr_21
@@ -9,12 +12,10 @@ import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.Snr_22
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.Tangki_10
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.Tangki_11
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.Tangki_9
+import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.UserPMATH
 
 
 class SNoorRepository(private val sNoorDao: SNoorDao) {
-
-    // Fungsi-fungsi ini hanya meneruskan panggilan ke DAO.
-    // Ini membuat kode lebih bersih dan mudah dites.
 
     fun getResultDensity(density: Double, temprature: Double): LiveData<Density_15?> {
         return sNoorDao.getResultDensity(density, temprature)
@@ -43,4 +44,22 @@ class SNoorRepository(private val sNoorDao: SNoorDao) {
     fun getResultSnr22(mm: Double): LiveData<Snr_22?> {
         return sNoorDao.getResultSnr22(mm)
     }
+
+    fun getResultCorrFactor(densityReal: String): LiveData<CorrFactor?> {
+        return sNoorDao.getResultCorrFactor(densityReal)
+    }
+
+    fun getUserPMATH(username: String, password: String): LiveData<Boolean> {
+        val result = sNoorDao.getUser(username, password).map { it != null }
+        val resultAll = sNoorDao.getAllUser()
+        val getUser = sNoorDao.getUserOnlineName(username)
+        val getUserPassword = sNoorDao.getUserOnlyfromPassword(password)
+        Log.d("LoginViewModel", "logginSucces: saya dijalnakan di login repository NAMA:: ${sNoorDao.getUserOnlineName(username).value}")
+        Log.d("LoginViewModel", "logginSucces: saya dijalnakan di login repository ALL: ${sNoorDao.getAllUser().value}")
+        Log.d("LoginViewModel", "logginSucces: saya dijalnakan di login repository PASSWORD: ${sNoorDao.getUserOnlyfromPassword(password).value}")
+        Log.d("LoginViewModel", "logginSucces: saya dijalnakan di login repository ${sNoorDao.getUser(username, password).value}")
+
+        return result
+    }
+
 }

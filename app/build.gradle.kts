@@ -68,6 +68,8 @@ dependencies {
     //PDF Document
     implementation(libs.itext7.core)
 
+    //Splash Screen
+    implementation(libs.androidx.core.splashscreen)
     //swipe refresh
     implementation(libs.androidx.swiperefreshlayout)
 

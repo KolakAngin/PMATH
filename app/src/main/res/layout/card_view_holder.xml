@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view_result"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    app:cardCornerRadius="20dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginBottom="20dp"
+    android:paddingBottom="20dp"
+    app:cardElevation="10dp"
+    app:cardBackgroundColor="@color/whiteOf">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/linearLayoutResult"
+        android:orientation="vertical"
+
+        android:layout_margin="20dp">
+
+
+        <TableLayout
+            android:id="@+id/table_view_result"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:gravity="center">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <TextView
+                    android:id="@+id/row_1_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="20sp"
+                    android:text="@string/death_stock_tank"
+                    android:gravity="start"
+                    android:padding="10dp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/row_1_body"
+                    android:gravity="start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:padding="10dp"
+                    android:layout_weight="1"
+                    tools:text="@string/dummy_liter"
+                    android:textStyle="bold"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/row_2_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:layout_weight="1"
+                    android:text="@string/dipping_result_tank"
+                    android:gravity="start"
+                    android:padding="10dp"
+                    android:textStyle="bold"/>
+                <TextView
+
+                    android:id="@+id/row_2_body"
+                    android:gravity="start"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:layout_weight="1"
+                    tools:text="@string/dummy_liter"
+                    android:textStyle="bold"/>
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <TextView
+                    android:id="@+id/row_3_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/ullage_tank"
+                    android:gravity="start"
+                    android:textSize="20sp"
+                    android:padding="10dp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/row_3_body"
+                    android:gravity="start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:textSize="20sp"
+                    android:layout_weight="1"
+                    tools:text="@string/dummy_liter"
+                    android:textStyle="bold"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <TextView
+                    android:id="@+id/row_4_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/pumpable_stock_tank"
+                    android:gravity="start"
+                    android:textSize="20sp"
+                    android:padding="10dp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/row_4_body"
+                    android:gravity="start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:textSize="20sp"
+                    android:layout_weight="1"
+                    tools:text="@string/dummy_liter"
+                    android:textStyle="bold"/>
+            </TableRow>
+
+        </TableLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:id="@+id/img_result_icon"
+            android:layout_height="250dp"
+            android:src="@drawable/find_s"
+            android:visibility="visible"/>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

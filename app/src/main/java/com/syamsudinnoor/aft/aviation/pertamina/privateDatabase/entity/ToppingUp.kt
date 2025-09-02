@@ -46,6 +46,9 @@ data class ToppingUp(
     @ColumnInfo("totalisator_awal")
     val totalisator_awal : String?,
 
+    @ColumnInfo("totalisator_akhir")
+    val totalisator_akhir : String?,
+
     @ColumnInfo("tanki")
     val tanki : String?,
 

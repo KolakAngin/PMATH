@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".ui.density.volume_control.fragment.DataHolderVolumeControlFragment">
+
+<LinearLayout
+    android:id="@+id/button_holder"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:orientation="horizontal"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_filter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:layout_weight="1"
+        android:background="@color/colorPrimary"
+        android:foreground="?attr/selectableItemBackground"
+        android:text="Filter Data"
+        android:textColor="@color/white" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_save"
+        android:enabled="true"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_weight="1"
+        android:background="@color/colorPrimary"
+        android:foreground="?attr/selectableItemBackground"
+        android:text="Save Data"
+        android:textColor="@color/white" />
+</LinearLayout>
+
+
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/recycle_view_data_holder"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:visibility="visible"
+    tools:visibility="visible"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/button_holder"/>
+
+
+<TextView
+    android:id="@+id/txt_no_data"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:gravity="center"
+    android:text="Tidak Ada Data"
+    android:textSize="40sp"
+    android:textStyle="italic"
+    android:visibility="gone"
+    tools:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/button_holder" />
+
+<com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/fab_add"
+    android:layout_width="wrap_content"
+    android:backgroundTint="@color/colorPrimary"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:layout_marginEnd="50dp"
+    android:contentDescription="Tambah Data Baru"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:srcCompat="@drawable/ic_refresh"
+    app:tint="@android:color/white" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

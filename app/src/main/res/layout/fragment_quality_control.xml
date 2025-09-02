@@ -34,7 +34,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Name Sign"
-                    android:inputType="none"/>
+                    android:inputType="textCapWords"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -54,21 +54,16 @@
                 />
 
             </com.google.android.material.textfield.TextInputLayout>
-            <com.google.android.material.textfield.TextInputLayout
+
+            <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_time"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Time"
-                    android:editable="false"
-                    android:inputType="none"
-                    />
-
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginTop="24dp"
+                style="@style/Widget.Material3.MaterialTimePicker.Button"
+                android:layout_weight="1"
+                android:text="Time Start"
+                android:layout_marginEnd="5dp"
+                android:id="@+id/buttonTimeFrom"/>
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -109,7 +104,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Seal / Segel"
-                    android:inputType="numberDecimal"
+                    android:inputType="textCapWords"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -337,6 +332,7 @@
                     android:text="Cari Data" />
 
                 <Button
+
                     android:background="@drawable/radio_selected_tangki"
                     android:id="@+id/buttonSave"
                     android:enabled="false"
@@ -349,6 +345,7 @@
             </LinearLayout>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_view_result"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"

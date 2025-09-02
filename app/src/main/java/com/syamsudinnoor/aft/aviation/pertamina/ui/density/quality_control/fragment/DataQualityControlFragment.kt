@@ -75,7 +75,7 @@ class DataQualityControlFragment : Fragment() {
 
         val adapter = BridgerQualityAdapter({ it ->
             val intent = Intent(requireContext(), BridgerDataShowActivty::class.java)
-            intent.putExtra(BridgerDataShowActivty.Companion.APP_NAME, it)
+            intent.putExtra(BridgerDataShowActivty.APP_NAME, it)
             startActivity(intent)
         }) {
             settingDialog("Apakah anda yakin ingin menghapus data ini?", it)
@@ -86,12 +86,10 @@ class DataQualityControlFragment : Fragment() {
         binding.recycleViewDataHolder.layoutManager = LinearLayoutManager(requireContext())
         binding.recycleViewDataHolder.adapter = adapter
         mainViewModel.qualityControlList.observe(viewLifecycleOwner){
-            Log.d("myDebug","Seharusnya dijalankan karena terpicu perubahan")
             adapter.submitList(it)
             if (it.isEmpty()){
                 binding.recycleViewDataHolder.visibility = View.GONE
                 binding.txtNoData.visibility = View.VISIBLE
-                Toast.makeText(requireContext(), "Tidak Ada Data", Toast.LENGTH_SHORT).show()
             }else{
                 binding.recycleViewDataHolder.visibility = View.VISIBLE
                 binding.txtNoData.visibility = View.GONE
@@ -220,7 +218,7 @@ class DataQualityControlFragment : Fragment() {
                 year = yearDialog.toString()
                 month = (monthDialog + 1).toString()
                 day = dayOfMonthDialog.toString()
-                localBinding.buttonDate.text = "$day:$month:$year"
+                localBinding.buttonDate.text = getString(R.string.date_container, day, month, year)
             }
         }
 
@@ -229,7 +227,8 @@ class DataQualityControlFragment : Fragment() {
             timeDialog(requireContext(),"Pilih Jam Mulai"){ hour, minute ->
                 startHour = hour.toString()
                 startMinute = minute.toString()
-                localBinding.buttonTimeFrom.text = "$startHour:$startMinute"
+                localBinding.buttonTimeFrom.text =
+                    getString(R.string.time_container, startHour, startMinute)
 
             }
         }

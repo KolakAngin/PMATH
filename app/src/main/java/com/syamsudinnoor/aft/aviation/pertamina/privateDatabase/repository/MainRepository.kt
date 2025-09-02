@@ -4,7 +4,10 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.MainDatabase
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.dao.MainDao
+import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.AnalisaVolumeControlQuality
+import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.AnalisaVolumeControlWithDetail
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.BridgerQualityControl
+import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.DetailKompartemen
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.ToppingUp
 import kotlinx.coroutines.flow.Flow
 
@@ -43,4 +46,22 @@ class MainRepository(private val dao: MainDao) {
         dao.deleteToppingUp(id)
 
     }
+
+
+    suspend fun insertAllAnalisaVolumeControlWithDetail(analisaVolumeControl: AnalisaVolumeControlQuality, details : List<DetailKompartemen>){
+        dao.insertVolumeControlWithDetail(analisaVolumeControl, details)
+    }
+
+    fun getAllDataVolumeControl() : Flow<List<AnalisaVolumeControlWithDetail>>{
+        return dao.getAllDataVolumeControl()
+    }
+
+    suspend fun deleteSelectedDataVolume(analisaVolumeControl: AnalisaVolumeControlQuality){
+        dao.deleteSelectedDataVolume(analisaVolumeControl)
+    }
+
+    fun getAnalisaVolumeControlByDate(startTime: Long, endTime: Long): Flow<List<AnalisaVolumeControlWithDetail>>{
+        return dao.getVolumeControlByDate(startTime,endTime)
+    }
+
 }

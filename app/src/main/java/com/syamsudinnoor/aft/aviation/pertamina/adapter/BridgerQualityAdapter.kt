@@ -38,7 +38,7 @@ class BridgerQualityAdapter(
     class ViewHolder(val binding: HolderQualityControlBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: BridgerQualityControl) {
             binding.txtBridgerHolder.text = item.bridger_no?.uppercase()
-            binding.txtLiterHolder.text = item.volume_liter.toString().uppercase()
+            binding.txtLiterHolder.text = item.volume_liter?.toInt().toString()
             binding.txtSealHolder.text = item.seal?.uppercase()
             binding.operator.text = item.operator_name?.uppercase()
             binding.timeDataQuilty.text = TimeConverter.toReadableDateTime(item.dateTime!!)

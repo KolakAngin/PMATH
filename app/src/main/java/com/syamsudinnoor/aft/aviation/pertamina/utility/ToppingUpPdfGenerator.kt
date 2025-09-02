@@ -25,17 +25,16 @@ import com.itextpdf.layout.properties.UnitValue
 import com.itextpdf.layout.properties.VerticalAlignment
 import com.syamsudinnoor.aft.aviation.pertamina.R
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.ToppingUp
+import com.syamsudinnoor.aft.aviation.pertamina.utility.formatterNumber
+import com.syamsudinnoor.aft.aviation.pertamina.utility.numberFormatter
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
-// Pastikan data class Anda ada di dalam proyek
-// data class ToppingUp(...)
-
 class ToppingUpPdfGenerator {
 
-    // Fungsi utama untuk generate PDF, menyimpan ke folder Download, dan mengembalikan Uri
+
     fun generatePdf(context: Context, data: List<ToppingUp>): Uri? {
         val fileName = "ToppingUpReport_${System.currentTimeMillis()}.pdf"
         var pdfUri: Uri? = null
@@ -52,7 +51,6 @@ class ToppingUpPdfGenerator {
                 resolver.openOutputStream(uri)?.use { outputStream ->
                     val writer = PdfWriter(outputStream)
                     val pdfDocument = PdfDocument(writer)
-                    // Menggunakan orientasi Portrait (tegak) untuk form ini
                     val document = Document(pdfDocument, PageSize.A4)
                     buildPdfContent(document, context, data)
                 }
@@ -82,11 +80,7 @@ class ToppingUpPdfGenerator {
         document.close()
     }
 
-    // ... import statements
-
-    // ================== FUNGSI HEADER FINAL (LENGKAP & SEIMBANG) ==================
     private fun addHeaderContent(document: Document, context: Context) {
-        // ---- BAGIAN 1: LOGO, JUDUL UTAMA, DAN ISO (YANG HILANG SEBELUMNYA) ----
         val headerTable = Table(UnitValue.createPercentArray(floatArrayOf(1.5f, 7f, 1.5f)))
             .setWidth(UnitValue.createPercentValue(100f))
 
@@ -172,7 +166,23 @@ class ToppingUpPdfGenerator {
 
 
     private fun createDataTable(data: List<ToppingUp>): Table {
-        val columnWidths = floatArrayOf(1f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 2f, 2f, 1.5f, 2.5f, 2f, 1.5f)
+        // Menambah satu nilai pada array untuk kolom baru (total 14 kolom)
+        val columnWidths = floatArrayOf(
+            0.8f, // NO
+            1.3f, // HIDUP
+            1.3f, // MATI
+            1.3f, // DURASI
+            1.5f, // SNR
+            1.3f, // SISA
+            1.3f, // SALES
+            1.5f, // JUMLAH
+            1.5f, // HASIL
+            1.5f, // M1/M2/M3/M4
+            2f, // TOTALISATOR AWAL
+            2f, // TOTALISATOR AKHIR <-- Kolom baru
+            1.3f, // TANKI
+            1.5f  // PARAF
+        )
         val table = Table(UnitValue.createPercentArray(columnWidths))
             .setWidth(UnitValue.createPercentValue(100f))
             .setTextAlignment(TextAlignment.CENTER)
@@ -196,6 +206,7 @@ class ToppingUpPdfGenerator {
         table.addHeaderCell(createHeaderCell("HASIL", 1, 1))
         table.addHeaderCell(createHeaderCell("M1\nM2\nM3\nM4", 3, 1))
         table.addHeaderCell(createHeaderCell("TOTALISATOR AWAL", 3, 1))
+        table.addHeaderCell(createHeaderCell("TOTALISATOR AKHIR", 3, 1))
         table.addHeaderCell(createHeaderCell("TANKI", 3, 1))
         table.addHeaderCell(createHeaderCell("PARAF", 3, 1))
 
@@ -224,7 +235,7 @@ class ToppingUpPdfGenerator {
                 for (j in 1..12) { table.addCell(createDataCell("")) }
             }
             // Tambahkan baris total kosong jika tidak ada data
-            addTotalRow(table, 0.0)
+            addTotalRow(table, "")
         } else {
             // Loop untuk mengisi data
             data.forEachIndexed { index, item ->
@@ -233,12 +244,13 @@ class ToppingUpPdfGenerator {
                 table.addCell(createDataCell(item.end_time?.let { timeFormat.format(Date(it)) } ?: "-"))
                 table.addCell(createDataCell(item.duration?.toString() ?: "0"))
                 table.addCell(createDataCell(item.snr_no ?: ""))
-                table.addCell(createDataCell(item.sisa_dipping?.toString() ?: "0"))
-                table.addCell(createDataCell(item.sales_ref?.toString() ?: "0"))
-                table.addCell(createDataCell(item.jumlah_topping?.toString() ?: "0"))
-                table.addCell(createDataCell(item.hasil_dipstik?.toString() ?: "0.0"))
+                table.addCell(createDataCell(formatterNumber(item.sisa_dipping) ?: ""))
+                table.addCell(createDataCell(formatterNumber(item.sales_ref) ?: ""))
+                table.addCell(createDataCell(formatterNumber(item.jumlah_topping) ?: ""))
+                table.addCell(createDataCell(formatterNumber(item.hasil_dipstik) ?: ""))
                 table.addCell(createDataCell(item.m_number ?: ""))
                 table.addCell(createDataCell(item.totalisator_awal ?: ""))
+                table.addCell(createDataCell(item.totalisator_akhir ?: ""))
                 table.addCell(createDataCell(item.tanki ?: ""))
                 table.addCell(createDataCell(item.operator ?: ""))
             }
@@ -247,28 +259,25 @@ class ToppingUpPdfGenerator {
             val totalTopping = data.sumOf { it.jumlah_topping?.toDouble() ?: 0.0 }
 
             // Tambahkan baris total ke tabel
-            addTotalRow(table, totalTopping)
+            addTotalRow(table, numberFormatter(totalTopping))
         }
     }
 
     // TAMBAHKAN FUNGSI BARU INI DI DALAM KELAS
-    private fun addTotalRow(table: Table, total: Double) {
-        // ================== PERBAIKAN UTAMA DI SINI ==================
-        // Membuat Cell dengan konstruktor Cell(rowspan, colspan)
-        val totalLabelCell = Cell(1, 7) // 1 baris, 7 kolom
+    private fun addTotalRow(table: Table, total: String) {
+
+        val totalLabelCell = Cell(1, 7)
             .add(Paragraph("JUMLAH"))
             .setTextAlignment(TextAlignment.CENTER)
             .setBold()
+            .setFontSize(6f)
         table.addCell(totalLabelCell)
-        // =============================================================
 
-        table.addCell(createDataCell(total.toString()).setTextAlignment(TextAlignment.CENTER).setBold())
+        table.addCell(createDataCell(total).setTextAlignment(TextAlignment.CENTER).setBold())
 
-        // ================== PERBAIKAN UTAMA DI SINI ==================
-        val emptyCell = Cell(1, 5) // 1 baris, 5 kolom
+        val emptyCell = Cell(1, 6)
             .add(Paragraph(""))
         table.addCell(emptyCell)
-        // =============================================================
     }
 
     private fun addFooterContent(document: Document) {
@@ -281,7 +290,7 @@ class ToppingUpPdfGenerator {
         val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale("id", "ID"))
         val tanggalHariIni = dateFormat.format(today)
 
-        topFooterTable.addCell(createBorderlessCell("AFT SYAMSUDIN NOOR, $tanggalHariIni").setTextAlignment(TextAlignment.LEFT))
+        topFooterTable.addCell(createBorderlessCell("DOKUMEN DIBUAT : AFT SYAMSUDIN NOOR, $tanggalHariIni").setTextAlignment(TextAlignment.LEFT))
         topFooterTable.addCell(createBorderlessCell("").setTextAlignment(TextAlignment.RIGHT))
         document.add(topFooterTable)
 
@@ -306,19 +315,15 @@ class ToppingUpPdfGenerator {
         document.add(signatureTable)
     }
 
-    private fun createBorderedCell(text: String): Cell {
-        return Cell().add(Paragraph(text).setFontSize(9f).setPadding(3f))
-            .setBorder(SolidBorder(ColorConstants.BLACK, 0.5f))
-    }
 
     // --- Fungsi-fungsi helper ---
     private fun createHeaderCell(text: String, rowspan: Int = 1, colspan: Int = 1): Cell {
-        return Cell(rowspan, colspan).add(Paragraph(text)).setBold().setFontSize(9f)
+        return Cell(rowspan, colspan).add(Paragraph(text)).setBold().setFontSize(6f)
             .setVerticalAlignment(VerticalAlignment.MIDDLE)
     }
 
     private fun createDataCell(text: String): Cell {
-        return Cell().add(Paragraph(text)).setFontSize(9f).setPadding(5f)
+        return Cell().add(Paragraph(text)).setFontSize(7f).setPadding(1f)
     }
 
     private fun createBorderlessCell(text: String): Cell {

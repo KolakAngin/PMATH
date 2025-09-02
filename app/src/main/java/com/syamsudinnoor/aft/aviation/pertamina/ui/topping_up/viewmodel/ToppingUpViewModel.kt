@@ -47,6 +47,23 @@ class ToppingUpViewModel(private val repository: SNoorRepository) : ViewModel() 
         repository.getResultSnr22(mm)
     }
 
+    private val _snr20After = MutableLiveData<Double>()
+
+    val snr20After: LiveData<Snr_20?> = _snr20After.switchMap { mm ->
+        repository.getResultSnr20(mm)
+    }
+
+    private val _snr21After = MutableLiveData<Double>()
+
+    val snr21After: LiveData<Snr_21?> = _snr21After.switchMap { mm ->
+        repository.getResultSnr21(mm)
+    }
+
+    private val _snr22After = MutableLiveData<Double>()
+    val snr22After : LiveData<Snr_22?> = _snr22After.switchMap { mm ->
+        repository.getResultSnr22(mm)
+    }
+
     fun getSnr20(mm: Double) {
         _snr20.value = mm
 
@@ -60,6 +77,19 @@ class ToppingUpViewModel(private val repository: SNoorRepository) : ViewModel() 
         _snr22.value = mm
     }
 
+    fun getSnr20After(mm: Double) {
+        _snr20After.value = mm
+
+    }
+
+    fun getSnr21After(mm: Double) {
+        _snr21After.value = mm
+    }
+
+    fun  getSnr22After(mm: Double) {
+        _snr22After.value = mm
+    }
+
 
     private val _isRefeullerSelected = MutableLiveData<Boolean>()
     val isRefeullerSelected: LiveData<Boolean>
@@ -69,6 +99,13 @@ class ToppingUpViewModel(private val repository: SNoorRepository) : ViewModel() 
     val isSessionSelected: LiveData<Boolean>
         get() = _isSessionSelected
 
+    private val _isMM2Valid = MutableLiveData<Boolean>()
+    val isMM2Valid: LiveData<Boolean>
+        get() = _isMM2Valid
+
+    fun onMM2Valid(isValid: Boolean) {
+        _isMM2Valid.value = isValid
+    }
 
     private val _isMMValid = MutableLiveData<Boolean>()
     val isMMValid: LiveData<Boolean>

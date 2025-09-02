@@ -41,7 +41,7 @@ class ToppingUpAdapter(private val onItemClicked: (ToppingUp) -> Unit,
         fun bind(item : ToppingUp){
             binding.txtBridgerHolder.text = item.snr_no ?: ""
             binding.txtLiterHolder.text = item.jumlah_topping.toString()
-            binding.txtSealHolder.text = item.totalisator_awal ?: ""
+            binding.txtSealHolder.text = item.totalisator_akhir ?: ""
             binding.txtTangki.text = item.tanki ?: ""
             binding.operator.text = item.operator ?: ""
             binding.timeDataQuilty.text = TimeConverter.toReadableDateTime(item.start_time ?: System.currentTimeMillis())

@@ -22,7 +22,7 @@
             app:navigationIconTint="@color/white"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:menu="@menu/main_menu"
+            app:menu="@menu/help_menu"
             app:iconTint="@color/white"
             android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
             app:title="@string/app_name" />

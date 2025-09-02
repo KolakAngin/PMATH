@@ -8,11 +8,14 @@ import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.dao.MainDao
+import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.AnalisaVolumeControlQuality
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.BridgerQualityControl
+import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.DetailKompartemen
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.ToppingUp
 
 
-@Database(entities = [BridgerQualityControl::class, ToppingUp::class], version = 1)
+@Database(entities = [BridgerQualityControl::class, ToppingUp::class,
+    AnalisaVolumeControlQuality::class, DetailKompartemen::class], version = 1)
 @TypeConverters(Converters::class)
 abstract class MainDatabase : RoomDatabase(){
     abstract fun getDao(): MainDao

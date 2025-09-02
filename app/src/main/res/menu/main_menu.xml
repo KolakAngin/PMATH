@@ -15,4 +15,10 @@
         android:title="info"
         app:showAsAction="ifRoom|collapseActionView"
         />
+
+    <item
+        android:id="@+id/logout_item"
+        android:icon="@drawable/ic_logout"
+        android:title="logout"
+        app:showAsAction="ifRoom|collapseActionView"/>
 </menu>

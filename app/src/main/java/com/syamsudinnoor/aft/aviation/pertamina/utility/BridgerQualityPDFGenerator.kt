@@ -119,7 +119,7 @@ class BridgerQualityPDFGenerator {
         table.addHeaderCell(createHeaderCell("DENS 15 C", 2, 1))
 
         // Grup 3
-        table.addHeaderCell(createHeaderCell("AFRN NO", 2, 1))
+        table.addHeaderCell(createHeaderCell("AFRN SHIPMENT NO.", 2, 1))
         table.addHeaderCell(createHeaderCell("DENS' OBSVD", 2, 1))
         table.addHeaderCell(createHeaderCell("TEMP", 2, 1))
         table.addHeaderCell(createHeaderCell("DENS' 15 C", 2, 1))
@@ -147,7 +147,7 @@ class BridgerQualityPDFGenerator {
             table.addCell(createDataCell(item.dateTime?.let { timeFormat.format(Date(it)) } ?: "-"))
             table.addCell(createDataCell(item.bridger_no ?: ""))
             table.addCell(createDataCell(item.bpp ?: ""))
-            table.addCell(createDataCell(item.volume_liter?.toInt().toString()))
+            table.addCell(createDataCell(formatterNumber(item.volume_liter) ?: ""))
             table.addCell(createDataCell(item.seal ?: ""))
 
             // Grup 2
@@ -168,7 +168,7 @@ class BridgerQualityPDFGenerator {
             // Grup 5
             table.addCell(createDataCell(item.diff_from_density_distributor?.toString() ?: ""))
             table.addCell(createDataCell(item.app_star ?: ""))
-            table.addCell(createDataCell(item.cu_psm?.toString() ?: ""))
+            table.addCell(createDataCell(item.cu_psm?.toInt().toString()))
 
             // Grup 6
             table.addCell(createDataCell(item.tangki ?: ""))
@@ -283,15 +283,13 @@ class BridgerQualityPDFGenerator {
     }
 
 
-
-    // --- Fungsi-fungsi helper (tidak ada perubahan) ---
     private fun createHeaderCell(text: String, rowspan: Int = 1, colspan: Int = 1): Cell {
-        return Cell(rowspan, colspan).add(Paragraph(text)).setBold().setFontSize(7f) // Font sedikit dikecilkan
+        return Cell(rowspan, colspan).add(Paragraph(text)).setBold().setFontSize(5f) // Font sedikit dikecilkan
             .setVerticalAlignment(VerticalAlignment.MIDDLE)
     }
 
     private fun createDataCell(text: String): Cell {
-        return Cell().add(Paragraph(text)).setFontSize(8f).setPadding(2f)
+        return Cell().add(Paragraph(text)).setFontSize(6f).setPadding(1.5f)
     }
 
     private fun createBorderlessCell(text: String): Cell {

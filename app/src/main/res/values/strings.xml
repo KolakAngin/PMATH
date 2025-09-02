@@ -29,10 +29,11 @@
 
     <string-array name="holder_name">
         <item>Penerimaan Bridger</item>
-        <item>Dipping Tank</item>
+        <item>Cek Stock</item>
         <item>Topping Up Refeuller</item>
         <item>Aircraft Fuel Remain</item>
         <item>Calculator</item>
+        <item>Converter</item>
         <item>Timer</item>
         <item>Stopwatch</item>
         <item>Note</item>
@@ -45,6 +46,7 @@
         <item>@drawable/refeuller_truck</item>
         <item>@drawable/airplane</item>
         <item>@drawable/calculator</item>
+        <item>@drawable/ic_converter_2</item>
         <item>@drawable/stopwatch</item>
         <item>@drawable/chronometer</item>
         <item>@drawable/ic_note</item>
@@ -78,6 +80,15 @@
     <string name="liter_volume">Masukkan Volume Liter</string>
     <string name="seal">Masukkan Seal</string>
     <string name="test_report_no">Masukkan Nomor Test Report</string>
+    <string name="vc_tab1">Quality Control</string>
+    <string name="vc_tab2">Data Quality Control</string>
+    <string name="tab_dipping_1">Dipping Tank</string>
+    <string name="tab_dipping_2">Dipping Refueller</string>
+    <string name="recomendation">Rekomendasi topping</string>
+    <string name="result">Lihat Hasil</string>
+    <string name="date_container">%1$s:%2$s:%3$s</string>
+    <string name="time_container">%1$s:%2$s</string>
+    <string name="hapus_data">Hapus Data : %1$s</string>
 
 
     <string-array name="tangks_choice">
