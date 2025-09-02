@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.repository.MainRepository
 import com.syamsudinnoor.aft.aviation.pertamina.ui.density.viewmodel.QualityControlViewModel
+import com.syamsudinnoor.aft.aviation.pertamina.ui.topping_up.viewmodel.DataToppingUpViewModel
+import com.syamsudinnoor.aft.aviation.pertamina.ui.topping_up.viewmodel.ToppingUpViewModel
 
 class MainViewModelFactory(val repository: MainRepository) : ViewModelProvider.Factory {
 
@@ -11,7 +13,11 @@ class MainViewModelFactory(val repository: MainRepository) : ViewModelProvider.F
         if (modelClass.isAssignableFrom(QualityControlViewModel::class.java)){
             @Suppress("UNCHECKED_CAST")
             return QualityControlViewModel(repository) as T
-        }else{
+        }else if(modelClass.isAssignableFrom(DataToppingUpViewModel::class.java)){
+            @Suppress("UNCHECKED_CAST")
+            return DataToppingUpViewModel(repository) as T
+        }
+        else {
             throw IllegalArgumentException("Unknown ViewModel class")
         }
     }

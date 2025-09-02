@@ -3,9 +3,8 @@ package com.syamsudinnoor.aft.aviation.pertamina.ui.density.adapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.syamsudinnoor.aft.aviation.pertamina.ui.density.fragment.DataQualityControlFragment
-import com.syamsudinnoor.aft.aviation.pertamina.ui.density.fragment.QualityControlFragment
-import com.syamsudinnoor.aft.aviation.pertamina.ui.density.fragment.VolumeControlFragment
+import com.syamsudinnoor.aft.aviation.pertamina.ui.density.quality_control.fragment.DataQualityControlFragment
+import com.syamsudinnoor.aft.aviation.pertamina.ui.density.quality_control.fragment.QualityControlFragment
 
 class SectionPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity){
     override fun createFragment(position: Int): Fragment {
@@ -13,11 +12,10 @@ class SectionPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(ac
         when (position) {
             0 -> fragment = QualityControlFragment()
             1 -> fragment = DataQualityControlFragment()
-            2 -> fragment = VolumeControlFragment()
         }
         return fragment as Fragment
     }
 
-    override fun getItemCount(): Int = 3
+    override fun getItemCount(): Int = 2
 
 }

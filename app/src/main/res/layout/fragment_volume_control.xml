@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.density.fragment.VolumeControlFragment">
+    tools:context=".ui.density.volume_control.fragment.VolumeControlFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

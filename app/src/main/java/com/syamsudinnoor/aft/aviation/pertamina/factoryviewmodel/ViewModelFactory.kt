@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.repository.SNoorRepository
 import com.syamsudinnoor.aft.aviation.pertamina.ui.density.viewmodel.DensityViewModel
 import com.syamsudinnoor.aft.aviation.pertamina.ui.dipping_tank.DippingTankViewModel
-import com.syamsudinnoor.aft.aviation.pertamina.ui.topping_up.ToppingUpViewModel
+import com.syamsudinnoor.aft.aviation.pertamina.ui.topping_up.viewmodel.ToppingUpViewModel
 
 class ViewModelFactory(private val repository: SNoorRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

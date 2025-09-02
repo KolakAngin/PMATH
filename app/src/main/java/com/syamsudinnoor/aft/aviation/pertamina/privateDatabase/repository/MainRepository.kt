@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.MainDatabase
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.dao.MainDao
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.BridgerQualityControl
+import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.ToppingUp
 import kotlinx.coroutines.flow.Flow
 
 class MainRepository(private val dao: MainDao) {
@@ -23,6 +24,23 @@ class MainRepository(private val dao: MainDao) {
 
     suspend fun deleteBridgerQualityControl(id : Int){
         dao.deleteBridgerQualityControl(id)
+
+    }
+
+    suspend fun insertToppingUp(toppingUp: ToppingUp){
+        dao.insertToppingUp(toppingUp)
+    }
+
+    fun getToppingUp(): Flow<List<ToppingUp>> {
+        return dao.getToppingUp()
+    }
+
+    fun getToppingUpByDate(startTime: Long, endTime: Long): Flow<List<ToppingUp>>{
+        return dao.getToppingUpByDate(startTime, endTime)
+    }
+
+    suspend fun deleteToppingUp(id : Int){
+        dao.deleteToppingUp(id)
 
     }
 }

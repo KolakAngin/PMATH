@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.topping_up.fragment.ToppingUpInputFragment">
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Paraf / Name Sign"
+            android:gravity="left"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="10dp">
+
+            <AutoCompleteTextView
+                android:id="@+id/spinner_operator_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Name Sign"
+                android:inputType="none"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pilih Refueller"
+            android:gravity="left"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content">
+            <AutoCompleteTextView
+                android:inputType="none"
+                android:hint="@string/choice_refeuller"
+                android:id="@+id/spinner_refeuller"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hasil Dipstik"
+            android:gravity="left"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/containterMM"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextMm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/insert_mm"
+                android:inputType="numberDecimal" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sales REF"
+            android:gravity="left"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_ref"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="REF"
+                android:inputType="numberDecimal" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Jumlah Topping"
+            android:gravity="left"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_topping_volume"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Jumlah Topping"
+                android:inputType="numberDecimal" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Totalisator Awal"
+            android:gravity="left"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_totalisator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Totalisator Awal"
+                android:inputType="numberDecimal" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Jam Ops Pompa"
+            android:gravity="left"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:id="@+id/button_start_time"
+                android:background="@drawable/radio_selected_tangki"
+                android:text="Start Time"
+                android:layout_marginEnd="10dp"
+                android:foreground="?attr/selectableItemBackground"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:id="@+id/button_minute"
+                android:background="@drawable/radio_selected_tangki"
+                android:text="Minute"
+                android:layout_marginEnd="10dp"
+                android:foreground="?attr/selectableItemBackground"/>
+
+            <TextView
+                android:id="@+id/time_end"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textSize="30dp"
+                android:gravity="center"
+                android:text="--:--"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dari Tanki"
+            android:gravity="left"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="15dp"
+            android:layout_height="wrap_content">
+
+            <AutoCompleteTextView
+                android:id="@+id/spinner_tank_qc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tangki"
+                android:inputType="none"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp">
+
+            <AutoCompleteTextView
+                android:id="@+id/spinner_m"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="M"
+                android:inputType="none"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/status_selection"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rg_session"
+            android:gravity="center"
+            android:saveEnabled="false"
+            android:orientation="horizontal">
+            <RadioButton
+                android:layout_weight="1"
+                android:gravity="center"
+                android:id="@+id/rb_topping_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="7dp"
+                android:button="@android:color/transparent"
+                android:background="@drawable/radio_selector"
+                android:textColor="@drawable/text_radio_selector"
+                android:elevation="4dp"
+                android:padding="16dp"
+                android:text="Topping Up"/>
+            <RadioButton
+                android:layout_weight="1"
+                android:gravity="center"
+                android:id="@+id/rb_settle_refeuller"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@android:color/transparent"
+                android:background="@drawable/radio_selector"
+                android:textColor="@drawable/text_radio_selector"
+                android:elevation="4dp"
+                android:layout_margin="7dp"
+                android:padding="16dp"
+                android:text="Settle"/>
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Nilai MM"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:background="@drawable/radio_selected_tangki"
+                android:id="@+id/buttonSearch"
+                android:enabled="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:text="Cari Data" />
+
+            <Button
+                android:background="@drawable/radio_selected_tangki"
+                android:id="@+id/buttonSave"
+                android:enabled="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:text="Simpan Data" />
+        </LinearLayout>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="100dp"
+            android:paddingBottom="20dp"
+            app:cardElevation="10dp"
+            app:cardBackgroundColor="@color/whiteOf">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/linearLayoutResult"
+                android:orientation="vertical"
+
+                android:layout_margin="20dp">
+
+
+                <TableLayout
+                    android:id="@+id/table_view_result"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:gravity="center">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        >
+                        <TextView
+                            android:id="@+id/row_1_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textSize="20sp"
+                            android:text="@string/death_stock_tank"
+                            android:gravity="start"
+                            android:padding="10dp"
+                            android:textStyle="bold"/>
+                        <TextView
+                            android:id="@+id/row_1_body"
+                            android:gravity="start"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="20sp"
+                            android:padding="10dp"
+                            android:layout_weight="1"
+                            tools:text="@string/dummy_liter"
+                            android:textStyle="bold"/>
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        >
+                        <TextView
+                            android:id="@+id/row_2_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="20sp"
+                            android:layout_weight="1"
+                            android:text="@string/dipping_result_tank"
+                            android:gravity="start"
+                            android:padding="10dp"
+                            android:textStyle="bold"/>
+                        <TextView
+
+                            android:id="@+id/row_2_body"
+                            android:gravity="start"
+                            android:textSize="20sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:layout_weight="1"
+                            tools:text="@string/dummy_liter"
+                            android:textStyle="bold"/>
+                    </TableRow>
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        >
+                        <TextView
+                            android:id="@+id/row_3_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/ullage_tank"
+                            android:gravity="start"
+                            android:textSize="20sp"
+                            android:padding="10dp"
+                            android:textStyle="bold"/>
+                        <TextView
+                            android:id="@+id/row_3_body"
+                            android:gravity="start"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:textSize="20sp"
+                            android:layout_weight="1"
+                            tools:text="@string/dummy_liter"
+                            android:textStyle="bold"/>
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        >
+                        <TextView
+                            android:id="@+id/row_4_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/pumpable_stock_tank"
+                            android:gravity="start"
+                            android:textSize="20sp"
+                            android:padding="10dp"
+                            android:textStyle="bold"/>
+                        <TextView
+                            android:id="@+id/row_4_body"
+                            android:gravity="start"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:textSize="20sp"
+                            android:layout_weight="1"
+                            tools:text="@string/dummy_liter"
+                            android:textStyle="bold"/>
+                    </TableRow>
+
+                </TableLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/img_result_icon"
+                    android:layout_height="250dp"
+                    android:src="@drawable/find_s"
+                    android:visibility="visible"/>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+</ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

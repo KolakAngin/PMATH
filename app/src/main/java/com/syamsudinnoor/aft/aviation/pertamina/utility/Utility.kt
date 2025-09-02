@@ -1,11 +1,22 @@
 package com.syamsudinnoor.aft.aviation.pertamina.utility
 
 
+import android.R
+import android.app.AlertDialog
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.content.Context
 import android.icu.util.Calendar
 import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Gravity
+import android.view.View
+import android.widget.NumberPicker
+import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.view.marginTop
 import java.math.BigDecimal
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
@@ -99,7 +110,55 @@ object TimeConverter {
 
         return calendar.timeInMillis
 
-
-
     }
+}
+
+
+
+object DialogHolder{
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun timeDialog(context : Context, title : String, callbackValue : (getHour : Int, getMinute:Int) -> Unit)  {
+        var hour = 0
+        var minute = 0
+        val costumeTitle = TextView(context).apply {
+            text = title
+            textSize = 16f
+            setPadding(0, 20, 0, 20)
+            gravity = Gravity.CENTER
+        }
+        val listener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minuteOfHour ->
+            hour = hourOfDay
+            minute = minuteOfHour
+            callbackValue(hour,minute)
+        }
+
+        val getCurrentTime = System.currentTimeMillis()
+        val calendar = Calendar.getInstance().apply { timeInMillis = getCurrentTime }
+        val cHour = calendar.get(Calendar.HOUR_OF_DAY)
+        val cMinute = calendar.get(Calendar.MINUTE)
+
+        val style = AlertDialog.THEME_HOLO_LIGHT
+        val timePicker = TimePickerDialog(context,style, listener, cHour, cMinute, true)
+        timePicker.setCustomTitle(costumeTitle)
+        timePicker.show()
+    }
+
+    fun dateDialog(context: Context,callbackValue : (year : Int, month : Int, day : Int) -> Unit){
+        val calender = java.util.Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+        }
+        val year = calender.get(java.util.Calendar.YEAR)
+        val month = calender.get(java.util.Calendar.MONTH)
+        val day = calender.get(java.util.Calendar.DAY_OF_MONTH)
+
+
+        val dateDialo = DatePickerDialog.OnDateSetListener{ _, yearDialog, monthDialog, dayOfMonthDialog ->
+            callbackValue(yearDialog,monthDialog,dayOfMonthDialog)
+        }
+
+        val datePicker = DatePickerDialog(context, AlertDialog.THEME_HOLO_LIGHT,dateDialo,year,month,day)
+        datePicker.show()
+    }
+
 }

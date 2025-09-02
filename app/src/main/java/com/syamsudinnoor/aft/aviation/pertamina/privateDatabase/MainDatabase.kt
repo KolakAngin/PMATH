@@ -5,15 +5,17 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.dao.MainDao
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.BridgerQualityControl
+import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.ToppingUp
 
 
-@Database(entities = [BridgerQualityControl::class], version = 1)
+@Database(entities = [BridgerQualityControl::class, ToppingUp::class], version = 1)
 @TypeConverters(Converters::class)
 abstract class MainDatabase : RoomDatabase(){
     abstract fun getDao(): MainDao
-
     companion object{
         @Volatile
         private var INSTANCE: MainDatabase? = null
@@ -27,7 +29,8 @@ abstract class MainDatabase : RoomDatabase(){
                     val instance = Room.databaseBuilder(
                         context.applicationContext,
                         MainDatabase::class.java,
-                        "main_database").build()
+                        "main_database")
+                        .build()
 
                     INSTANCE = instance
                     return instance

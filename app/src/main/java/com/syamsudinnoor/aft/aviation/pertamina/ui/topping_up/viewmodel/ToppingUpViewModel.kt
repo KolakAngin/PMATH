@@ -1,18 +1,16 @@
-package com.syamsudinnoor.aft.aviation.pertamina.ui.topping_up
+package com.syamsudinnoor.aft.aviation.pertamina.ui.topping_up.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.switchMap
-import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.Density_15
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.Snr_20
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.Snr_21
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.Snr_22
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.Tangki_10
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.Tangki_9
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.repository.SNoorRepository
-
 
 class ToppingUpViewModel(private val repository: SNoorRepository) : ViewModel() {
 

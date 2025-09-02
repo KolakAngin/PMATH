@@ -1,4 +1,4 @@
-package com.syamsudinnoor.aft.aviation.pertamina.ui.density.fragment
+package com.syamsudinnoor.aft.aviation.pertamina.ui.density.volume_control.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

@@ -1,5 +1,6 @@
 package com.syamsudinnoor.aft.aviation.pertamina.ui.density.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,26 +10,6 @@ import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.repository.MainR
 import kotlinx.coroutines.launch
 
 
-
-//class QualityControlViewModel(private val mainRepository: MainRepository) : ViewModel() {
-//
-//
-//    val allQualityControlData: LiveData<List<BridgerQualityControl>> = mainRepository.getBridgerQualityControl()
-//
-//
-//    fun insert(bridgerQualityControl: BridgerQualityControl) {
-//        viewModelScope.launch {
-//            mainRepository.insertBridgerQualityControl(bridgerQualityControl)
-//        }
-//    }
-//
-//    fun delete(id : Int){
-//        viewModelScope.launch {
-//            mainRepository.deleteBridgerQualityControl(id)
-//        }
-//    }
-//}
-//
 
 class QualityControlViewModel(private val mainRepository: MainRepository) : ViewModel() {
 
@@ -40,17 +21,18 @@ class QualityControlViewModel(private val mainRepository: MainRepository) : View
     }
 
     fun loadAllData() {
+        Log.d("myDebug","Masuk loadData")
         viewModelScope.launch {
             mainRepository.getBridgerQualityControl().collect { allData ->
                 _qualityControlList.value = allData
             }
         }
+        Log.d("myDebug","Selesai loadData")
     }
 
     fun filterDataByDate(startTime: Long, endTime: Long) {
         viewModelScope.launch {
             mainRepository.getBridgerQualityControlByDate(startTime, endTime).collect { filteredData ->
-
                 _qualityControlList.value = filteredData
             }
         }
@@ -67,4 +49,6 @@ class QualityControlViewModel(private val mainRepository: MainRepository) : View
             mainRepository.deleteBridgerQualityControl(id)
         }
     }
+
+
 }

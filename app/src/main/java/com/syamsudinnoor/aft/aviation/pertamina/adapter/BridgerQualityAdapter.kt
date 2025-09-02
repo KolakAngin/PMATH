@@ -42,6 +42,7 @@ class BridgerQualityAdapter(
             binding.txtSealHolder.text = item.seal?.uppercase()
             binding.operator.text = item.operator_name?.uppercase()
             binding.timeDataQuilty.text = TimeConverter.toReadableDateTime(item.dateTime!!)
+            binding.txtTangki.text = item.tangki?.uppercase()
         }
     }
 

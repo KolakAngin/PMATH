@@ -1,4 +1,4 @@
-package com.syamsudinnoor.aft.aviation.pertamina.ui.density
+package com.syamsudinnoor.aft.aviation.pertamina.ui.density.quality_control.activity_holder
 
 import android.os.Build
 import android.os.Bundle
@@ -41,7 +41,7 @@ class BridgerDataShowActivty : AppCompatActivity() {
         _binding = null
     }
 
-    companion object{
+    companion object {
         const val APP_NAME = "Quality Control"
     }
 }

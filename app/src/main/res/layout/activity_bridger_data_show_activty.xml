@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.density.fragment.QualityControlFragment">
+    tools:context=".ui.density.quality_control.activity_holder.BridgerDataShowActivty">
 
     <!-- PERBAIKAN 1: Mengubah width dan height menjadi 0dp agar lebih robust -->
     <ScrollView

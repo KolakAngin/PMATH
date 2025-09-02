@@ -50,6 +50,18 @@
         <item>@drawable/ic_note</item>
         <item>@drawable/ic_add</item>
     </integer-array>
+
+
+    <string-array name="holder_name_density">
+        <item>Bridger Quality Control</item>
+        <item>Volume Control</item>
+    </string-array>
+
+    <integer-array name="holder_image_density">
+        <item>@drawable/qc_icon</item>
+        <item>@drawable/ic_volume_control</item>
+
+    </integer-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tab_1">Quality Control</string>
@@ -57,7 +69,7 @@
     <string name="tab_3">Quality Control Data Collection</string>
     <string name="remain_refeuller">Sisa produk dalam tangki</string>
     <string name="choice_tank">Pilih tangki</string>
-    <string name="choice_refeuller">Pilih Refeuller</string>
+    <string name="choice_refeuller">Pilih Refueller</string>
     <string name="insert_mm">Masukkan nilai mm</string>
     <string name="inset_liter">Masukan dalam format liter</string>
     <string name="operator">Operator</string>
@@ -89,5 +101,13 @@
         <item>Operator 3</item>
         <item>Operator 4</item>
         <item>Operator 5</item>
+    </string-array>
+
+
+    <string-array name="m_choice">
+        <item>M1</item>
+        <item>M2</item>
+        <item>M3</item>
+        <item>M4</item>
     </string-array>
 </resources>

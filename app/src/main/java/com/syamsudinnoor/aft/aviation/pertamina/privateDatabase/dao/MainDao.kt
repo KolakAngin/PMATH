@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.BridgerQualityControl
+import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.ToppingUp
 import kotlinx.coroutines.flow.Flow
 
 
@@ -26,6 +27,19 @@ interface MainDao {
     @Query("SELECT * FROM BridgerQualityControl WHERE time BETWEEN :startTime AND :endTime")
     fun getBridgerQualityControlByDate(startTime: Long, endTime: Long): Flow<List<BridgerQualityControl>>
 
+
+    @Query("SELECT * FROM topping_up ORDER BY start_time DESC")
+    fun getToppingUp(): Flow<List<ToppingUp>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertToppingUp(toppingUp: ToppingUp)
+
+
+    @Query("DELETE FROM topping_up where id = :id")
+    suspend fun deleteToppingUp(id : Int)
+
+    @Query("SELECT * FROM topping_up WHERE start_time BETWEEN :startTime AND :endTime")
+    fun getToppingUpByDate(startTime: Long, endTime: Long): Flow<List<ToppingUp>>
 
 
 

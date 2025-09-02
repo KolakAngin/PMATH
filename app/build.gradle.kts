@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx) // Untuk lifecycleScope
 
+
     // --- Dependensi Room yang sudah ada ---
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
@@ -64,8 +65,15 @@ dependencies {
 
     implementation(libs.androidx.viewpager2)
 
+    //PDF Document
+    implementation(libs.itext7.core)
+
+    //swipe refresh
+    implementation(libs.androidx.swiperefreshlayout)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+
 }

@@ -37,7 +37,7 @@ class DensityViewModel(private val repository: SNoorRepository) : ViewModel() {
     init {
         // Tambahkan sumber yang ingin diawasi
         _isFormValid.addSource(_isDensityValid) {
-            validateForm() // Panggil validasi setiap kali density berubah
+            validateForm() // Pangg//il validasi setiap kali density berubah
         }
         _isFormValid.addSource(_isTemperatureValid) {
             validateForm() // Panggil validasi setiap kali temperatur berubah

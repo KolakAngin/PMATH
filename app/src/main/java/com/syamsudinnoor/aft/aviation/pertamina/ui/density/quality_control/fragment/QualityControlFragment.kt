@@ -1,17 +1,17 @@
-package com.syamsudinnoor.aft.aviation.pertamina.ui.density.fragment
+package com.syamsudinnoor.aft.aviation.pertamina.ui.density.quality_control.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.syamsudinnoor.aft.aviation.pertamina.R
-import com.syamsudinnoor.aft.aviation.pertamina.factoryviewmodel.ViewModelFactory
 import com.syamsudinnoor.aft.aviation.pertamina.databinding.FragmentQualityControlBinding
 import com.syamsudinnoor.aft.aviation.pertamina.factoryviewmodel.MainViewModelFactory
+import com.syamsudinnoor.aft.aviation.pertamina.factoryviewmodel.ViewModelFactory
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.MainDatabase
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.SnoorRoomDatabase
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.BridgerQualityControl
@@ -20,20 +20,19 @@ import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.repository.SNoor
 import com.syamsudinnoor.aft.aviation.pertamina.ui.density.viewmodel.DensityViewModel
 import com.syamsudinnoor.aft.aviation.pertamina.ui.density.viewmodel.QualityControlViewModel
 import com.syamsudinnoor.aft.aviation.pertamina.utility.TimeConverter
-import com.syamsudinnoor.aft.aviation.pertamina.utility.numberFormatter
-
 
 class QualityControlFragment : Fragment() {
 
-    private lateinit var binding: FragmentQualityControlBinding
-    private val viewModel: DensityViewModel by viewModels{
-        val database = SnoorRoomDatabase.getDatabase(requireContext())
+    private var _binding : FragmentQualityControlBinding? = null
+    private val binding get() = _binding!!
+    private val viewModel: DensityViewModel by viewModels {
+        val database = SnoorRoomDatabase.Companion.getDatabase(requireContext())
         val repository = SNoorRepository(database.sNoorDao())
         ViewModelFactory(repository)
     }
 
     private val mainViewModel : QualityControlViewModel by viewModels{
-        val database = MainDatabase.getDatabase(requireContext())
+        val database = MainDatabase.Companion.getDatabase(requireContext())
         val repository = MainRepository(database.getDao())
         MainViewModelFactory(repository)
     }
@@ -74,7 +73,7 @@ class QualityControlFragment : Fragment() {
     ): View? {
 
         // Inflate the layout for this fragment
-        binding = FragmentQualityControlBinding.inflate(inflater, container, false)
+        _binding = FragmentQualityControlBinding.inflate(inflater, container, false)
 
         binding.editTime.setText(TimeConverter.toReadableTime(currentTime))
 
@@ -115,6 +114,7 @@ class QualityControlFragment : Fragment() {
             viewModel.onJoinChecking(false)
             currentTime = System.currentTimeMillis()
             binding.editTime.setText(TimeConverter.toReadableTime(currentTime))
+            Toast.makeText(requireContext(), "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
         }
 
         return binding.root
@@ -140,7 +140,6 @@ class QualityControlFragment : Fragment() {
         densityOBDS = binding.editTextDensity.text.toString().toDoubleOrNull()
         temperature = binding.editTextTemp.text.toString().toDoubleOrNull()
 
-        diffMax = binding.editDiffMax.text.toString().toDoubleOrNull()
         appmNo = binding.editApp.text.toString()
         cuPSM = binding.editCuPsm.text.toString()
         toTank = binding.spinnerTankQc.text.toString()
@@ -166,35 +165,48 @@ class QualityControlFragment : Fragment() {
             viewModel.searchDensity(density, temperature)
         }
     }
-    private fun setupDensity(){
+    private fun setupDensity() {
+
         viewModel.densityResult.observe(viewLifecycleOwner) { result ->
-            if (result != null && densityFromDistributor != null) {
-                val formattedResult = "Hasil Ditemukan: ${result.result}, diffrensial : ${result.result!! - densityFromDistributor!!}"
-                resultDensity = result.result
-                diffMax = result.result - densityFromDistributor!!
-                Toast.makeText(requireContext(), "Hasil : ${result.result}, hasil diff : ${densityFromDistributor!!} pengurangan $diffMax", Toast.LENGTH_SHORT).show()
-                val difMaxText = when{
-                    ( result.result - densityFromDistributor!! >= TOLERENCE ) && (result.result - densityFromDistributor!! <= NEGATIVE_TOLERENCE)
-                        -> "OKE : {${result.result - densityFromDistributor!!}"
-                    else -> "NOT OKE : {${result.result - densityFromDistributor!!}"
-                }
-
-
-                binding.editDensityRsult.setText(result.result.toString())
-                binding.editDiffMax.setText(diffMax.toString())
-
-                binding.textViewResult.text = formattedResult + " " + difMaxText
-
-                binding.imgResultIcon.visibility  = View.GONE
-            }else if (result != null){
-                val formattedResult = "Hasil Ditemukan: ${result}"
-                binding.textViewResult.text = formattedResult
-                binding.imgResultIcon.visibility  = View.GONE
-            }else {
+            if (result == null || result.result == null) {
                 binding.textViewResult.text = "Data tidak ditemukan."
                 binding.imgResultIcon.setImageResource(R.drawable.not_found)
-                binding.imgResultIcon.visibility  = View.VISIBLE
+                binding.imgResultIcon.visibility = View.VISIBLE
+
+                return@observe
             }
+
+
+            val distributorDensity = densityFromDistributor
+
+            if (distributorDensity == null) {
+                binding.textViewResult.text = "Hasil Ditemukan: ${result.result}"
+                binding.imgResultIcon.visibility = View.GONE
+                return@observe
+            }
+
+            val resultValue = result.result
+            val difference = resultValue - distributorDensity
+
+            // 4. Bulatkan hasil pengurangan menjadi 5 digit di belakang koma untuk ditampilkan
+            val formattedDifference = String.format("%.5f", difference)
+
+
+            val status: String
+            if (difference in NEGATIVE_TOLERENCE..TOLERENCE) {
+                status = "OKE"
+            } else {
+                status = "NOT OKE"
+            }
+
+            binding.apply {
+                textViewResult.text = "Hasil: $resultValue, Diferensial: $formattedDifference | Status: $status"
+                imgResultIcon.visibility = View.GONE
+            }
+
+            resultDensity = resultValue
+            diffMax = formattedDifference.replace(",",".").toDouble()
+
         }
     }
 
@@ -214,7 +226,12 @@ class QualityControlFragment : Fragment() {
         binding.spinnerOperatorName.setAdapter(adapterOperator)
         binding.spinnerTankQc.setAdapter(adapterTank)
     }
-    
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     companion object{
         const val TOLERENCE : Double = 0.003
         const val NEGATIVE_TOLERENCE : Double = -0.003
