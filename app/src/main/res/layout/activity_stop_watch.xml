@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="#FFFFFF"
+tools:context=".ui.stopwatch.StopWatchActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/appBarLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/colorPrimary"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            app:titleTextColor="@color/white"
+            app:navigationIconTint="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:menu="@menu/help_menu"
+            app:iconTint="@color/white"
+            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+            app:title="@string/app_name" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+<TextView
+    android:id="@+id/tvTimer"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="32dp"
+    android:fontFamily="sans-serif-light"
+    android:text="00:00.00"
+    android:textColor="#000000"
+    android:textSize="60sp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+
+<TextView
+    android:id="@+id/tvStatus"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Stopped"
+    android:textColor="#888888"
+    android:textSize="18sp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/tvTimer" />
+
+<androidx.recyclerview.widget.RecyclerView
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:id="@+id/rvLaps"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:layout_marginTop="24dp"
+    android:layout_marginBottom="24dp"
+    app:layout_constraintBottom_toTopOf="@+id/btnLapReset"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/tvStatus"
+    tools:listitem="@layout/stopwatch_lap_item_layout" />
+
+<com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/btnLapReset"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="32dp"
+    android:src="@drawable/ic_flag"
+    app:backgroundTint="#E0E0E0"
+    app:elevation="4dp"
+    app:fabSize="normal"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toStartOf="@+id/btnStartStop"
+    app:layout_constraintHorizontal_chainStyle="packed"
+    app:layout_constraintStart_toStartOf="parent"
+    app:tint="#555555" />
+
+<com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/btnStartStop"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="80dp"
+    android:layout_marginBottom="32dp"
+    android:src="@drawable/ic_play"
+    app:backgroundTint="#D1E8FF"
+    app:elevation="4dp"
+    app:fabSize="normal"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@+id/btnLapReset"
+    app:tint="#005CB3" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

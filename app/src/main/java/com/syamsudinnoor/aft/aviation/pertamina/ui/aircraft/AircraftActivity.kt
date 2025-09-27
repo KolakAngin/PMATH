@@ -19,6 +19,7 @@ import com.syamsudinnoor.aft.aviation.pertamina.R
 import com.syamsudinnoor.aft.aviation.pertamina.factoryviewmodel.ViewModelFactory
 import com.syamsudinnoor.aft.aviation.pertamina.databinding.ActivityAircraftBinding
 import com.syamsudinnoor.aft.aviation.pertamina.utility.numberFormatter
+import com.syamsudinnoor.aft.aviation.pertamina.utility.textWatcherWithNumber
 
 class AircraftActivity : AppCompatActivity() {
     private lateinit var binding : ActivityAircraftBinding
@@ -106,33 +107,7 @@ class AircraftActivity : AppCompatActivity() {
 
 
     private fun validateInput(){
-        binding.finalRequest.addTextChangedListener(object : TextWatcher {
-            private var current = ""
-            override fun afterTextChanged(s: Editable?) {}
-
-            override fun beforeTextChanged(
-                s: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int
-            ) { }
-
-            override fun onTextChanged(
-                s: CharSequence?,
-                start: Int,
-                before: Int,
-                count: Int
-            ) {
-                if(s.toString().isNotEmpty()){
-
-                    viewModel.onFinalInputChanged(true)
-                }else{
-                    viewModel.onFinalInputChanged(false)
-
-                }
-            }
-
-        })
+        binding.finalRequest.apply { addTextChangedListener(textWatcherWithNumber(this)) }
 
         binding.remain.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}

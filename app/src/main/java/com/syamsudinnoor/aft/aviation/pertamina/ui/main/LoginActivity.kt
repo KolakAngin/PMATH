@@ -18,6 +18,7 @@ import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.SnoorRoomDatabas
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.repository.SNoorRepository
 import com.syamsudinnoor.aft.aviation.pertamina.ui.main.viewmodel.LoginViewModel
 import androidx.core.content.edit
+import com.syamsudinnoor.aft.aviation.pertamina.ui.flashlight.FlashLightActivity
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -41,6 +42,12 @@ class LoginActivity : AppCompatActivity() {
             }else{
                 Toast.makeText(this, "Username atau Password tidak boleh kosong", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        binding.sosButton.setOnClickListener {
+            val intent = Intent(this, FlashLightActivity::class.java)
+            intent.putExtra("SOS", true)
+            startActivity(intent)
         }
 
     }

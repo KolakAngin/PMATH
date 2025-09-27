@@ -134,6 +134,34 @@
                     android:textStyle="bold"/>
             </TableRow>
 
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <TextView
+                    android:id="@+id/row_5_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_weight="1"
+                    android:text="@string/pumpable_stock_tank"
+                    android:gravity="start"
+                    android:textSize="20sp"
+                    android:padding="10dp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/row_5_body"
+                    android:gravity="start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:textSize="20sp"
+                    android:layout_weight="1"
+                    android:visibility="gone"
+                    tools:text="@string/dummy_liter"
+                    android:textStyle="bold"/>
+            </TableRow>
+
         </TableLayout>
 
         <ImageView

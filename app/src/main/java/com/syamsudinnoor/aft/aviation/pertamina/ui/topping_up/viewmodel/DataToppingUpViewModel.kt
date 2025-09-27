@@ -45,4 +45,10 @@ class DataToppingUpViewModel(private val repository: MainRepository) : ViewModel
         }
     }
 
+    fun updateToppingUp(toppingUp: ToppingUp) {
+        viewModelScope.launch {
+            repository.updateToppingUp(toppingUp)
+        }
+    }
+
 }

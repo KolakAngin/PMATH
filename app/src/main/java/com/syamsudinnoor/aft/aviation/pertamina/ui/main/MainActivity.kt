@@ -12,7 +12,6 @@
     import androidx.activity.viewModels
     import androidx.appcompat.app.AppCompatActivity
     import androidx.appcompat.widget.SearchView
-    import androidx.core.content.getSystemService
     import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 
     import androidx.core.view.ViewCompat
@@ -25,11 +24,15 @@
     import com.syamsudinnoor.aft.aviation.pertamina.ui.aircraft.AircraftActivity
     import com.syamsudinnoor.aft.aviation.pertamina.ui.density.DensityActivity
     import com.syamsudinnoor.aft.aviation.pertamina.ui.dipping_tank.DippingTankActivity
-    import com.syamsudinnoor.aft.aviation.pertamina.ui.topping_up.ToppingUpActivity
-    import androidx.core.content.edit
+    import com.syamsudinnoor.aft.aviation.pertamina.ui.topping_up.activity.ToppingUpActivity
     import androidx.lifecycle.lifecycleScope
-    import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.ToppingUp
+    import com.syamsudinnoor.aft.aviation.pertamina.ui.calculator.CalculatorActivity
+    import com.syamsudinnoor.aft.aviation.pertamina.ui.converter.ConverterActivity
+    import com.syamsudinnoor.aft.aviation.pertamina.ui.flashlight.FlashLightActivity
     import com.syamsudinnoor.aft.aviation.pertamina.ui.main.viewmodel.MainLoginViewModel
+    import com.syamsudinnoor.aft.aviation.pertamina.ui.stopwatch.StopWatchActivity
+    import com.syamsudinnoor.aft.aviation.pertamina.utility.openWhatsApp
+    import com.syamsudinnoor.aft.aviation.pertamina.utility.settingDialogGlobal
     import kotlinx.coroutines.launch
 
     class MainActivity : AppCompatActivity() {
@@ -112,6 +115,24 @@
                         startActivity(intent)
                     }
 
+                    "Calculator" ->{
+                        val intent = Intent(this, CalculatorActivity::class.java)
+                        startActivity(intent)
+                    }
+                    "Stopwatch" ->{
+                        val intent = Intent(this, StopWatchActivity::class.java)
+                        startActivity(intent)
+                    }
+                    "Flash Light" -> {
+                        val intent = Intent(this, FlashLightActivity::class.java)
+                        startActivity(intent)
+                    }
+                    "Converter" -> {
+                        val intent = Intent(this, ConverterActivity::class.java)
+                        startActivity(intent)
+                    }
+                    "Tambah Fitur" -> openWhatsApp(this,"6285173005241","Halo Developer Saya Ingin Tambah Fitur Baru")
+
                 }
 
             }
@@ -127,7 +148,7 @@
             dialog.setContentView(R.layout.costum_delete_quality_control)
             dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
             val titleText : TextView = dialog.findViewById(R.id.txt_title)
-            titleText.text = "Apakah anda yakin untuk keluar aplikasi"
+            titleText.text = "Konfirmasi Keluar Aplikasi"
             val massageText  : TextView = dialog.findViewById(R.id.txt_massage)
             massageText.text = massage
 
@@ -189,7 +210,22 @@
         override fun onOptionsItemSelected(item: MenuItem): Boolean {
             when(item.itemId){
                 R.id.about_item -> Toast.makeText(this,"About Clicked", Toast.LENGTH_SHORT).show()
-                R.id.logout_item -> settingDialog("Konfirmasi Keluar Aplikasi")
+                R.id.logout_item -> {
+                    settingDialogGlobal("Konfirmasi Keluar Aplikasi","Apakah Anda yakin keluar aplikasi",
+                        this){
+                        val sharedPref = getSharedPreferences("app_prefs", MODE_PRIVATE)
+                        with(sharedPref.edit()) {
+                            clear()
+                            apply()
+                        }
+
+                        val intent = Intent(this, LoginActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+                        startActivity(intent)
+                        finish()
+                    }
+                }
             }
             return super.onOptionsItemSelected(item)
         }

@@ -16,12 +16,21 @@
 
     <style name="Theme.MyApp.Splash" parent="Theme.SplashScreen">
         <!-- Icon aplikasi yang akan muncul di splash -->
-        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_item_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_foreground</item>
         <!-- Background splash -->
         <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="android:windowSplashScreenIconBackgroundColor" tools:targetApi="31">@color/white</item>
 
         <!-- Tema utama setelah splash -->
         <item name="postSplashScreenTheme">@style/Base.Theme.PMATH</item>
+    </style>
+
+    <style name="CustomTabLayout" parent="Widget.MaterialComponents.TabLayout">
+        <item name="tabInlineLabel">true</item>
+        <item name="tabGravity">fill</item>
+        <item name="tabMode">fixed</item>
+        <item name="tabBackground">@drawable/tab_indicator</item>
+        <item name="tabIndicator">@null</item>
     </style>
 
 

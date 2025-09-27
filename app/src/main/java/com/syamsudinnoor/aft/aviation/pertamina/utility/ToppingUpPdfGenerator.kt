@@ -55,7 +55,7 @@ class ToppingUpPdfGenerator {
                     buildPdfContent(document, context, data)
                 }
             }
-        } else { // Android 9 ke bawah
+        } else {
             val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
             if (!downloadsDir.exists()) {
                 downloadsDir.mkdirs()
@@ -70,7 +70,6 @@ class ToppingUpPdfGenerator {
         return pdfUri
     }
 
-    // Fungsi untuk membangun seluruh konten PDF
     private fun buildPdfContent(document: Document, context: Context, data: List<ToppingUp>) {
         document.setMargins(30f, 30f, 30f, 30f)
         addHeaderContent(document, context)

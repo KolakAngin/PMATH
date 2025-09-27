@@ -28,9 +28,11 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.tabs.TabLayout
+        style="@style/CustomTabLayout"
         android:layout_width="match_parent"
         app:tabIndicatorFullWidth="true"
         android:layout_height="50dp"
+        app:tabGravity="fill"
         app:tabMode="fixed"
         app:layout_constraintTop_toBottomOf="@id/appBarLayout"
         android:background="?attr/colorOnPrimary"

@@ -1,5 +1,6 @@
 package com.syamsudinnoor.aft.aviation.pertamina.ui.density.volume_control.activity_holder
 
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -8,9 +9,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.syamsudinnoor.aft.aviation.pertamina.R
 import com.syamsudinnoor.aft.aviation.pertamina.databinding.ActivityVolumeControlBinding
+import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.AnalisaVolumeControlWithDetail
 import com.syamsudinnoor.aft.aviation.pertamina.ui.density.adapter.SectionPagerAdapter
 import com.syamsudinnoor.aft.aviation.pertamina.ui.density.adapter.SectionQualityControlAdapter
 import com.syamsudinnoor.aft.aviation.pertamina.ui.density.quality_control.activity_holder.BridgerQualityControlActivity
@@ -18,6 +21,8 @@ import com.syamsudinnoor.aft.aviation.pertamina.ui.density.quality_control.activ
 
 class VolumeControlActivity : AppCompatActivity() {
     private lateinit var binding: ActivityVolumeControlBinding
+    private var updateData : AnalisaVolumeControlWithDetail? = null
+    private lateinit var viewPager : ViewPager2
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        enableEdgeToEdge()
@@ -29,12 +34,18 @@ class VolumeControlActivity : AppCompatActivity() {
             insets
         }
 
+        updateData = if (Build.VERSION.SDK_INT >= 33){
+            intent.getParcelableExtra("UPDATE_DATA", AnalisaVolumeControlWithDetail::class.java)
+        }else{
+            intent.getParcelableExtra("UPDATE_DATA")
+        }
+
         setSupportActionBar(binding.topAppBar)
         supportActionBar?.title = APP_NAME
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val sectionPagerAdapter = SectionQualityControlAdapter(this)
-        val viewPager = binding.viewPager
+        val sectionPagerAdapter = SectionQualityControlAdapter(updateData,this)
+        viewPager = binding.viewPager
 
         viewPager.adapter = sectionPagerAdapter
 

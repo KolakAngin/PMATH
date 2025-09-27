@@ -31,6 +31,7 @@ import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.AnalisaVo
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.ToppingUp
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.repository.MainRepository
 import com.syamsudinnoor.aft.aviation.pertamina.ui.density.viewmodel.VolumeControlMainViewModel
+import com.syamsudinnoor.aft.aviation.pertamina.ui.density.volume_control.activity_holder.DataShowActivity
 import com.syamsudinnoor.aft.aviation.pertamina.utility.AnalisaVolumeControlPdfGenerator
 import com.syamsudinnoor.aft.aviation.pertamina.utility.DialogHolder.dateDialog
 import com.syamsudinnoor.aft.aviation.pertamina.utility.DialogHolder.timeDialog
@@ -68,7 +69,10 @@ class DataHolderVolumeControlFragment : Fragment() {
     ): View? {
         _binding = FragmentDataHolderVolumeControlBinding.inflate(inflater, container, false)
         adapter = VolumeControlAdapter({
-            Toast.makeText(requireContext(), it.analisaVolumeControl.aft, Toast.LENGTH_SHORT).show()
+            val intent = Intent(requireContext(), DataShowActivity::class.java)
+            intent.putExtra("DATA",it)
+            startActivity(intent)
+
         }){
             settingDialog("Apakah anda yakin ingin menghapus data ini?", it)
 

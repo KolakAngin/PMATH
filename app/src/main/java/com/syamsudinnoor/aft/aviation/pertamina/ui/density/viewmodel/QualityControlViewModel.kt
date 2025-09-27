@@ -50,5 +50,11 @@ class QualityControlViewModel(private val mainRepository: MainRepository) : View
         }
     }
 
+    fun update(bridgerQualityControl: BridgerQualityControl){
+        viewModelScope.launch {
+            mainRepository.updateBridgerQuality(bridgerQualityControl)
+        }
+    }
+
 
 }

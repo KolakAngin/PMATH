@@ -18,4 +18,17 @@
     <color name="warning_2">#DEE7E56A</color>
     <color name="warning_3">#DE72E76A</color>
 
+
+    <color name="purple_200">#0F9D58</color>
+    <color name="purple_500">#0F9D58</color>
+    <color name="purple_700">#0F9D58</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+
+    <!--three different shades of black color-->
+    <color name="blac_shade_1">#292D36</color>
+    <color name="black_shade_2">#272B33</color>
+    <color name="black_shade_3">#22252D</color>
+    <color name="yellow">#ffa500</color>
+
 </resources>

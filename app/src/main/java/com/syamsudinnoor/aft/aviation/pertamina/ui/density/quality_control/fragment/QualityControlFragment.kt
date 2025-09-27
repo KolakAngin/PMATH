@@ -3,6 +3,7 @@ package com.syamsudinnoor.aft.aviation.pertamina.ui.density.quality_control.frag
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +26,8 @@ import com.syamsudinnoor.aft.aviation.pertamina.ui.density.viewmodel.DensityView
 import com.syamsudinnoor.aft.aviation.pertamina.ui.density.viewmodel.QualityControlViewModel
 import com.syamsudinnoor.aft.aviation.pertamina.utility.DialogHolder.timeDialog
 import com.syamsudinnoor.aft.aviation.pertamina.utility.TimeConverter
+import com.syamsudinnoor.aft.aviation.pertamina.utility.helperSettingEditText
+import com.syamsudinnoor.aft.aviation.pertamina.utility.textWatcherWithNumber
 import java.util.Date
 
 class QualityControlFragment : Fragment() {
@@ -32,13 +35,13 @@ class QualityControlFragment : Fragment() {
     private var _binding : FragmentQualityControlBinding? = null
     private val binding get() = _binding!!
     private val viewModel: DensityViewModel by viewModels {
-        val database = SnoorRoomDatabase.Companion.getDatabase(requireContext())
+        val database = SnoorRoomDatabase.getDatabase(requireContext())
         val repository = SNoorRepository(database.sNoorDao())
         ViewModelFactory(repository)
     }
 
     private val mainViewModel : QualityControlViewModel by viewModels{
-        val database = MainDatabase.Companion.getDatabase(requireContext())
+        val database = MainDatabase.getDatabase(requireContext())
         val repository = MainRepository(database.getDao())
         MainViewModelFactory(repository)
     }
@@ -63,7 +66,6 @@ class QualityControlFragment : Fragment() {
     private var temperatureDocument : Double? = 0.0
     private var resultDensityDocument : Double? = 0.0
 
-    //non nullable
     private var densityOBDS : Double? = 0.0
     private var temperature : Double? = 0.0
 
@@ -72,6 +74,8 @@ class QualityControlFragment : Fragment() {
     private var appmNo : String? = null
     private var cuPSM : String? = null
     private var toTank : String? = null
+
+    private var dataUpdate : BridgerQualityControl? = null
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
@@ -90,6 +94,16 @@ class QualityControlFragment : Fragment() {
             }
         }
 
+        dataUpdate = if (Build.VERSION.SDK_INT >= 33){
+            arguments?.getParcelable("UPDATE_DATA",BridgerQualityControl::class.java)
+        }else{
+            @Suppress("DEPRECATION") arguments?.getParcelable("UPDATE_DATA")
+        }
+
+        if (dataUpdate != null){
+            setupAllData(dataUpdate!!)
+        }
+
         //setupDensity()
         binding.buttonSearch.isEnabled = true
 
@@ -100,6 +114,19 @@ class QualityControlFragment : Fragment() {
         binding.buttonSearch.setOnClickListener {
             checkInput()
         }
+        binding.editCuPsm.addTextChangedListener(helperSettingEditText {
+            if (it.isNotEmpty()){
+                when{
+                    it.toDouble() in 50.0..800.0 -> {
+                        Log.d("cuPSM",it)
+                    }else ->{
+                    Log.d("cuPSM",it + " Gagal")
+                    binding.editCuPsm.error = "Harus di antara 50 - 800"
+                }
+                }
+            }
+        })
+        binding.editLiter.apply { addTextChangedListener(textWatcherWithNumber(this)) }
 
         binding.buttonSave.setOnClickListener {
             val wasUpper = when{
@@ -127,13 +154,84 @@ class QualityControlFragment : Fragment() {
                 tangki = toTank,
                 operator_name = operatorName
             )
-            mainViewModel.insert(reportData)
+
+            val reportDataToUpdate = BridgerQualityControl(
+                id = dataUpdate?.id!!,
+                dateTime = currentTime,
+                bridger_no = wasUpper,
+                bpp = BppNo,
+                volume_liter = liter,
+                seal = sealOrSegel,
+                test_report_no = testReportNo,
+                density_15_from_distributor = densityFromDistributor,
+                afrn_no = afrnNo,
+                density_obsd_rec_document = densityOBDSDocument,
+                temp_rec_document = temperatureDocument,
+                density_15_result_rec_document = resultDensityDocument,
+                density_obsd = densityOBDS,
+                temprature = temperature,
+                density_15_calculation = resultDensity,
+                diff_from_density_distributor = diffMax,
+                app_star = appmNo,
+                cu_psm = cuPSM?.toDoubleOrNull(),
+                tangki = toTank,
+                operator_name = operatorName
+            )
+
+            if (dataUpdate == null){
+                mainViewModel.insert(reportData)
+                Toast.makeText(requireContext(), "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
+            }else{
+                mainViewModel.update(reportDataToUpdate)
+                Toast.makeText(requireContext(), "Data berhasil diupdate", Toast.LENGTH_SHORT).show()
+            }
             viewModel.onJoinChecking(false)
             currentTime = System.currentTimeMillis()
-            Toast.makeText(requireContext(), "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
+
         }
 
         return binding.root
+    }
+
+    private fun setupAllData(data : BridgerQualityControl){
+
+        binding.spinnerOperatorName.setText(data.operator_name ?: "")
+        binding.editBridgerNo.setText(data.bridger_no ?: "")
+        binding.buttonTimeFrom.setText(TimeConverter.toReadableTime(data.dateTime ?: System.currentTimeMillis()))
+        binding.editBpp.setText(data.bpp ?: "")
+        binding.editLiter.setText(data.volume_liter?.toString() ?: "")
+        binding.editSeal.setText(data.seal ?: "")
+        binding.editTestReport.setText(data.test_report_no ?: "")
+        binding.editDens15FromDistributor.setText(data.density_15_from_distributor?.toString() ?: "")
+        binding.afrnNo.setText(data.afrn_no ?: "")
+        binding.editDensityRecDoc.setText(data.density_obsd_rec_document?.toString() ?: "")
+        binding.editTempRecDoc.setText(data.temp_rec_document?.toString() ?: "")
+        binding.editResultDensityRecDoc.setText(data.density_15_result_rec_document?.toString() ?: "")
+        binding.editTextDensity.setText(data.density_obsd?.toString() ?: "")
+        binding.editTextTemp.setText(data.temprature?.toString() ?: "")
+        binding.editApp.setText(data.app_star ?: "")
+        binding.editCuPsm.setText(data.cu_psm?.toString() ?: "")
+        binding.spinnerTankQc.setText(data.tangki ?: "")
+
+        currentTime = data.dateTime
+        bridgerNo = data.bridger_no
+        BppNo = data.bpp
+        liter = data.volume_liter
+        sealOrSegel = data.seal
+        testReportNo = data.test_report_no
+        densityFromDistributor = data.density_15_from_distributor
+        afrnNo = data.afrn_no
+        densityOBDSDocument = data.density_obsd_rec_document
+        temperatureDocument = data.temp_rec_document
+        resultDensityDocument = data.density_15_result_rec_document
+        densityOBDS = data.density_obsd
+        temperature = data.temprature
+        appmNo = data.app_star
+        cuPSM = data.cu_psm.toString()
+        toTank = data.tangki
+        operatorName = data.operator_name
+
+        checkInput()
     }
 
     private fun checkInput(){
@@ -161,8 +259,14 @@ class QualityControlFragment : Fragment() {
         cuPSM = binding.editCuPsm.text.toString()
         toTank = binding.spinnerTankQc.text.toString()
 
+        val cuPSM = binding.editCuPsm.text.toString().toDoubleOrNull()
+        val cu = when(cuPSM != null){
+            true -> cuPSM
+            false -> 0.0
+        }
 
-        if (densityFromDistributor != null && densityOBDS != null && temperature != null) {
+
+        if (densityFromDistributor != null && densityOBDS != null && temperature != null && cu in 50.0..800.0) {
 
             searchDensity()
             setupDensity()
@@ -178,7 +282,8 @@ class QualityControlFragment : Fragment() {
     private fun searchDensity() {
         val density = binding.editTextDensity.text.toString().toDoubleOrNull()
         val temperature = binding.editTextTemp.text.toString().toDoubleOrNull()
-        if (density != null && temperature != null){
+
+        if (density != null && temperature != null) {
             viewModel.searchDensity(density, temperature)
         }
     }
@@ -259,6 +364,12 @@ class QualityControlFragment : Fragment() {
     }
 
     companion object{
+
+        fun newInstance(bridgerQualityControl: BridgerQualityControl?) = QualityControlFragment().apply {
+            arguments = Bundle().apply {
+                putParcelable("UPDATE_DATA",bridgerQualityControl)
+            }
+        }
         const val TOLERENCE : Double = 0.003
         const val NEGATIVE_TOLERENCE : Double = -0.003
     }

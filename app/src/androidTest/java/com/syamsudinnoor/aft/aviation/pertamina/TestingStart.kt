@@ -9,12 +9,12 @@ import org.junit.runner.RunWith
 import org.junit.Assert.*
 
 /**
- * Instrumented test, which will execute on an Android device.
+ * Simulasi testing menggunakan AndroidX Test
  *
- * See [testing documentation](http://d.android.com/tools/testing).
+ * Testing dilakukan untuk menemukan malfungsi sistem dalam pengoperasian logika program
  */
 @RunWith(AndroidJUnit4::class)
-class ExampleInstrumentedTest {
+class TestingStart {
     @Test
     fun useAppContext() {
         // Context of the app under test.

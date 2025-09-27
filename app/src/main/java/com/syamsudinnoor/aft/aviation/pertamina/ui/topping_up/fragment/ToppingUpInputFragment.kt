@@ -51,6 +51,9 @@ import kotlin.math.min
 
 class ToppingUpInputFragment : Fragment() {
 
+
+    private lateinit var status : String
+    private  var dataUpdate : ToppingUp? = null
     private var _binding : FragmentToppingUpInputBinding? = null
     private val binding get() = _binding!!
 
@@ -93,8 +96,18 @@ class ToppingUpInputFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentToppingUpInputBinding.inflate(inflater, container, false)
+        dataUpdate = arguments?.getParcelable<ToppingUp?>("UPDATE_DATA")
+        if (dataUpdate != null){
+            status = "UPDATE"
 
+        }else{
+            status = "INSERT"
+        }
 
+        if (status == "UPDATE"){
+            setUpdateView()
+            setupData(dataUpdate!!)
+        }
 
         validateInput()
         searchToppingUp()
@@ -117,7 +130,7 @@ class ToppingUpInputFragment : Fragment() {
         }
 
         viewModel.isMM2Valid.observe(viewLifecycleOwner){isValid ->
-            binding.buttonSarch2.isEnabled = isValid
+            binding.buttonSearch2.isEnabled = isValid
         }
 
 
@@ -125,8 +138,53 @@ class ToppingUpInputFragment : Fragment() {
             insertData()
         }
 
-
         return binding.root
+    }
+
+
+    private fun setUpdateView(){
+        binding.buttonSearch.visibility = View.GONE
+        binding.cardView1.cardViewResult.visibility = View.GONE
+        binding.viewHide.visibility = View.VISIBLE
+    }
+
+    private fun setupData(toppingUp: ToppingUp){
+        searchToppingUp()
+        val ref  = toppingUp.sales_ref ?: 0
+        binding.spinnerOperatorName.setText(toppingUp.operator)
+        binding.spinnerRefeuller.setText(toppingUp.snr_no)
+        binding.editTextMm.setText(toppingUp.sisa_dipping.toString())
+        binding.editRef.setText(ref.toString())
+        binding.editToppingVolume.setText(toppingUp.jumlah_topping.toString())
+        binding.editTotalisatorAwal.setText(toppingUp.totalisator_awal)
+        binding.editTotalisatorAkhir.setText(toppingUp.totalisator_akhir)
+        binding.spinnerM.setText(toppingUp.m_number)
+        binding.buttonStartTime.text = TimeConverter.toReadableTime(toppingUp.start_time?: System.currentTimeMillis())
+        binding.buttonMinute.text = "${toppingUp.duration} Minute"
+        binding.editDippingAfterTopping.setText(toppingUp.hasil_dipstik.toString())
+        binding.spinnerTankQc.setText(toppingUp.tanki)
+        binding.spinnerM.setText(toppingUp.m_number)
+        binding.timeEnd.text = " = ${TimeConverter.toReadableTime(toppingUp.start_time!!)}"
+
+        hourStart = toppingUp.start_time
+        hourEnd = toppingUp.end_time
+        duration = toppingUp.duration
+        statusRefeuller = toppingUp.snr_no
+        sisaDipping = toppingUp.sisa_dipping
+        salesRef = toppingUp.sales_ref
+        jumlahTopping = toppingUp.jumlah_topping
+        hasilDipstik = toppingUp.hasil_dipstik
+        mVariabel = toppingUp.m_number
+        totalisatorAwal = toppingUp.totalisator_awal
+        totalisatorAkhir = toppingUp.totalisator_akhir
+        tangki = toppingUp.tanki
+        operator = toppingUp.operator
+
+        searchForToppingUp(hasilDipstik ?: 0.0,"after",binding.cardView2)
+
+        binding.buttonSearch2.isEnabled = true
+
+
     }
 
 
@@ -157,8 +215,30 @@ class ToppingUpInputFragment : Fragment() {
             totalisator_akhir = totalisatorAkhir
             )
 
-        toppingUpViewModel.insert(data)
-        Toast.makeText(requireContext(),"Data berhasil disimpan",Toast.LENGTH_SHORT).show()
+        val dataToUpdate = ToppingUp(
+            id = dataUpdate?.id!!,
+            start_time = hourStart,
+            end_time = hourEnd,
+            duration = duration,
+            snr_no = statusRefeuller ?: "",
+            sisa_dipping = sisaDipping,
+            sales_ref = salesRef,
+            jumlah_topping = jumlahTopping,
+            hasil_dipstik = hasilDipstik,
+            m_number = mVariabel,
+            totalisator_awal = totalisatorAwal,
+            tanki = tangki,
+            operator = operator,
+            totalisator_akhir = totalisatorAkhir
+        )
+
+        if (status == "INSERT"){
+            toppingUpViewModel.insert(data)
+            Toast.makeText(requireContext(), "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
+        }else if (status == "UPDATE"){
+            toppingUpViewModel.updateToppingUp(dataToUpdate)
+            Toast.makeText(requireContext(), "Data berhasil diupdate", Toast.LENGTH_SHORT).show()
+        }
         binding.buttonSave.isEnabled = false
     }
 
@@ -216,25 +296,24 @@ class ToppingUpInputFragment : Fragment() {
             val value = binding.editTextMm.text.toString().toDouble()
             sisaDipping = value.toInt()
 
-            val status = "before"
-            searchForToppingUp(value,status,cardView)
+            val statusKirim = "before"
+            searchForToppingUp(value,statusKirim,cardView)
             binding.viewHide.visibility = View.VISIBLE
         }
-        binding.buttonSarch2.setOnClickListener {
+        binding.buttonSearch2.setOnClickListener {
             val imm = requireContext().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(binding.editDippingAfterTopping.windowToken, 0)
             val cardView = binding.cardView2
             cardView.cardViewResult.setBackgroundResource(R.drawable.normal_card_background)
             val value = binding.editDippingAfterTopping.text.toString().toDouble()
             hasilDipstik = value
+            val statusKirim = "after"
 
-            val status = "after"
-            searchForToppingUp(value,status,cardView)
+            searchForToppingUp(value,statusKirim,cardView)
         }
     }
 
     private fun searchForToppingUp(value : Double ,status: String,cardView: CardViewHolderBinding){
-
         when(statusRefeuller){
             "SNR 17" -> {
                 if (status == "before"){
@@ -463,16 +542,19 @@ class ToppingUpInputFragment : Fragment() {
             binding.spinnerM.setAdapter(adapterM)
     }
 
-
-
     companion object {
+
+        fun newInstance(toppings : ToppingUp?) = ToppingUpInputFragment().apply {
+            arguments = Bundle().apply {
+                putParcelable("UPDATE_DATA",toppings)
+            }
+        }
+
         const val APP_NAME = "APP_NAME"
         private const val CONST_17_21_22 = 24500.0
         private const val CONST_19_20 = 25000.0
 
     }
-
-
 
 }
 

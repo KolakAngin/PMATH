@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.MyApp.Splash" parent="Theme.SplashScreen">
+        <!-- Icon aplikasi yang akan muncul di splash -->
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_foreground</item>
+        <!-- Background splash -->
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">
+            @color/white
+        </item>
+
+        <!-- Tema utama setelah splash -->
+        <item name="postSplashScreenTheme">@style/Base.Theme.PMATH</item>
+    </style>
+</resources>

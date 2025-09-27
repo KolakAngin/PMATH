@@ -51,14 +51,6 @@ class SNoorRepository(private val sNoorDao: SNoorDao) {
 
     fun getUserPMATH(username: String, password: String): LiveData<Boolean> {
         val result = sNoorDao.getUser(username, password).map { it != null }
-        val resultAll = sNoorDao.getAllUser()
-        val getUser = sNoorDao.getUserOnlineName(username)
-        val getUserPassword = sNoorDao.getUserOnlyfromPassword(password)
-        Log.d("LoginViewModel", "logginSucces: saya dijalnakan di login repository NAMA:: ${sNoorDao.getUserOnlineName(username).value}")
-        Log.d("LoginViewModel", "logginSucces: saya dijalnakan di login repository ALL: ${sNoorDao.getAllUser().value}")
-        Log.d("LoginViewModel", "logginSucces: saya dijalnakan di login repository PASSWORD: ${sNoorDao.getUserOnlyfromPassword(password).value}")
-        Log.d("LoginViewModel", "logginSucces: saya dijalnakan di login repository ${sNoorDao.getUser(username, password).value}")
-
         return result
     }
 

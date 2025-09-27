@@ -1,33 +1,34 @@
 package com.syamsudinnoor.aft.aviation.pertamina.utility
 
 
-import android.R
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.icu.util.Calendar
 import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Gravity
-import android.view.View
-import android.widget.NumberPicker
+import android.view.Window
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.view.marginTop
 import com.google.android.material.textfield.TextInputEditText
 import java.math.BigDecimal
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Locale
-import java.util.logging.LogManager
-import kotlin.time.Duration.Companion.hours
+import androidx.core.net.toUri
+import com.syamsudinnoor.aft.aviation.pertamina.R
+import com.syamsudinnoor.aft.aviation.pertamina.ui.main.LoginActivity
 
 
 fun numberFormatter(number: Double, scale : Int = 2): String{
@@ -251,3 +252,45 @@ object TerbilangConverter {
         return result.toUpperCase(Locale.ROOT)
     }
 }
+
+fun openWhatsApp(context: Context, number: String, message: String){
+    val url = "https://api.whatsapp.com/send?phone=$number&text=$message"
+    val uri = url.toUri()
+    val pm : PackageManager = context.packageManager
+
+
+    val intent = Intent(Intent.ACTION_VIEW,uri).apply {
+        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    }
+    try{
+        context.startActivity(intent)
+    }catch (e : Exception){
+        Toast.makeText(context, "Ada masalah ketika membuka WhatsApp Hubungi Manual melalui 085173005241", Toast.LENGTH_SHORT).show()
+    }
+
+}
+
+fun settingDialogGlobal(title : String,massage: String,context : Context,onYesButtonClicked : () -> Unit){
+    val dialog = Dialog(context)
+    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+    dialog.setCancelable(false)
+    dialog.setContentView(R.layout.costum_delete_quality_control)
+    dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+    val titleText : TextView = dialog.findViewById(R.id.txt_title)
+    titleText.text = title
+    val massageText  : TextView = dialog.findViewById(R.id.txt_massage)
+    massageText.text = massage
+
+
+    val yesButton : Button = dialog.findViewById(R.id.btn_yes)
+    yesButton.setOnClickListener {
+        onYesButtonClicked()
+        dialog.dismiss()
+    }
+    val noButton : Button = dialog.findViewById(R.id.btn_no)
+    noButton.setOnClickListener {
+        dialog.dismiss()
+    }
+    dialog.show()
+}
+

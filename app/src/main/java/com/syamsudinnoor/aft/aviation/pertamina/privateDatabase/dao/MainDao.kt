@@ -7,6 +7,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.AnalisaVolumeControlQuality
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.AnalisaVolumeControlWithDetail
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.BridgerQualityControl
@@ -63,7 +64,7 @@ interface MainDao {
         insertAllDetialKompartemen(details)
     }
 
-    @Query("SELECT * FROM analisa_volume_control_quality order by tanggal asc")
+    @Query("SELECT * FROM analisa_volume_control_quality order by tanggal desc")
     fun getAllDataVolumeControl(): Flow<List<AnalisaVolumeControlWithDetail>>
 
     @Delete
@@ -71,5 +72,34 @@ interface MainDao {
 
     @Query("SELECT * FROM analisa_volume_control_quality WHERE tanggal BETWEEN :startTime AND :endTime")
     fun getVolumeControlByDate(startTime: Long, endTime: Long): Flow<List<AnalisaVolumeControlWithDetail>>
+
+
+    @Update
+    suspend fun updateToppingUp(toppingUp: ToppingUp)
+
+    @Update
+    suspend fun updateBridgerQuality(bridgerQualityControl: BridgerQualityControl)
+
+    @Update
+    suspend fun updateVolumeControl(analisaVolumeControl: AnalisaVolumeControlQuality)
+
+    @Query("DELETE FROM volume_control_quality_detail WHERE idAnalisa = :idAnalisaInduk")
+    suspend fun deleteDetailsByAnalisaId(idAnalisaInduk: Int)
+
+    @Transaction
+    suspend fun updateAnalisaWithDetails(analisa: AnalisaVolumeControlQuality, details: List<DetailKompartemen>) {
+        // Langkah 1: Update data induk
+        updateVolumeControl(analisa)
+
+        // Langkah 2: Hapus semua data anak yang lama
+        deleteDetailsByAnalisaId(analisa.idAnalisa)
+
+        // Langkah 3: Siapkan dan insert data anak yang baru
+        // (Penting: pastikan ID induknya sudah benar)
+        details.forEach { it.idAnalisa = analisa.idAnalisa }
+        insertAllDetialKompartemen(details)
+    }
+
+
 
 }

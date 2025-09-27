@@ -48,6 +48,12 @@ class VolumeControlMainViewModel(private val repository: MainRepository) : ViewM
                 _allVolumeControlWithDetail.value = it
             }
         }
+    }
+
+    fun updateVolumeControlWithDetail(analisaVolume : AnalisaVolumeControlQuality, detail : List<DetailKompartemen>){
+        viewModelScope.launch {
+            repository.updateVolumeControl(analisaVolume,detail)
+        }
 
     }
 }

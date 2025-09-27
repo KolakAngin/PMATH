@@ -20,7 +20,6 @@ class LoginViewModel(private val repository: SNoorRepository) : ViewModel() {
 
 
     fun loginUser(username: String, password: String) {
-        Log.d("LoginViewModel", "logginSucces: saya dijalnakan di login user")
         _loginSuccess.value = Pair(username, password)
     }
 

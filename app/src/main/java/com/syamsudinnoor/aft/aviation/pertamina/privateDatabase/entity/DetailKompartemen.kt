@@ -1,8 +1,10 @@
 package com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 
 
 @Entity(tableName = "volume_control_quality_detail",
@@ -11,6 +13,7 @@ import androidx.room.PrimaryKey
             ["idAnalisa"],["idAnalisa"],
             onDelete = ForeignKey.CASCADE)
     ])
+@Parcelize
 data class DetailKompartemen(
     @PrimaryKey(autoGenerate = true)
     var idDetail : Int = 0,
@@ -28,4 +31,4 @@ data class DetailKompartemen(
     var corr_factor : Double?,
     var density_15 : Double?,
     var liter_15 : Double?
-)
+) : Parcelable

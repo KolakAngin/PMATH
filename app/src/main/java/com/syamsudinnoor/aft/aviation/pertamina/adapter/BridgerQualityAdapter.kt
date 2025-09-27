@@ -10,6 +10,7 @@ import com.syamsudinnoor.aft.aviation.pertamina.utility.TimeConverter
 
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import com.syamsudinnoor.aft.aviation.pertamina.utility.formatterNumber
 
 class BridgerQualityAdapter(
     private val clickListener: (BridgerQualityControl) -> Unit,
@@ -38,7 +39,7 @@ class BridgerQualityAdapter(
     class ViewHolder(val binding: HolderQualityControlBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: BridgerQualityControl) {
             binding.txtBridgerHolder.text = item.bridger_no?.uppercase()
-            binding.txtLiterHolder.text = item.volume_liter?.toInt().toString()
+            binding.txtLiterHolder.text = formatterNumber(item.volume_liter)
             binding.txtSealHolder.text = item.seal?.uppercase()
             binding.operator.text = item.operator_name?.uppercase()
             binding.timeDataQuilty.text = TimeConverter.toReadableDateTime(item.dateTime!!)

@@ -34,9 +34,9 @@
         <item>Aircraft Fuel Remain</item>
         <item>Calculator</item>
         <item>Converter</item>
-        <item>Timer</item>
+        <item>Flash Light</item>
         <item>Stopwatch</item>
-        <item>Note</item>
+        <!--        <item>Note</item>-->
         <item>Tambah Fitur</item>
     </string-array>
 
@@ -46,10 +46,10 @@
         <item>@drawable/refeuller_truck</item>
         <item>@drawable/airplane</item>
         <item>@drawable/calculator</item>
-        <item>@drawable/ic_converter_2</item>
-        <item>@drawable/stopwatch</item>
+        <item>@drawable/calculator_converter</item>
+        <item>@drawable/ic_flash_light</item>
         <item>@drawable/chronometer</item>
-        <item>@drawable/ic_note</item>
+        <!--        <item>@drawable/ic_note</item>-->
         <item>@drawable/ic_add</item>
     </integer-array>
 
@@ -107,11 +107,9 @@
     </string-array>
 
     <string-array name="operator_choice">
-        <item>Operator 1</item>
-        <item>Operator 2</item>
-        <item>Operator 3</item>
-        <item>Operator 4</item>
-        <item>Operator 5</item>
+        <item>MISTO</item>
+        <item>TOMMY</item>
+        <item>DARUL</item>
     </string-array>
 
 
@@ -121,4 +119,37 @@
         <item>M3</item>
         <item>M4</item>
     </string-array>
+
+
+        <string name="privacy_policy_title">Kebijakan Privasi</string>
+
+        <string name="privacy_policy_intro">Kebijakan privasi ini berlaku untuk aplikasi PMATH (selanjutnya disebut "Aplikasi") untuk perangkat seluler yang dibuat oleh Pertamina Patra Niaga AFT. Syamsudin Noor (selanjutnya disebut "Penyedia Layanan") sebagai layanan gratis. Layanan ini dimaksudkan untuk digunakan "SEBAGAIMANA ADANYA".</string>
+
+        <string name="privacy_policy_info_title">Pengumpulan dan Penggunaan Informasi</string>
+        <string name="privacy_policy_info">Aplikasi mengumpulkan informasi ketika Anda mengunduh dan menggunakannya. Informasi ini dapat mencakup hal-hal seperti:\n• Alamat Protokol Internet perangkat Anda (misalnya alamat IP)\n• Halaman dari Aplikasi yang Anda kunjungi, waktu dan tanggal kunjungan, serta lama waktu yang dihabiskan pada halaman tersebut\n• Lama penggunaan Aplikasi\n• Sistem operasi yang Anda gunakan pada perangkat seluler Anda\n\nAplikasi tidak mengumpulkan informasi yang tepat mengenai lokasi perangkat seluler Anda.\n\nPenyedia Layanan dapat menggunakan informasi yang Anda berikan untuk menghubungi Anda dari waktu ke waktu guna memberikan informasi penting, pemberitahuan yang diperlukan, serta promosi pemasaran.\n\nUntuk pengalaman yang lebih baik saat menggunakan Aplikasi, Penyedia Layanan dapat meminta Anda memberikan informasi pribadi tertentu, termasuk namun tidak terbatas pada: hollandideveloper@gmail.com. Informasi yang diminta akan disimpan dan digunakan sebagaimana dijelaskan dalam kebijakan privasi ini.</string>
+
+        <string name="privacy_policy_third_party_title">Akses Pihak Ketiga</string>
+        <string name="privacy_policy_third_party">Hanya data yang teragregasi dan dianonimkan yang secara berkala dikirimkan ke layanan eksternal untuk membantu Penyedia Layanan dalam meningkatkan Aplikasi dan layanan mereka. Penyedia Layanan dapat membagikan informasi Anda kepada pihak ketiga dengan cara yang dijelaskan dalam pernyataan privasi ini.\n\nPenyedia Layanan dapat mengungkapkan Informasi yang Diberikan Pengguna dan Informasi yang Dikumpulkan Secara Otomatis:\n• sebagaimana diwajibkan oleh hukum, misalnya untuk mematuhi panggilan pengadilan atau proses hukum serupa;\n• ketika mereka meyakini dengan itikad baik bahwa pengungkapan diperlukan untuk melindungi hak mereka, melindungi keselamatan Anda atau keselamatan orang lain, menyelidiki penipuan, atau menanggapi permintaan pemerintah;\n• dengan penyedia layanan terpercaya mereka yang bekerja atas nama mereka, tidak memiliki penggunaan independen atas informasi yang diungkapkan, dan telah menyetujui untuk mematuhi aturan yang tercantum dalam pernyataan privasi ini.</string>
+
+        <string name="privacy_policy_opt_out_title">Hak untuk Menolak (Opt-Out)</string>
+        <string name="privacy_policy_opt_out">Anda dapat menghentikan semua pengumpulan informasi oleh Aplikasi dengan mudah dengan menghapus instalasi. Anda dapat menggunakan proses penghapusan standar yang tersedia pada perangkat seluler Anda atau melalui toko aplikasi atau jaringan.</string>
+
+        <string name="privacy_policy_data_retention_title">Kebijakan Retensi Data</string>
+        <string name="privacy_policy_data_retention">Penyedia Layanan akan menyimpan data yang diberikan pengguna selama Anda menggunakan Aplikasi dan untuk jangka waktu yang wajar setelahnya. Jika Anda ingin mereka menghapus Data yang Diberikan Pengguna yang telah Anda sampaikan melalui Aplikasi, silakan hubungi mereka di hollandideveloper@gmail.com dan mereka akan merespons dalam waktu yang wajar.</string>
+
+        <string name="privacy_policy_children_title">Anak-anak</string>
+        <string name="privacy_policy_children">Penyedia Layanan tidak menggunakan Aplikasi untuk secara sadar meminta data atau memasarkan kepada anak-anak di bawah usia 13 tahun.\n\nPenyedia Layanan tidak secara sadar mengumpulkan informasi pribadi dari anak-anak. Penyedia Layanan mendorong semua anak untuk tidak pernah mengirimkan informasi pribadi melalui Aplikasi dan/atau Layanan. Penyedia Layanan mendorong orang tua dan wali untuk memantau penggunaan internet anak-anak mereka dan membantu menegakkan kebijakan ini dengan menginstruksikan anak-anak mereka untuk tidak memberikan informasi pribadi melalui Aplikasi dan/atau Layanan tanpa izin mereka.\n\nJika Anda yakin bahwa seorang anak telah memberikan informasi pribadi kepada Penyedia Layanan melalui Aplikasi dan/atau Layanan, silakan hubungi Penyedia Layanan (hollandideveloper@gmail.com) agar tindakan yang diperlukan dapat dilakukan.\n\nAnda juga harus berusia minimal 16 tahun untuk menyetujui pemrosesan informasi pribadi Anda di negara Anda (di beberapa negara kami dapat mengizinkan orang tua atau wali Anda untuk melakukannya atas nama Anda).</string>
+
+        <string name="privacy_policy_security_title">Keamanan</string>
+        <string name="privacy_policy_security">Penyedia Layanan peduli terhadap kerahasiaan informasi Anda. Penyedia Layanan menyediakan perlindungan fisik, elektronik, dan prosedural untuk melindungi informasi yang mereka proses dan simpan.</string>
+
+        <string name="privacy_policy_changes_title">Perubahan</string>
+        <string name="privacy_policy_changes">Kebijakan Privasi ini dapat diperbarui dari waktu ke waktu untuk alasan apa pun. Penyedia Layanan akan memberi tahu Anda mengenai setiap perubahan pada Kebijakan Privasi dengan memperbarui halaman ini dengan Kebijakan Privasi yang baru.\n\nAnda disarankan untuk secara berkala meninjau Kebijakan Privasi ini, karena penggunaan yang berkelanjutan dianggap sebagai persetujuan atas semua perubahan.\n\nKebijakan privasi ini berlaku sejak 27 September 2025.</string>
+
+        <string name="privacy_policy_consent_title">Persetujuan Anda</string>
+        <string name="privacy_policy_consent">Dengan menggunakan Aplikasi, Anda menyetujui pemrosesan informasi Anda sebagaimana diatur dalam Kebijakan Privasi ini sekarang dan sebagaimana yang akan diubah oleh kami.</string>
+
+        <string name="privacy_policy_contact_title">Hubungi Kami</string>
+        <string name="privacy_policy_contact">Jika Anda memiliki pertanyaan mengenai privasi saat menggunakan Aplikasi, atau memiliki pertanyaan tentang praktik kami, silakan hubungi Penyedia Layanan melalui email di hollandideveloper@gmail.com.</string>
+
 </resources>

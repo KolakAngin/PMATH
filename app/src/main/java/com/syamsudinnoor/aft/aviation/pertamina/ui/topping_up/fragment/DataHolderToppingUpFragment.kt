@@ -31,7 +31,7 @@ import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.MainDatabase
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.BridgerQualityControl
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.ToppingUp
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.repository.MainRepository
-import com.syamsudinnoor.aft.aviation.pertamina.ui.topping_up.DataShowToppingUp
+import com.syamsudinnoor.aft.aviation.pertamina.ui.topping_up.activity.DataShowToppingUp
 import com.syamsudinnoor.aft.aviation.pertamina.ui.topping_up.viewmodel.DataToppingUpViewModel
 import com.syamsudinnoor.aft.aviation.pertamina.utility.BridgerQualityPDFGenerator
 import com.syamsudinnoor.aft.aviation.pertamina.utility.DialogHolder.dateDialog

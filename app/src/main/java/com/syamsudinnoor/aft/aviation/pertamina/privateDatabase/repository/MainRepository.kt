@@ -64,4 +64,16 @@ class MainRepository(private val dao: MainDao) {
         return dao.getVolumeControlByDate(startTime,endTime)
     }
 
+    suspend fun updateToppingUp(toppingUp: ToppingUp){
+        dao.updateToppingUp(toppingUp)
+    }
+
+    suspend fun updateBridgerQuality(bridgerQualityControl: BridgerQualityControl){
+        dao.updateBridgerQuality(bridgerQualityControl)
+    }
+
+    suspend fun updateVolumeControl(analisaVolumeControl: AnalisaVolumeControlQuality, details: List<DetailKompartemen>){
+        dao.updateAnalisaWithDetails(analisaVolumeControl,details)
+    }
+
 }

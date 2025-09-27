@@ -1,23 +1,23 @@
-package com.syamsudinnoor.aft.aviation.pertamina.ui.topping_up
+package com.syamsudinnoor.aft.aviation.pertamina.ui.topping_up.activity
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.syamsudinnoor.aft.aviation.pertamina.R
 import com.syamsudinnoor.aft.aviation.pertamina.databinding.ActivityDataShowToppingUpBinding
-import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.BridgerQualityControl
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.ToppingUp
 import com.syamsudinnoor.aft.aviation.pertamina.ui.density.quality_control.activity_holder.BridgerDataShowActivty
-import com.syamsudinnoor.aft.aviation.pertamina.ui.topping_up.ToppingUpActivity.Companion.APP_NAME
 import com.syamsudinnoor.aft.aviation.pertamina.utility.TimeConverter
 import com.syamsudinnoor.aft.aviation.pertamina.utility.formatterNumber
 
 class DataShowToppingUp : AppCompatActivity() {
 
     private lateinit var binding : ActivityDataShowToppingUpBinding
+    private  var reportData : ToppingUp? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +25,7 @@ class DataShowToppingUp : AppCompatActivity() {
         binding = ActivityDataShowToppingUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val reportData = if (Build.VERSION.SDK_INT >= 33){
+        reportData = if (Build.VERSION.SDK_INT >= 33){
             intent.getParcelableExtra(BridgerDataShowActivty.Companion.APP_NAME, ToppingUp::class.java)
         }else{
             @Suppress("DEPRECATION")
@@ -38,6 +38,7 @@ class DataShowToppingUp : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         setupData(reportData!!)
+
     }
 
     private fun setupData(data : ToppingUp) {
@@ -60,6 +61,29 @@ class DataShowToppingUp : AppCompatActivity() {
         binding.row14Body.text = data.operator
     }
 
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.update_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId){
+            R.id.update_data -> {
+                val intent = Intent(this, ToppingUpEditData::class.java)
+                intent.putExtra("UPDATE_DATA",reportData)
+                startActivity(intent)
+                finish()
+                true
+            }
+            android.R.id.home ->{
+                finish()
+                true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+
+    }
     companion object{
         const val APP_NAME = "Detail Data"
     }

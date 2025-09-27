@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import com.syamsudinnoor.aft.aviation.pertamina.R
 import com.syamsudinnoor.aft.aviation.pertamina.databinding.CardViewHolderBinding
@@ -24,6 +25,7 @@ import com.syamsudinnoor.aft.aviation.pertamina.factoryviewmodel.ViewModelFactor
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.MainDatabase
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.SnoorRoomDatabase
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.AnalisaVolumeControlQuality
+import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.AnalisaVolumeControlWithDetail
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.DetailKompartemen
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.repository.MainRepository
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.repository.SNoorRepository
@@ -31,7 +33,9 @@ import com.syamsudinnoor.aft.aviation.pertamina.ui.density.viewmodel.VolumeContr
 import com.syamsudinnoor.aft.aviation.pertamina.ui.density.viewmodel.VolumeControlViewModel
 import com.syamsudinnoor.aft.aviation.pertamina.utility.DialogHolder.dateDialog
 import com.syamsudinnoor.aft.aviation.pertamina.utility.TimeConverter
+import com.syamsudinnoor.aft.aviation.pertamina.utility.settingDialogGlobal
 import com.syamsudinnoor.aft.aviation.pertamina.utility.textWatcherWithNumber
+import java.sql.Time
 import java.util.Date
 
 class VolumeControlFragment : Fragment() {
@@ -53,12 +57,6 @@ class VolumeControlFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val _kompartemenStatus :  Array<String> = arrayOf("Depan", "Tengah","Belakang")
-    private val kompartemenStatus = mutableSetOf<String>()
-    private lateinit var adapter1 : ArrayAdapter<String>
-    private lateinit var adapter2 : ArrayAdapter<String>
-    private lateinit var adapter3 : ArrayAdapter<String>
-
-
 
     //header data
     private var tanggalBongkar : Long? = null
@@ -87,18 +85,28 @@ class VolumeControlFragment : Fragment() {
     private val arrayDensity15 : MutableList<Double> = mutableListOf(0.0,0.0,0.0)
     private val arrayCorrFactor  = mutableListOf(0.0,0.0,0.0)
 
+    private lateinit var kompartemenView : Array<KompartemenHolderBinding>
+    private lateinit var searcHolderView : Array<CardViewHolderBinding>
+    private var updateData : AnalisaVolumeControlWithDetail? = null
+
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        adapter1 = ArrayAdapter(requireContext(), R.layout.spinner_item_holder,_kompartemenStatus.toMutableList())
-        adapter2 = ArrayAdapter(requireContext(), R.layout.spinner_item_holder,_kompartemenStatus.toMutableList())
-        adapter3 = ArrayAdapter(requireContext(), R.layout.spinner_item_holder,_kompartemenStatus.toMutableList())
-
         _binding = FragmentVolumeControlBinding.inflate(inflater, container, false)
         observeCorrFactor()
+
+        kompartemenView = arrayOf(binding.kompartemen1, binding.kompartemen2, binding.kompartemen3)
+        searcHolderView = arrayOf(binding.searchHolder1, binding.searchHolder2, binding.searchHolder3)
+
+
+        updateData = arguments?.getParcelable<AnalisaVolumeControlWithDetail?>("UPDATE_DATA")
+
+        if (updateData != null){
+            setupUpdateData(updateData!!)
+        }
 
 
         binding.kompartemen1.buttonSearchKompartemen.setOnClickListener {
@@ -106,10 +114,14 @@ class VolumeControlFragment : Fragment() {
         }
 
         binding.kompartemen1.buttonNextKompartemen.setOnClickListener {
-            binding.txtKompartemen2.visibility = View.VISIBLE
-            binding.kompartemen2.lvKompartemen1.visibility = View.VISIBLE
-            binding.searchHolder2.cardViewResult.visibility = View.VISIBLE
-            binding.buttonSaveData.isEnabled = false
+            settingDialogGlobal("Konfirmasi Tambah Data Kompartemen",
+                "Apakah Anda yakin tambah data kompartemen?",
+                requireContext()){
+                binding.txtKompartemen2.visibility = View.VISIBLE
+                binding.kompartemen2.lvKompartemen1.visibility = View.VISIBLE
+                binding.searchHolder2.cardViewResult.visibility = View.VISIBLE
+                binding.buttonSaveData.isEnabled = false
+            }
         }
 
         binding.kompartemen2.buttonSearchKompartemen.setOnClickListener {
@@ -117,10 +129,15 @@ class VolumeControlFragment : Fragment() {
         }
 
         binding.kompartemen2.buttonNextKompartemen.setOnClickListener {
-            binding.txtKompartemen3.visibility = View.VISIBLE
-            binding.kompartemen3.lvKompartemen1.visibility = View.VISIBLE
-            binding.searchHolder3.cardViewResult.visibility = View.VISIBLE
-            binding.buttonSaveData.isEnabled = false
+            settingDialogGlobal("Konfirmasi Tambah Data Kompartemen",
+                "Apakah Anda yakin tambah data kompartemen?",
+                requireContext()){
+                binding.txtKompartemen3.visibility = View.VISIBLE
+                binding.kompartemen3.lvKompartemen1.visibility = View.VISIBLE
+                binding.searchHolder3.cardViewResult.visibility = View.VISIBLE
+                binding.buttonSaveData.isEnabled = false
+            }
+
         }
 
 
@@ -144,7 +161,9 @@ class VolumeControlFragment : Fragment() {
             checkMainInput()
         }
 
-        binding.editHargaAvtur.addTextChangedListener(textWatcherWithNumber(binding.editHargaAvtur))
+        binding.editHargaAvtur.apply { addTextChangedListener { textWatcherWithNumber(this) } }
+        binding.editKuantitas.apply { addTextChangedListener { textWatcherWithNumber(this) } }
+
 
         return binding.root
     }
@@ -174,6 +193,21 @@ class VolumeControlFragment : Fragment() {
             sopir_bridger_1 = sopirBridger1,
             sopir_bridger_2 = sopirBridger2
         )
+
+        val volumeControlToUpdate = AnalisaVolumeControlQuality(
+            idAnalisa = updateData!!.analisaVolumeControl.idAnalisa,
+            tanggal = tanggalBongkar,
+            aft = aft,
+            supply_point = supplyPoint,
+            transportir = transportir,
+            kuantitas = kuantitas,
+            no_polisi = noPolisi,
+            harga_avtur = hargaAvtur,
+            spv_rsd = spvRsd,
+            sopir_bridger_1 = sopirBridger1,
+            sopir_bridger_2 = sopirBridger2
+        )
+
         val detail = mutableListOf<DetailKompartemen>()
         for (i in getNonNullDataIndex(arrayKompartemen)){
             val data = DetailKompartemen(
@@ -194,9 +228,44 @@ class VolumeControlFragment : Fragment() {
             detail.add(data)
         }
 
-        Toast.makeText(requireContext(), "Data berhasil disimpan ${detail}", Toast.LENGTH_SHORT).show()
+        if (updateData != null){
+            volumeViewModel.updateVolumeControlWithDetail(volumeControlToUpdate, detail)
+            Toast.makeText(requireContext(), "Data berhasil diupdate", Toast.LENGTH_SHORT).show()
+        }else{
+            volumeViewModel.insertVolumeWithDetail(volumeControl, detail)
+            Toast.makeText(requireContext(), "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
+        }
 
-        volumeViewModel.insertVolumeWithDetail(volumeControl, detail)
+
+
+    }
+
+    private fun setupUpdateData(data : AnalisaVolumeControlWithDetail){
+        binding.buttonTangalBongkar.setText(TimeConverter.toReadableDate(data.analisaVolumeControl.tanggal ?: System.currentTimeMillis()))
+        binding.spinnerAft.setText(data.analisaVolumeControl.aft ?: "")
+        binding.spinnerSupplyPoint.setText(data.analisaVolumeControl.supply_point ?: "")
+        binding.spinnerTransportir.setText(data.analisaVolumeControl.transportir ?: "")
+        binding.editNoPolisi.setText(data.analisaVolumeControl.no_polisi ?: "")
+        binding.editKuantitas.setText(data.analisaVolumeControl.kuantitas?.toString() ?: "")
+        binding.editHargaAvtur.setText(data.analisaVolumeControl.harga_avtur?.toInt()?.toString() ?: "")
+        binding.editSpvRsd.setText(data.analisaVolumeControl.spv_rsd ?: "")
+        binding.editSopirBridger1.setText(data.analisaVolumeControl.sopir_bridger_1 ?: "")
+        binding.editSopirBridger2.setText(data.analisaVolumeControl.sopir_bridger_2 ?: "")
+
+        var index = 0
+        for (i in data.detailKompartemen){
+            kompartemenView[index].lvKompartemen1.visibility = View.VISIBLE
+            searcHolderView[index].cardViewResult.visibility = View.VISIBLE
+            kompartemenView[index].spinnerKompartemen.setText(i.kompartemen ?: "")
+            kompartemenView[index].editTeraKompartemen.setText(i.tera?.toString() ?: "")
+            kompartemenView[index].editUkuranSuppyPointKompartemen.setText(i.ukuran_supply_point?.toString() ?: "")
+            kompartemenView[index].editRMmIKompartemen.setText(i.rmm_i?.toString() ?: "")
+            kompartemenView[index].editUkuranDppuKompartemen.setText(i.ukuran_dppu?.toString() ?: "")
+            kompartemenView[index].editDensityObsKompartemen.setText(i.density_obs?.toString() ?: "")
+            kompartemenView[index].editTempObsKompartemen.setText(i.temp_obs?.toString() ?: "")
+            checkValidation(i.kompartemen ?: "", kompartemenView[index])
+            index++
+        }
 
     }
 
@@ -220,21 +289,21 @@ class VolumeControlFragment : Fragment() {
         arrayUkuranDppu[numerator] = kompartemenHolder.editUkuranDppuKompartemen.text.toString().toIntOrNull()
         arrayDensityObs[numerator] = kompartemenHolder.editDensityObsKompartemen.text.toString().toDoubleOrNull()
         arrayTempObs[numerator] = kompartemenHolder.editTempObsKompartemen.text.toString().toIntOrNull()
+        kuantitas = binding.editKuantitas.text.toString().toIntOrNull()
         
         if (arrayKompartemen[numerator] != null && 
             (arrayTera[numerator] != null || arrayUkuranSupplyPoint[numerator] != null) &&
             arrayRmmI[numerator] != null && arrayUkuranDppu[numerator] != null &&
-            arrayDensityObs[numerator] != null && arrayTempObs[numerator] != null){
-            arraySelisihUllage[numerator] = selisihUllage(arrayTera[numerator] ?: 0,
-                arrayUkuranSupplyPoint[numerator] ?: 0,
-                arrayUkuranDppu[numerator] ?: 0)
+            arrayDensityObs[numerator] != null && arrayTempObs[numerator] != null && kuantitas != null) {
 
-            arraySelisihLiter[numerator] = selisihLiter(arraySelisihUllage[numerator] ?: 0, arrayRmmI[numerator] ?: 0.0)
-            submitDataViewModel(status, arrayDensityObs[numerator] ?: 0.0, arrayTempObs[numerator] ?: 0)
-            kompartemenHolder.buttonNextKompartemen.isEnabled = true
-            binding.buttonSaveData.isEnabled = true
+                arraySelisihUllage[numerator] = selisihUllage(arrayTera[numerator] ?: 0,
+                    arrayUkuranSupplyPoint[numerator] ?: 0,
+                    arrayUkuranDppu[numerator] ?: 0)
 
-            Toast.makeText(requireContext(), "Selisih Ullage : ${arraySelisihUllage[numerator]} liter selisih : ${arraySelisihLiter[numerator]} corr : ${arrayCorrFactor[numerator]} selisih liter : ${arrayLiter15[numerator]} -- ${selisihLiter15(arrayCorrFactor[numerator],arraySelisihLiter[numerator] ?: 0.0)}", Toast.LENGTH_LONG).show()
+                arraySelisihLiter[numerator] = selisihLiter(arraySelisihUllage[numerator] ?: 0, arrayRmmI[numerator] ?: 0.0)
+                submitDataViewModel(status, arrayDensityObs[numerator] ?: 0.0, arrayTempObs[numerator] ?: 0)
+                kompartemenHolder.buttonNextKompartemen.isEnabled = true
+                binding.buttonSaveData.isEnabled = true
 
 
         }else{
@@ -247,9 +316,15 @@ class VolumeControlFragment : Fragment() {
         holder.tableViewResult.visibility = View.VISIBLE
         holder.cardViewResult.setBackgroundResource(R.drawable.normal_card_background)
 
+        val border = if (kuantitas != null){
+            kuantitas!! * 0.0015
+        }else{
+            0.0
+        }
+
         val numerator = when{status == "Depan" -> 0; status == "Tengah" -> 1 else -> 2}
 
-        holder.row1Header.text = resources.getString(R.string.ullage_tank)
+        holder.row1Header.text = "Selisih mm"
         holder.row1Body.text = arraySelisihUllage[numerator].toString()
 
         holder.row2Header.text = "Selisih Liter"
@@ -263,10 +338,26 @@ class VolumeControlFragment : Fragment() {
         holder.row4Header.text = "Liter 15"
         holder.row4Body.text = result.toString()
 
-        arrayLiter15[numerator] = result
+
+        var selisih : Double
+        if (result < 0 && Math.abs(result) > border) {
+            selisih = result + border
+            holder.row5Header.visibility = View.VISIBLE
+            holder.row5Body.visibility = View.VISIBLE
+
+            holder.row5Header.text = "Klaim Losess"
+            holder.row5Body.text = selisih.toString()
+            holder.cardViewResult.setBackgroundResource(R.drawable.red_card_background)
+            arrayLiter15[numerator] = selisih
+        }else{
+            holder.row5Header.visibility = View.GONE
+            holder.row5Body.visibility = View.GONE
+            holder.cardViewResult.setBackgroundResource(R.drawable.green_card_background)
+            arrayLiter15[numerator] = 0.0
+        }
+
 
     }
-
 
     private fun selisihUllage(tera : Int, ukuranSupplyPoint : Int, ukuranDDPU : Int) : Int{
         return if (ukuranSupplyPoint != 0) ukuranDDPU - ukuranSupplyPoint else ukuranDDPU - tera
@@ -326,41 +417,14 @@ class VolumeControlFragment : Fragment() {
 
     private fun selisihLiter15(corrFactor: Double, selisihLiter: Double) : Double = corrFactor * selisihLiter
 
-    private fun updateDropDown(){
-        val filteredList = _kompartemenStatus.filter { it !in kompartemenStatus }
-
-        if(binding.kompartemen1.spinnerKompartemen.text.toString().isEmpty()){
-            adapter1.clear()
-            adapter1.addAll(filteredList)
-        }else if(binding.kompartemen2.spinnerKompartemen.text.toString().isEmpty()){
-            adapter2.clear()
-            adapter2.addAll(filteredList)
-        }else if(binding.kompartemen3.spinnerKompartemen.text.toString().isEmpty()) {
-            adapter3.clear()
-            adapter3.addAll(filteredList)
-        }
-    }
-
-    private fun setupListener(dropdown : AutoCompleteTextView, adapter : ArrayAdapter<String>){
-        dropdown.setAdapter(adapter)
-        dropdown.setOnItemClickListener { _, _, position, _ ->
-            val selectedItem = adapter.getItem(position)
-            if (selectedItem != null) {
-                kompartemenStatus.add(selectedItem)
-                updateDropDown()
-            }
-        }
-    }
 
     override fun onResume() {
         super.onResume()
-        binding.kompartemen1.spinnerKompartemen.setAdapter(adapter1)
-        binding.kompartemen2.spinnerKompartemen.setAdapter(adapter2)
-        binding.kompartemen2.spinnerKompartemen.setAdapter(adapter3)
+        val kompartemenAdapter = ArrayAdapter(requireContext(), R.layout.spinner_item_holder, _kompartemenStatus)
+        binding.kompartemen1.spinnerKompartemen.setAdapter(kompartemenAdapter)
+        binding.kompartemen2.spinnerKompartemen.setAdapter(kompartemenAdapter)
+        binding.kompartemen2.spinnerKompartemen.setAdapter(kompartemenAdapter)
 
-        setupListener(binding.kompartemen1.spinnerKompartemen, adapter1)
-        setupListener(binding.kompartemen2.spinnerKompartemen, adapter2)
-        setupListener(binding.kompartemen3.spinnerKompartemen, adapter3)
 
         val arrayAft = arrayOf("AFT. Syamsudin Noor")
         val arraySupplyPoint = arrayOf("IT Banjarmasin")
@@ -379,6 +443,15 @@ class VolumeControlFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    companion object{
+        fun newInstance(updateData : AnalisaVolumeControlWithDetail?) = VolumeControlFragment().apply {
+            arguments = Bundle().apply {
+                putParcelable("UPDATE_DATA", updateData)
+            }
+        }
+    }
+
 
 }
 
