@@ -24,7 +24,7 @@
             android:layout_weight="1"
             android:background="@color/colorPrimary"
             android:foreground="?attr/selectableItemBackground"
-            android:text="Filter Data"
+            android:text="@string/filter_data"
             android:textColor="@color/white" />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -36,7 +36,7 @@
             android:layout_weight="1"
             android:background="@color/colorPrimary"
             android:foreground="?attr/selectableItemBackground"
-            android:text="Save Data"
+            android:text="@string/send_data"
             android:textColor="@color/white" />
     </LinearLayout>
 
@@ -58,11 +58,11 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center"
-        android:text="Tidak Ada Data"
+        android:text="@string/tidak_ada_data"
         android:textSize="40sp"
         android:textStyle="italic"
         android:visibility="gone"
-        tools:visibility="gone"
+        tools:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -71,10 +71,11 @@
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add"
         android:layout_width="wrap_content"
-        android:backgroundTint="@color/colorPrimary"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:layout_marginEnd="50dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="28dp"
+        android:backgroundTint="@color/colorPrimary"
         android:contentDescription="Tambah Data Baru"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

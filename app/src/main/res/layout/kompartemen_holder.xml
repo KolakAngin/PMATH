@@ -19,6 +19,7 @@
             android:id="@+id/spinner_kompartemen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="none"
             android:hint="Kompartemen"/>
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -52,19 +53,21 @@
             android:inputType="numberDecimal" />
     </com.google.android.material.textfield.TextInputLayout>
 
+
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_marginBottom="15dp">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_r_mm_i_kompartemen"
+        <AutoCompleteTextView
+            android:id="@+id/spinner_r_mm_i_kompartemen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="R (mm/i)"
-            android:inputType="numberDecimal" />
+            android:inputType="numberDecimal"/>
     </com.google.android.material.textfield.TextInputLayout>
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"

@@ -45,22 +45,22 @@ class DataShowActivity : AppCompatActivity() {
     }
 
     private fun setupAdapter(data: AnalisaVolumeControlWithDetail) {
-        binding.rvDataKompartemen.adapter = DetailKompartemenAdapter(data.detailKompartemen)
+        binding.rvDataKompartemen.adapter = DetailKompartemenAdapter(data.detailKompartemen.filter { it.kompartemen != null})
         binding.rvDataKompartemen.layoutManager = LinearLayoutManager(this)
     }
 
     private fun setupHeader(data: AnalisaVolumeControlWithDetail) {
 
         binding.row1Body.text = TimeConverter.toReadableDateTime(data.analisaVolumeControl.tanggal ?: System.currentTimeMillis())
-        binding.row2Body.text = data.analisaVolumeControl.aft
-        binding.row3Body.text = data.analisaVolumeControl.supply_point
-        binding.row4Body.text = data.analisaVolumeControl.transportir
-        binding.row5Body.text = data.analisaVolumeControl.no_polisi
+        binding.row2Body.text = data.analisaVolumeControl.aft ?: ""
+        binding.row3Body.text = data.analisaVolumeControl.supply_point ?: ""
+        binding.row4Body.text = data.analisaVolumeControl.transportir ?: ""
+        binding.row5Body.text = data.analisaVolumeControl.no_polisi ?: ""
         binding.row6Body.text = formatterNumber(data.analisaVolumeControl.kuantitas)
         binding.row7Body.text = formatterNumber(data.analisaVolumeControl.harga_avtur)
-        binding.row8Body.text = data.analisaVolumeControl.spv_rsd
-        binding.row9Body.text = data.analisaVolumeControl.sopir_bridger_1
-        binding.row10Body.text = data.analisaVolumeControl.sopir_bridger_2
+        binding.row8Body.text = data.analisaVolumeControl.spv_rsd ?: ""
+        binding.row9Body.text = data.analisaVolumeControl.sopir_bridger_1 ?: ""
+        binding.row10Body.text = data.analisaVolumeControl.sopir_bridger_2 ?: ""
     }
 
 
@@ -75,6 +75,7 @@ class DataShowActivity : AppCompatActivity() {
                 val intent = Intent(this, VolumeControlEditDataActivity::class.java)
                 intent.putExtra("UPDATE_DATA", updateData)
                 startActivity(intent)
+                finish()
                 true
 
             }

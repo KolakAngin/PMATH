@@ -13,7 +13,6 @@
         android:id="@+id/about_item"
         android:icon="@drawable/ic_privacy_policy"
         android:title="info"
-        app:showAsAction="ifRoom|collapseActionView"
         />
 
     <item

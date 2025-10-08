@@ -41,7 +41,7 @@ class FlashLightActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.topAppBar)
-        supportActionBar?.title = "Flash Light"
+        supportActionBar?.title = "Flashlight"
         val bool = intent.getBooleanExtra("SOS", false)
         if (bool){
             supportActionBar?.setDisplayHomeAsUpEnabled(false)
@@ -145,8 +145,13 @@ class FlashLightActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        cameraManager.setTorchMode(cameraId!!,false)
-        sosThread?.interrupt()
+        try{
+            cameraManager.setTorchMode(cameraId!!,false)
+            sosThread?.interrupt()
+        }catch (e : NullPointerException){
+
+        }
+
 
     }
 }

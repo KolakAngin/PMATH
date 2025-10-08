@@ -59,10 +59,9 @@ class AircraftActivity : AppCompatActivity() {
         binding.textViewResult.visibility = View.VISIBLE
         binding.imgResultIcon.visibility = View.GONE
 
-
-        val finalRequest = binding.finalRequest.text.toString().toDouble()
-        val remain = binding.remain.text.toString().toDouble()
-        val remainRefeuller = binding.refeullerVolume.text.toString().toDouble()
+        val finalRequest = binding.finalRequest.text.toString().replace(".","").toDouble()
+        val remain = binding.remain.text.toString().replace(".","").toDouble()
+        val remainRefeuller = binding.refeullerVolume.text.toString().replace(".","").toDouble()
 
         val result = (finalRequest - remain) / CONSTANTA
         val decision = remainRefeuller - result
@@ -107,59 +106,31 @@ class AircraftActivity : AppCompatActivity() {
 
 
     private fun validateInput(){
-        binding.finalRequest.apply { addTextChangedListener(textWatcherWithNumber(this)) }
-
-        binding.remain.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {}
-
-            override fun beforeTextChanged(
-                s: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int
-            ) { }
-
-            override fun onTextChanged(
-                s: CharSequence?,
-                start: Int,
-                before: Int,
-                count: Int
-            ) {
-                if(s.toString().isNotEmpty()){
-                    viewModel.onRemainInputChanged(true)
-                }else{
-                    viewModel.onRemainInputChanged(false)
+        binding.finalRequest.apply { addTextChangedListener(textWatcherWithNumber(this,{
+            if(it.isNotEmpty()){
+                viewModel.onFinalInputChanged(true)
+            }else{
+                viewModel.onFinalInputChanged(false)
 
                 }
+        }))}
+
+        binding.remain.apply { addTextChangedListener(textWatcherWithNumber(this,{
+            if(it.isNotEmpty()){
+                viewModel.onRemainInputChanged(true)
+            }else{
+                viewModel.onRemainInputChanged(false)
+
             }
+        }))}
 
-        })
 
-
-        binding.refeullerVolume.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {}
-
-            override fun beforeTextChanged(
-                s: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int
-            ) {}
-
-            override fun onTextChanged(
-                s: CharSequence?,
-                start: Int,
-                before: Int,
-                count: Int
-            ) {
-                if (s.toString().isNotEmpty()) {
-                    viewModel.onRemainRefeullerChanged(true)
-                } else {
-                    viewModel.onRemainRefeullerChanged(false)
-                }
-            }
-
-        })
+        binding.refeullerVolume.apply { addTextChangedListener(textWatcherWithNumber(this,{
+            if (it.isNotEmpty()) {
+                viewModel.onRemainRefeullerChanged(true)
+            } else {
+                viewModel.onRemainRefeullerChanged(false)
+            }}))}
 
     }
 

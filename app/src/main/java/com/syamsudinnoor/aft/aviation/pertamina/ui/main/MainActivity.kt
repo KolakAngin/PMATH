@@ -3,6 +3,8 @@
     import android.app.Dialog
     import android.content.Intent
     import android.os.Bundle
+    import android.text.SpannableString
+    import android.text.style.ForegroundColorSpan
     import android.view.Menu
     import android.view.MenuItem
     import android.view.Window
@@ -34,6 +36,9 @@
     import com.syamsudinnoor.aft.aviation.pertamina.utility.openWhatsApp
     import com.syamsudinnoor.aft.aviation.pertamina.utility.settingDialogGlobal
     import kotlinx.coroutines.launch
+    import androidx.core.view.size
+    import androidx.core.view.get
+    import com.itextpdf.kernel.colors.Color
 
     class MainActivity : AppCompatActivity() {
         private lateinit var binding: ActivityMainBinding
@@ -99,7 +104,7 @@
                         intent.putExtra(DensityActivity.APP_NAME, itemMenu.name)
                         startActivity(intent)
                     }
-                    "Topping Up Refeuller" ->{
+                    "Topping Up Refueller" ->{
                         val intent = Intent(this,ToppingUpActivity::class.java)
                         intent.putExtra(ToppingUpActivity.APP_NAME, itemMenu.name)
                         startActivity(intent)
@@ -123,7 +128,7 @@
                         val intent = Intent(this, StopWatchActivity::class.java)
                         startActivity(intent)
                     }
-                    "Flash Light" -> {
+                    "Flashlight" -> {
                         val intent = Intent(this, FlashLightActivity::class.java)
                         startActivity(intent)
                     }
@@ -131,7 +136,7 @@
                         val intent = Intent(this, ConverterActivity::class.java)
                         startActivity(intent)
                     }
-                    "Tambah Fitur" -> openWhatsApp(this,"6285173005241","Halo Developer Saya Ingin Tambah Fitur Baru")
+                    "Call Developer" -> openWhatsApp(this,"6285173005241","Halo Developer Saya Ingin Tambah Fitur Baru")
 
                 }
 
@@ -204,12 +209,27 @@
 
             }
             searchView?.setOnQueryTextListener(c)
+
+            if (menu != null){
+                for(i in 0..menu.size - 1){
+                    val menuItem = menu[i]
+                    val spannable = SpannableString(menuItem.title.toString())
+                    spannable.setSpan(ForegroundColorSpan(resources.getColor(R.color.black)),
+                        0,
+                        spannable.length,
+                        0)
+
+                    menuItem.title = spannable
+
+                }
+            }
+
             return true
         }
 
         override fun onOptionsItemSelected(item: MenuItem): Boolean {
             when(item.itemId){
-                R.id.about_item -> Toast.makeText(this,"About Clicked", Toast.LENGTH_SHORT).show()
+                R.id.about_item -> startActivity(Intent(this, PrivacyPolicyActivity::class.java))
                 R.id.logout_item -> {
                     settingDialogGlobal("Konfirmasi Keluar Aplikasi","Apakah Anda yakin keluar aplikasi",
                         this){

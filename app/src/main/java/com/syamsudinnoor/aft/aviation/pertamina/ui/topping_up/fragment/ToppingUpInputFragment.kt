@@ -43,6 +43,7 @@ import com.syamsudinnoor.aft.aviation.pertamina.utility.numberFormatter
 import com.syamsudinnoor.aft.aviation.pertamina.utility.DialogHolder.timeDialog
 import com.syamsudinnoor.aft.aviation.pertamina.utility.formatterNumber
 import com.syamsudinnoor.aft.aviation.pertamina.utility.helperSettingEditText
+import com.syamsudinnoor.aft.aviation.pertamina.utility.textWatcherWithNumber
 import java.sql.Time
 import java.util.Date
 import kotlin.getValue
@@ -138,6 +139,10 @@ class ToppingUpInputFragment : Fragment() {
             insertData()
         }
 
+        binding.editToppingVolume.apply {
+            addTextChangedListener(textWatcherWithNumber(binding.editToppingVolume))
+        }
+
         return binding.root
     }
 
@@ -161,7 +166,7 @@ class ToppingUpInputFragment : Fragment() {
         binding.spinnerM.setText(toppingUp.m_number)
         binding.buttonStartTime.text = TimeConverter.toReadableTime(toppingUp.start_time?: System.currentTimeMillis())
         binding.buttonMinute.text = "${toppingUp.duration} Minute"
-        binding.editDippingAfterTopping.setText(toppingUp.hasil_dipstik.toString())
+        binding.editDippingAfterTopping.setText(toppingUp.hasil_dipstik?.toInt()?.toString() ?: "")
         binding.spinnerTankQc.setText(toppingUp.tanki)
         binding.spinnerM.setText(toppingUp.m_number)
         binding.timeEnd.text = " = ${TimeConverter.toReadableTime(toppingUp.start_time!!)}"
@@ -179,9 +184,6 @@ class ToppingUpInputFragment : Fragment() {
         totalisatorAkhir = toppingUp.totalisator_akhir
         tangki = toppingUp.tanki
         operator = toppingUp.operator
-
-        searchForToppingUp(hasilDipstik ?: 0.0,"after",binding.cardView2)
-
         binding.buttonSearch2.isEnabled = true
 
 
@@ -193,7 +195,7 @@ class ToppingUpInputFragment : Fragment() {
         tangki = binding.spinnerTankQc.text.toString()
         operator = binding.spinnerOperatorName.text.toString()
         salesRef = binding.editRef.text.toString().toIntOrNull()
-        jumlahTopping = binding.editToppingVolume.text.toString().toIntOrNull()
+        jumlahTopping = binding.editToppingVolume.text.toString().replace(".","").`toInt`()
         totalisatorAwal = binding.editTotalisatorAwal.text.toString()
         totalisatorAkhir = binding.editTotalisatorAkhir.text.toString()
         mVariabel = binding.spinnerM.text.toString()
@@ -215,29 +217,30 @@ class ToppingUpInputFragment : Fragment() {
             totalisator_akhir = totalisatorAkhir
             )
 
-        val dataToUpdate = ToppingUp(
-            id = dataUpdate?.id!!,
-            start_time = hourStart,
-            end_time = hourEnd,
-            duration = duration,
-            snr_no = statusRefeuller ?: "",
-            sisa_dipping = sisaDipping,
-            sales_ref = salesRef,
-            jumlah_topping = jumlahTopping,
-            hasil_dipstik = hasilDipstik,
-            m_number = mVariabel,
-            totalisator_awal = totalisatorAwal,
-            tanki = tangki,
-            operator = operator,
-            totalisator_akhir = totalisatorAkhir
-        )
 
         if (status == "INSERT"){
             toppingUpViewModel.insert(data)
             Toast.makeText(requireContext(), "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
         }else if (status == "UPDATE"){
+            val dataToUpdate = ToppingUp(
+                id = dataUpdate?.id!!,
+                start_time = hourStart,
+                end_time = hourEnd,
+                duration = duration,
+                snr_no = statusRefeuller ?: "",
+                sisa_dipping = sisaDipping,
+                sales_ref = salesRef,
+                jumlah_topping = jumlahTopping,
+                hasil_dipstik = hasilDipstik,
+                m_number = mVariabel,
+                totalisator_awal = totalisatorAwal,
+                tanki = tangki,
+                operator = operator,
+                totalisator_akhir = totalisatorAkhir
+            )
             toppingUpViewModel.updateToppingUp(dataToUpdate)
             Toast.makeText(requireContext(), "Data berhasil diupdate", Toast.LENGTH_SHORT).show()
+            activity?.finish()
         }
         binding.buttonSave.isEnabled = false
     }

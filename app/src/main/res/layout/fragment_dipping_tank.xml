@@ -153,11 +153,12 @@ tools:context=".ui.dipping_tank.fragment.FragmentDippingTank">
                 android:layout_margin="5dp">
 
                 <ImageView
-                    android:layout_width="wrap_content"
                     android:id="@+id/img_result_icon"
+                    android:layout_width="wrap_content"
                     android:layout_height="250dp"
+                    android:layout_gravity="center"
                     android:src="@drawable/find_s"
-                    android:visibility="visible"/>
+                    android:visibility="visible" />
 
                 <TableLayout
                     android:id="@+id/table_view_result"
@@ -165,6 +166,7 @@ tools:context=".ui.dipping_tank.fragment.FragmentDippingTank">
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:visibility="gone"
+                    tools:visibility="visible"
                     android:gravity="center">
 
                     <TableRow

@@ -33,6 +33,7 @@ import com.syamsudinnoor.aft.aviation.pertamina.ui.density.viewmodel.VolumeContr
 import com.syamsudinnoor.aft.aviation.pertamina.ui.density.viewmodel.VolumeControlViewModel
 import com.syamsudinnoor.aft.aviation.pertamina.utility.DialogHolder.dateDialog
 import com.syamsudinnoor.aft.aviation.pertamina.utility.TimeConverter
+import com.syamsudinnoor.aft.aviation.pertamina.utility.numberFormatter
 import com.syamsudinnoor.aft.aviation.pertamina.utility.settingDialogGlobal
 import com.syamsudinnoor.aft.aviation.pertamina.utility.textWatcherWithNumber
 import java.sql.Time
@@ -100,6 +101,7 @@ class VolumeControlFragment : Fragment() {
 
         kompartemenView = arrayOf(binding.kompartemen1, binding.kompartemen2, binding.kompartemen3)
         searcHolderView = arrayOf(binding.searchHolder1, binding.searchHolder2, binding.searchHolder3)
+        kompartemenView.last().buttonNextKompartemen.visibility = View.GONE
 
 
         updateData = arguments?.getParcelable<AnalisaVolumeControlWithDetail?>("UPDATE_DATA")
@@ -112,6 +114,8 @@ class VolumeControlFragment : Fragment() {
         binding.kompartemen1.buttonSearchKompartemen.setOnClickListener {
             checkValidation("Depan",binding.kompartemen1)
         }
+        binding.editHargaAvtur.apply { addTextChangedListener ( textWatcherWithNumber(binding.editHargaAvtur) ) }
+        binding.editKuantitas.apply { addTextChangedListener ( textWatcherWithNumber(binding.editKuantitas)) }
 
         binding.kompartemen1.buttonNextKompartemen.setOnClickListener {
             settingDialogGlobal("Konfirmasi Tambah Data Kompartemen",
@@ -135,7 +139,7 @@ class VolumeControlFragment : Fragment() {
                 binding.txtKompartemen3.visibility = View.VISIBLE
                 binding.kompartemen3.lvKompartemen1.visibility = View.VISIBLE
                 binding.searchHolder3.cardViewResult.visibility = View.VISIBLE
-                binding.buttonSaveData.isEnabled = false
+                binding.kompartemen3.buttonNextKompartemen.visibility = View.GONE
             }
 
         }
@@ -161,10 +165,6 @@ class VolumeControlFragment : Fragment() {
             checkMainInput()
         }
 
-        binding.editHargaAvtur.apply { addTextChangedListener { textWatcherWithNumber(this) } }
-        binding.editKuantitas.apply { addTextChangedListener { textWatcherWithNumber(this) } }
-
-
         return binding.root
     }
 
@@ -173,7 +173,7 @@ class VolumeControlFragment : Fragment() {
         supplyPoint = binding.spinnerSupplyPoint.text.toString()
         transportir = binding.spinnerTransportir.text.toString()
         noPolisi = binding.editNoPolisi.text.toString()
-        kuantitas = binding.editKuantitas.text.toString().toIntOrNull()
+        kuantitas = binding.editKuantitas.text.toString().replace(".","").toIntOrNull()
         hargaAvtur = binding.editHargaAvtur.text.toString().replace(".","").toDoubleOrNull()
         spvRsd = binding.editSpvRsd.text.toString()
         sopirBridger1 = binding.editSopirBridger1.text.toString()
@@ -182,20 +182,6 @@ class VolumeControlFragment : Fragment() {
 
 
         val volumeControl = AnalisaVolumeControlQuality(
-            tanggal = tanggalBongkar,
-            aft = aft,
-            supply_point = supplyPoint,
-            transportir = transportir,
-            kuantitas = kuantitas,
-            no_polisi = noPolisi,
-            harga_avtur = hargaAvtur,
-            spv_rsd = spvRsd,
-            sopir_bridger_1 = sopirBridger1,
-            sopir_bridger_2 = sopirBridger2
-        )
-
-        val volumeControlToUpdate = AnalisaVolumeControlQuality(
-            idAnalisa = updateData!!.analisaVolumeControl.idAnalisa,
             tanggal = tanggalBongkar,
             aft = aft,
             supply_point = supplyPoint,
@@ -229,8 +215,23 @@ class VolumeControlFragment : Fragment() {
         }
 
         if (updateData != null){
+            val volumeControlToUpdate = AnalisaVolumeControlQuality(
+                idAnalisa = updateData!!.analisaVolumeControl.idAnalisa,
+                tanggal = tanggalBongkar,
+                aft = aft,
+                supply_point = supplyPoint,
+                transportir = transportir,
+                kuantitas = kuantitas,
+                no_polisi = noPolisi,
+                harga_avtur = hargaAvtur,
+                spv_rsd = spvRsd,
+                sopir_bridger_1 = sopirBridger1,
+                sopir_bridger_2 = sopirBridger2
+            )
+
             volumeViewModel.updateVolumeControlWithDetail(volumeControlToUpdate, detail)
             Toast.makeText(requireContext(), "Data berhasil diupdate", Toast.LENGTH_SHORT).show()
+            activity?.finish()
         }else{
             volumeViewModel.insertVolumeWithDetail(volumeControl, detail)
             Toast.makeText(requireContext(), "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
@@ -259,11 +260,10 @@ class VolumeControlFragment : Fragment() {
             kompartemenView[index].spinnerKompartemen.setText(i.kompartemen ?: "")
             kompartemenView[index].editTeraKompartemen.setText(i.tera?.toString() ?: "")
             kompartemenView[index].editUkuranSuppyPointKompartemen.setText(i.ukuran_supply_point?.toString() ?: "")
-            kompartemenView[index].editRMmIKompartemen.setText(i.rmm_i?.toString() ?: "")
+            kompartemenView[index].spinnerRMmIKompartemen.setText(i.rmm_i?.toString() ?: "")
             kompartemenView[index].editUkuranDppuKompartemen.setText(i.ukuran_dppu?.toString() ?: "")
             kompartemenView[index].editDensityObsKompartemen.setText(i.density_obs?.toString() ?: "")
             kompartemenView[index].editTempObsKompartemen.setText(i.temp_obs?.toString() ?: "")
-            checkValidation(i.kompartemen ?: "", kompartemenView[index])
             index++
         }
 
@@ -285,17 +285,16 @@ class VolumeControlFragment : Fragment() {
         arrayKompartemen[numerator] = kompartemenHolder.spinnerKompartemen.text.toString()
         arrayTera[numerator] = kompartemenHolder.editTeraKompartemen.text.toString().toIntOrNull()
         arrayUkuranSupplyPoint[numerator]= kompartemenHolder.editUkuranSuppyPointKompartemen.text.toString().toIntOrNull()
-        arrayRmmI[numerator]  = kompartemenHolder.editRMmIKompartemen.text.toString().toDoubleOrNull()
+        arrayRmmI[numerator]  = kompartemenHolder.spinnerRMmIKompartemen.text.toString().toDoubleOrNull()
         arrayUkuranDppu[numerator] = kompartemenHolder.editUkuranDppuKompartemen.text.toString().toIntOrNull()
         arrayDensityObs[numerator] = kompartemenHolder.editDensityObsKompartemen.text.toString().toDoubleOrNull()
         arrayTempObs[numerator] = kompartemenHolder.editTempObsKompartemen.text.toString().toIntOrNull()
-        kuantitas = binding.editKuantitas.text.toString().toIntOrNull()
+        kuantitas = binding.editKuantitas.text.toString().replace(".","").toIntOrNull()
         
         if (arrayKompartemen[numerator] != null && 
             (arrayTera[numerator] != null || arrayUkuranSupplyPoint[numerator] != null) &&
             arrayRmmI[numerator] != null && arrayUkuranDppu[numerator] != null &&
             arrayDensityObs[numerator] != null && arrayTempObs[numerator] != null && kuantitas != null) {
-
                 arraySelisihUllage[numerator] = selisihUllage(arrayTera[numerator] ?: 0,
                     arrayUkuranSupplyPoint[numerator] ?: 0,
                     arrayUkuranDppu[numerator] ?: 0)
@@ -315,6 +314,8 @@ class VolumeControlFragment : Fragment() {
         holder.imgResultIcon.visibility = View.GONE
         holder.tableViewResult.visibility = View.VISIBLE
         holder.cardViewResult.setBackgroundResource(R.drawable.normal_card_background)
+        holder.row5Header.visibility = View.GONE
+        holder.row5Body.visibility = View.GONE
 
         val border = if (kuantitas != null){
             kuantitas!! * 0.0015
@@ -325,37 +326,29 @@ class VolumeControlFragment : Fragment() {
         val numerator = when{status == "Depan" -> 0; status == "Tengah" -> 1 else -> 2}
 
         holder.row1Header.text = "Selisih mm"
-        holder.row1Body.text = arraySelisihUllage[numerator].toString()
+        val selisihMM : Int = arraySelisihUllage[numerator] ?: 0
+        holder.row1Body.text = numberFormatter(selisihMM,4)
 
         holder.row2Header.text = "Selisih Liter"
-        holder.row2Body.text = arraySelisihLiter[numerator].toString()
+        holder.row2Body.text = numberFormatter(arraySelisihLiter[numerator] ?: 0.0,4)
 
         holder.row3Header.text = "Density 15"
-        holder.row3Body.text = arrayDensity15[numerator].toString()
+        holder.row3Body.text = numberFormatter(arrayDensity15[numerator],4)
 
-        val rMmI : Double = arraySelisihLiter[numerator] ?: 0.0
-        val result = selisihLiter15(arrayCorrFactor[numerator],rMmI)
+        val literSelisih : Double = arraySelisihLiter[numerator] ?: 0.0
+        val result = selisihLiter15(arrayCorrFactor[numerator],literSelisih)
         holder.row4Header.text = "Liter 15"
-        holder.row4Body.text = result.toString()
+        holder.row4Body.text = numberFormatter(result,4)
 
 
-        var selisih : Double
-        if (result < 0 && Math.abs(result) > border) {
-            selisih = result + border
-            holder.row5Header.visibility = View.VISIBLE
-            holder.row5Body.visibility = View.VISIBLE
-
-            holder.row5Header.text = "Klaim Losess"
-            holder.row5Body.text = selisih.toString()
+        if (selisihMM <= -3) {
             holder.cardViewResult.setBackgroundResource(R.drawable.red_card_background)
-            arrayLiter15[numerator] = selisih
         }else{
             holder.row5Header.visibility = View.GONE
             holder.row5Body.visibility = View.GONE
             holder.cardViewResult.setBackgroundResource(R.drawable.green_card_background)
-            arrayLiter15[numerator] = 0.0
         }
-
+        arrayLiter15[numerator] = result
 
     }
 
@@ -423,20 +416,26 @@ class VolumeControlFragment : Fragment() {
         val kompartemenAdapter = ArrayAdapter(requireContext(), R.layout.spinner_item_holder, _kompartemenStatus)
         binding.kompartemen1.spinnerKompartemen.setAdapter(kompartemenAdapter)
         binding.kompartemen2.spinnerKompartemen.setAdapter(kompartemenAdapter)
-        binding.kompartemen2.spinnerKompartemen.setAdapter(kompartemenAdapter)
+        binding.kompartemen3.spinnerKompartemen.setAdapter(kompartemenAdapter)
 
 
         val arrayAft = arrayOf("AFT. Syamsudin Noor")
         val arraySupplyPoint = arrayOf("IT Banjarmasin")
         val arrayTransportir = arrayOf("PT. Pertamina Patra Niaga")
+        val rMMArray = arrayOf(0.305,0.34)
 
         val adapterAft = ArrayAdapter(requireContext(), R.layout.spinner_item_holder, arrayAft)
         val adapterSupplyPoint = ArrayAdapter(requireContext(), R.layout.spinner_item_holder, arraySupplyPoint)
         val adapterTransportir = ArrayAdapter(requireContext(), R.layout.spinner_item_holder, arrayTransportir)
+        val adapterRMM = ArrayAdapter(requireContext(),R.layout.spinner_item_holder,rMMArray)
 
         binding.spinnerAft.setAdapter(adapterAft)
         binding.spinnerSupplyPoint.setAdapter(adapterSupplyPoint)
         binding.spinnerTransportir.setAdapter(adapterTransportir)
+
+        binding.kompartemen1.spinnerRMmIKompartemen.setAdapter(adapterRMM)
+        binding.kompartemen2.spinnerRMmIKompartemen.setAdapter(adapterRMM)
+        binding.kompartemen3.spinnerRMmIKompartemen.setAdapter(adapterRMM)
     }
 
     override fun onDestroyView() {

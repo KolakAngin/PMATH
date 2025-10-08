@@ -128,7 +128,7 @@ class AnalisaVolumeControlPdfGenerator {
         subHeaderTable.addCell(createBorderlessCell(tanggal))
         subHeaderTable.addCell(createBorderlessCell(""))
         subHeaderTable.addCell(createBorderlessCell(""))
-        subHeaderTable.addCell(createBorderlessCell("Rit ${ritNumber}").setTextAlignment(TextAlignment.RIGHT))
+        subHeaderTable.addCell(createBorderlessCell("Jam ${TimeConverter.toReadableTime(analisa.tanggal ?: System.currentTimeMillis())}").setTextAlignment(TextAlignment.RIGHT))
 
         subHeaderTable.addCell(createBorderlessCell("AFT"))
         subHeaderTable.addCell(createBorderlessCell(":"))

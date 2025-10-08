@@ -21,7 +21,7 @@
     <string name="request_final">Request Final</string>
     <string name="remain_value">Masukan Nilai Sisa</string>
     <string name="remain">Remain</string>
-    <string name="refeuller_value">Masukan sisa referuller</string>
+    <string name="refeuller_value">Masukan sisa Refueller</string>
     <string name="oke_stock_aircraft">Hasil perkiraan yang dibutuhkan dalam pengisian ini adalah %1$s liter, dengan stock sisa %2$s liter pengisian dapat dilakukan.</string>
     <string name="oke_stock_aircraft_warning">Hasil Perkiraan yang dibutuhkan dalam pengisian ini adalah %1$s liter, dengan total stock %2$s liter pengisian dapat dilakukan, pertimbangkan untuk topping up setelah pengisian selesai dilakukan.</string>
     <string name="not_oke_stock_aircraft">Hasil Perkiraan yang dibutuhkan dalam pengisian ini adalah %1$s liter, dengan total stock %2$s liter pengisian tidak dapat dilakukan. Segera lakukan topping up.</string>
@@ -30,18 +30,19 @@
     <string-array name="holder_name">
         <item>Penerimaan Bridger</item>
         <item>Cek Stock</item>
-        <item>Topping Up Refeuller</item>
+        <item>Topping Up Refueller</item>
         <item>Aircraft Fuel Remain</item>
         <item>Calculator</item>
         <item>Converter</item>
-        <item>Flash Light</item>
+        <item>Flashlight</item>
         <item>Stopwatch</item>
         <!--        <item>Note</item>-->
-        <item>Tambah Fitur</item>
+        <item>Calculator Dopping Stadis</item>
+        <item>Call Developer</item>
     </string-array>
 
     <integer-array name="holder_image">
-        <item>@drawable/celcius</item>
+        <item>@drawable/ic_bongkar</item>
         <item>@drawable/dipping_icon</item>
         <item>@drawable/refeuller_truck</item>
         <item>@drawable/airplane</item>
@@ -50,7 +51,8 @@
         <item>@drawable/ic_flash_light</item>
         <item>@drawable/chronometer</item>
         <!--        <item>@drawable/ic_note</item>-->
-        <item>@drawable/ic_add</item>
+        <item>@drawable/oil_tank</item>
+        <item>@drawable/ic_developer</item>
     </integer-array>
 
 
@@ -151,5 +153,9 @@
 
         <string name="privacy_policy_contact_title">Hubungi Kami</string>
         <string name="privacy_policy_contact">Jika Anda memiliki pertanyaan mengenai privasi saat menggunakan Aplikasi, atau memiliki pertanyaan tentang praktik kami, silakan hubungi Penyedia Layanan melalui email di hollandideveloper@gmail.com.</string>
+    <string name="send_data">Send Data</string>
+    <string name="filter_data">Filter Data</string>
+    <string name="tidak_ada_data">Tidak Ada Data</string>
+    <string name="save_caps">Safe Capacity</string>
 
 </resources>

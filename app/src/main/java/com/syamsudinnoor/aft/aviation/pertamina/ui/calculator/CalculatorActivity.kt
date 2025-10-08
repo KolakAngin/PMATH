@@ -164,11 +164,15 @@ class CalculatorActivity : AppCompatActivity() {
     private fun onPiClick() { appendToMain("3.141") }
     private fun onDecimalPointClick() { appendToMain(".") }
 
+
     private fun onEqualClick() {
         val expression = binding.idTVprimary.text.toString()
         if (expression.isNotEmpty()) {
             try {
-                val result = evaluate(expression)
+                // SOLUSI: Ganti semua koma (,) dengan titik (.) sebelum evaluasi
+                val sanitizedExpression = expression.replace(',', '.')
+
+                val result = evaluate(sanitizedExpression) // <--- Hitung string yang sudah bersih
                 binding.idTVprimary.text = formatNumber(result)
                 binding.idTVSecondary.text = expression
             } catch (e: Exception) {

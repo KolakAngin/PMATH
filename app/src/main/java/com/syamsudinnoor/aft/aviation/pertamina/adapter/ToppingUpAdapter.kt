@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.syamsudinnoor.aft.aviation.pertamina.databinding.HolderQualityControlBinding
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.ToppingUp
 import com.syamsudinnoor.aft.aviation.pertamina.utility.TimeConverter
+import com.syamsudinnoor.aft.aviation.pertamina.utility.formatterNumber
 
 class ToppingUpAdapter(private val onItemClicked: (ToppingUp) -> Unit,
                        private val onItemLongClicked : (ToppingUp) -> Unit):
@@ -40,7 +41,7 @@ class ToppingUpAdapter(private val onItemClicked: (ToppingUp) -> Unit,
     class ViewHolder(val binding : HolderQualityControlBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(item : ToppingUp){
             binding.txtBridgerHolder.text = item.snr_no ?: ""
-            binding.txtLiterHolder.text = item.jumlah_topping.toString()
+            binding.txtLiterHolder.text = formatterNumber(item.jumlah_topping)
             binding.txtSealHolder.text = item.totalisator_akhir ?: ""
             binding.txtTangki.text = item.tanki ?: ""
             binding.operator.text = item.operator ?: ""

@@ -75,6 +75,21 @@ class DataHolderToppingUpFragment : Fragment() {
         viewmodel.toppingUpList.observe(viewLifecycleOwner){
             adapter.submitList(it)
             dataReport = it
+            if (it.isEmpty()){
+                binding.buttonSave.isEnabled = false
+                binding.buttonFilter.isEnabled = false
+                binding.buttonSave.setBackgroundResource(android.R.color.darker_gray)
+                binding.buttonFilter.setBackgroundResource(android.R.color.darker_gray)
+                binding.recycleViewDataHolder.visibility = View.GONE
+                binding.txtNoData.visibility = View.VISIBLE
+            }else{
+                binding.buttonSave.isEnabled = true
+                binding.buttonFilter.isEnabled = true
+                binding.buttonSave.setBackgroundResource(R.color.colorPrimary)
+                binding.buttonFilter.setBackgroundResource(R.color.colorPrimary)
+                binding.recycleViewDataHolder.visibility = View.VISIBLE
+                binding.txtNoData.visibility = View.GONE
+            }
         }
 
         binding.buttonFilter.setOnClickListener {
@@ -87,6 +102,7 @@ class DataHolderToppingUpFragment : Fragment() {
 
         binding.fabAdd.setOnClickListener {
             viewmodel.loadData()
+            Toast.makeText(requireContext(), "Refreshing...", Toast.LENGTH_SHORT).show()
         }
 
 

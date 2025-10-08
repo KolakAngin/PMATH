@@ -29,13 +29,13 @@ class DetailKompartemenAdapter(private val detailKomp: List<DetailKompartemen>) 
 
         fun bind(kompartemen : DetailKompartemen){
             binding.txtTitle.text = "Kompartemen " + kompartemen.kompartemen
-            binding.row2Body.text = kompartemen.tera.toString()
+            binding.row2Body.text = kompartemen.tera?.toString() ?: ""
             binding.row3Body.text = kompartemen.ukuran_supply_point?.toString() ?: "-"
-            binding.row4Body.text = kompartemen.rmm_i.toString()
-            binding.row5Body.text = kompartemen.ukuran_dppu.toString()
+            binding.row4Body.text = kompartemen.rmm_i?.toString() ?: ""
+            binding.row5Body.text = kompartemen.ukuran_dppu?.toString() ?: ""
             binding.row6Body.text = numberFormatter(kompartemen.density_obs ?: 0.0)
-            binding.row7Body.text = kompartemen.temp_obs.toString()
-            binding.row8Body.text = kompartemen.selisih_ullage.toString()
+            binding.row7Body.text = kompartemen.temp_obs?.toString() ?: ""
+            binding.row8Body.text = kompartemen.selisih_ullage?.toString() ?: ""
             binding.row9Body.text = numberFormatter(kompartemen.selisih_liter ?: 0.0)
             binding.row10Body.text = numberFormatter(kompartemen.corr_factor ?: 0.0)
             binding.row11Body.text = numberFormatter(kompartemen.density_15 ?: 0.0)

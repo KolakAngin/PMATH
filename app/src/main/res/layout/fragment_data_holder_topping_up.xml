@@ -24,10 +24,11 @@ tools:context=".ui.topping_up.fragment.DataHolderToppingUpFragment">
         android:layout_weight="1"
         android:background="@color/colorPrimary"
         android:foreground="?attr/selectableItemBackground"
-        android:text="Filter Data"
+        android:text="@string/filter_data"
         android:textColor="@color/white" />
 
     <androidx.appcompat.widget.AppCompatButton
+
         android:id="@+id/button_save"
         android:enabled="true"
         android:layout_width="0dp"
@@ -36,7 +37,7 @@ tools:context=".ui.topping_up.fragment.DataHolderToppingUpFragment">
         android:layout_weight="1"
         android:background="@color/colorPrimary"
         android:foreground="?attr/selectableItemBackground"
-        android:text="Save Data"
+        android:text="@string/send_data"
         android:textColor="@color/white" />
 </LinearLayout>
 
@@ -58,7 +59,7 @@ tools:context=".ui.topping_up.fragment.DataHolderToppingUpFragment">
     android:layout_width="0dp"
     android:layout_height="0dp"
     android:gravity="center"
-    android:text="Tidak Ada Data"
+    android:text="@string/tidak_ada_data"
     android:textSize="40sp"
     android:textStyle="italic"
     android:visibility="gone"

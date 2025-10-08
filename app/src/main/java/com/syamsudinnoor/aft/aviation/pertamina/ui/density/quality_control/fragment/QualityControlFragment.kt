@@ -26,9 +26,11 @@ import com.syamsudinnoor.aft.aviation.pertamina.ui.density.viewmodel.DensityView
 import com.syamsudinnoor.aft.aviation.pertamina.ui.density.viewmodel.QualityControlViewModel
 import com.syamsudinnoor.aft.aviation.pertamina.utility.DialogHolder.timeDialog
 import com.syamsudinnoor.aft.aviation.pertamina.utility.TimeConverter
+import com.syamsudinnoor.aft.aviation.pertamina.utility.formatterNumberDecimal
 import com.syamsudinnoor.aft.aviation.pertamina.utility.helperSettingEditText
 import com.syamsudinnoor.aft.aviation.pertamina.utility.textWatcherWithNumber
 import java.util.Date
+import kotlin.toString
 
 class QualityControlFragment : Fragment() {
 
@@ -155,35 +157,36 @@ class QualityControlFragment : Fragment() {
                 operator_name = operatorName
             )
 
-            val reportDataToUpdate = BridgerQualityControl(
-                id = dataUpdate?.id!!,
-                dateTime = currentTime,
-                bridger_no = wasUpper,
-                bpp = BppNo,
-                volume_liter = liter,
-                seal = sealOrSegel,
-                test_report_no = testReportNo,
-                density_15_from_distributor = densityFromDistributor,
-                afrn_no = afrnNo,
-                density_obsd_rec_document = densityOBDSDocument,
-                temp_rec_document = temperatureDocument,
-                density_15_result_rec_document = resultDensityDocument,
-                density_obsd = densityOBDS,
-                temprature = temperature,
-                density_15_calculation = resultDensity,
-                diff_from_density_distributor = diffMax,
-                app_star = appmNo,
-                cu_psm = cuPSM?.toDoubleOrNull(),
-                tangki = toTank,
-                operator_name = operatorName
-            )
 
             if (dataUpdate == null){
                 mainViewModel.insert(reportData)
                 Toast.makeText(requireContext(), "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
             }else{
+                val reportDataToUpdate = BridgerQualityControl(
+                    id = dataUpdate?.id!!,
+                    dateTime = currentTime,
+                    bridger_no = wasUpper,
+                    bpp = BppNo,
+                    volume_liter = liter,
+                    seal = sealOrSegel,
+                    test_report_no = testReportNo,
+                    density_15_from_distributor = densityFromDistributor,
+                    afrn_no = afrnNo,
+                    density_obsd_rec_document = densityOBDSDocument,
+                    temp_rec_document = temperatureDocument,
+                    density_15_result_rec_document = resultDensityDocument,
+                    density_obsd = densityOBDS,
+                    temprature = temperature,
+                    density_15_calculation = resultDensity,
+                    diff_from_density_distributor = diffMax,
+                    app_star = appmNo,
+                    cu_psm = cuPSM?.toDoubleOrNull(),
+                    tangki = toTank,
+                    operator_name = operatorName
+                )
                 mainViewModel.update(reportDataToUpdate)
                 Toast.makeText(requireContext(), "Data berhasil diupdate", Toast.LENGTH_SHORT).show()
+                activity?.finish()
             }
             viewModel.onJoinChecking(false)
             currentTime = System.currentTimeMillis()
@@ -199,7 +202,7 @@ class QualityControlFragment : Fragment() {
         binding.editBridgerNo.setText(data.bridger_no ?: "")
         binding.buttonTimeFrom.setText(TimeConverter.toReadableTime(data.dateTime ?: System.currentTimeMillis()))
         binding.editBpp.setText(data.bpp ?: "")
-        binding.editLiter.setText(data.volume_liter?.toString() ?: "")
+        binding.editLiter.setText(data.volume_liter?.toInt()?.toString() ?: "")
         binding.editSeal.setText(data.seal ?: "")
         binding.editTestReport.setText(data.test_report_no ?: "")
         binding.editDens15FromDistributor.setText(data.density_15_from_distributor?.toString() ?: "")
@@ -210,7 +213,7 @@ class QualityControlFragment : Fragment() {
         binding.editTextDensity.setText(data.density_obsd?.toString() ?: "")
         binding.editTextTemp.setText(data.temprature?.toString() ?: "")
         binding.editApp.setText(data.app_star ?: "")
-        binding.editCuPsm.setText(data.cu_psm?.toString() ?: "")
+        binding.editCuPsm.setText(data.cu_psm?.toInt()?.toString() ?: "")
         binding.spinnerTankQc.setText(data.tangki ?: "")
 
         currentTime = data.dateTime
@@ -230,8 +233,6 @@ class QualityControlFragment : Fragment() {
         cuPSM = data.cu_psm.toString()
         toTank = data.tangki
         operatorName = data.operator_name
-
-        checkInput()
     }
 
     private fun checkInput(){
@@ -239,7 +240,7 @@ class QualityControlFragment : Fragment() {
         operatorName = binding.spinnerOperatorName.text.toString()
         bridgerNo = binding.editBridgerNo.text.toString()
         BppNo = binding.editBpp.text.toString()
-        liter = binding.editLiter.text.toString().toDoubleOrNull()
+        liter = binding.editLiter.text.toString().replace(".","").toDoubleOrNull()
         sealOrSegel = binding.editSeal.text.toString()
         testReportNo = binding.editTestReport.text.toString()
 
@@ -311,7 +312,7 @@ class QualityControlFragment : Fragment() {
             val difference = resultValue - distributorDensity
 
             // 4. Bulatkan hasil pengurangan menjadi 5 digit di belakang koma untuk ditampilkan
-            val formattedDifference = String.format("%.5f", difference)
+            val formattedDifference = formatterNumberDecimal(difference,6)
 
 
             val status: String
@@ -336,12 +337,10 @@ class QualityControlFragment : Fragment() {
             }
 
             resultDensity = resultValue
-            diffMax = formattedDifference.replace(",",".").toDouble()
+            diffMax = formattedDifference?.replace(",",".")?.toDouble()
 
         }
     }
-
-
 
 
     override fun onResume() {

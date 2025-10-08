@@ -204,9 +204,20 @@ class FragmentDippingTank : Fragment(){
 
         binding.imgResultIcon.visibility = View.GONE
         binding.tableViewResult.visibility = View.VISIBLE
+        binding.row4Header.visibility = View.VISIBLE
+        binding.row4Body.visibility = View.VISIBLE
+
 
         binding.row1Header.text = getString(R.string.max_capacity_tank)
         binding.row1Body.text = getString(R.string.liter_holder, numberFormatter(maxCapsByTank))
+
+        if (tangkiName == "Tangki 11"){
+            binding.row4Header.text = getString(R.string.save_caps)
+            binding.row4Body.text = getString(R.string.liter_holder, numberFormatter(MAX_CAP_T11_SAFE_CAPS))
+        }else{
+            binding.row4Header.text = getString(R.string.save_caps)
+            binding.row4Body.text = getString(R.string.liter_holder, numberFormatter(maxCapsByTank - 1000))
+        }
 
         binding.row2Header.text = getString(R.string.dipping_result_tank)
         binding.row2Body.text = getString(R.string.liter_holder, numberFormatter(liter))
@@ -214,8 +225,6 @@ class FragmentDippingTank : Fragment(){
         binding.row3Header.text = getString(R.string.receiving_capacity_tank)
         binding.row3Body.text = getString(R.string.liter_holder, numberFormatter(capacityRecomendation))
 
-        binding.row4Header.visibility = View.GONE
-        binding.row4Body.visibility = View.GONE
 
         val percentage = (liter / maxCapsByTank) * 100
         when{
@@ -347,7 +356,8 @@ class FragmentDippingTank : Fragment(){
 
         private const val MAX_CAP_T9 : Double = 98000.0
         private const val MAX_CAP_T10 : Double = 499000.0
-        private const val MAX_CAP_T11 : Double = 1000000.0
+        private const val MAX_CAP_T11 : Double = 1127000.0
+        private const val MAX_CAP_T11_SAFE_CAPS : Double = 1000000.0
 
         private const val D_STOCK_T9 : Double = 5000.0
         private const val D_STOCK_T10 : Double = 10000.0

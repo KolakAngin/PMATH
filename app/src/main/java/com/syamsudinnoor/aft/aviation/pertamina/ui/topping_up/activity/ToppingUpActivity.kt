@@ -84,25 +84,20 @@ class ToppingUpActivity : AppCompatActivity() {
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.help_menu, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        menuInflater.inflate(R.menu.help_menu, menu)
+//        return super.onCreateOptionsMenu(menu)
+//    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
+        return when(item.itemId){
             android.R.id.home -> {
-                if (statusIsUpdate){
-                    val intent = Intent(this, ToppingUpActivity::class.java)
-                    intent.putExtra("DETAIL_INDEX",0)
-                    startActivity(intent)
-                    finish()
-                    true
-                }else{
-                    return super.onOptionsItemSelected(item)
-                }
-            }else -> return super.onOptionsItemSelected(item)
-
+                finish()
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
         }
     }
 

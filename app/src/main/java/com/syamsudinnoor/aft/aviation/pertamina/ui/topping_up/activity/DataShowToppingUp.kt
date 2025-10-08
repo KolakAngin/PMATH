@@ -26,7 +26,7 @@ class DataShowToppingUp : AppCompatActivity() {
         setContentView(binding.root)
 
         reportData = if (Build.VERSION.SDK_INT >= 33){
-            intent.getParcelableExtra(BridgerDataShowActivty.Companion.APP_NAME, ToppingUp::class.java)
+            intent.getParcelableExtra(APP_NAME, ToppingUp::class.java)
         }else{
             @Suppress("DEPRECATION")
             intent.getParcelableExtra(APP_NAME)
@@ -49,16 +49,16 @@ class DataShowToppingUp : AppCompatActivity() {
         binding.row3Body.text =
             TimeConverter.toReadableTime(data.end_time ?: System.currentTimeMillis())
         binding.row4Body.text = data.duration?.toString() + " Menit"
-        binding.row5Body.text = data.snr_no
+        binding.row5Body.text = data.snr_no ?: ""
         binding.row6Body.text = formatterNumber(data.sisa_dipping)
         binding.row7Body.text = formatterNumber(data.sales_ref)
         binding.row8Body.text = formatterNumber(data.jumlah_topping)
         binding.row9Body.text = formatterNumber(data.hasil_dipstik)
-        binding.row10Body.text = data.m_number
-        binding.row11Body.text = data.totalisator_awal
-        binding.row12Body.text = data.totalisator_akhir
-        binding.row13Body.text = data.tanki
-        binding.row14Body.text = data.operator
+        binding.row10Body.text = data.m_number ?: ""
+        binding.row11Body.text = data.totalisator_awal ?: ""
+        binding.row12Body.text = data.totalisator_akhir ?: ""
+        binding.row13Body.text = data.tanki ?: ""
+        binding.row14Body.text = data.operator ?: ""
     }
 
 

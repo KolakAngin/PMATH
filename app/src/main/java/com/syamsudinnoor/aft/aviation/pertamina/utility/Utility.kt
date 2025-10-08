@@ -37,16 +37,25 @@ fun numberFormatter(number: Double, scale : Int = 2): String{
     return formatter.format(roundingDecimal)
 }
 
-fun numberFormatter(number: Int): String{
+fun numberFormatter(number: Int, scale : Int = 2): String{
+    val roundingDecimal = BigDecimal(number).setScale(scale, BigDecimal.ROUND_HALF_UP)
     val formatter = NumberFormat.getNumberInstance()
-    return formatter.format(number)
+    return formatter.format(roundingDecimal)
 }
+
 
 
 /**
  * @param number Double
  * using for return number format : 23000 to 23,000
  */
+fun formatterNumber(number: Int?): String?{
+    if (number == null) return null
+    val formatter = DecimalFormat("#,###")
+    return formatter.format(number)
+
+}
+
 fun formatterNumber(number: Double?): String?{
     if (number == null) return null
     val formatter = DecimalFormat("#,###")
@@ -55,11 +64,28 @@ fun formatterNumber(number: Double?): String?{
 }
 
 
-fun formatterNumber(number: Int?): String?{
+fun formatterNumberDecimal(number: Double?, scale: Int = 2): String? {
     if (number == null) return null
-    val formatter = DecimalFormat("#,###")
-    return formatter.format(number)
 
+    val pattern = buildString {
+        append("0.")                // sebelum koma
+        repeat(scale) { append("0") } // pastikan selalu tampil nol sesuai scale
+    }
+
+    val formatter = DecimalFormat(pattern)
+    return formatter.format(number)
+}
+
+fun formatterNumberDecimal(number: Int?, scale: Int = 2): String? {
+    if (number == null) return null
+
+    val pattern = buildString {
+        append("0.")                // sebelum koma
+        repeat(scale) { append("0") } // pastikan selalu tampil nol sesuai scale
+    }
+
+    val formatter = DecimalFormat(pattern)
+    return formatter.format(number)
 }
 
 

@@ -11,6 +11,7 @@
         <item name="colorOnTertiary">@color/colorOnTernary</item>
         <item name="iconTint">@color/colorOnPrimary</item>
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+        <item name="android:actionMenuTextColor">@color/black</item>
 
     </style>
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Theme.MyApp.Splash" parent="Theme.SplashScreen">
         <!-- Icon aplikasi yang akan muncul di splash -->
@@ -9,8 +9,20 @@
         <item name="android:windowSplashScreenIconBackgroundColor">
             @color/white
         </item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
+        <item name="colorTertiary">@color/colorTernary</item>
+        <item name="colorOnTertiary">@color/colorOnTernary</item>
+        <item name="iconTint">@color/colorOnPrimary</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+        <item name="android:actionMenuTextColor">@color/black</item>
 
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="actionMenuTextColor">@color/black</item>
         <!-- Tema utama setelah splash -->
         <item name="postSplashScreenTheme">@style/Base.Theme.PMATH</item>
+        <item name="popupMenuStyle">@style/PopupMenuStyle</item>
     </style>
 </resources>
