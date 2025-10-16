@@ -8,16 +8,17 @@
     tools:context=".ui.main.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         android:id="@+id/appBarLayout"
         app:layout_constraintStart_toStartOf="parent"
         android:background="@color/colorPrimary"
         app:layout_constraintTop_toTopOf="parent"
-        android:theme="@style/ThemeOverlay.MyPopUpTheme"
-        >
+        android:theme="@style/ThemeOverlay.MyPopUpTheme">
 
         <com.google.android.material.appbar.MaterialToolbar
+
             android:id="@+id/topAppBar"
             app:titleTextColor="@color/white"
             app:navigationIconTint="@color/white"

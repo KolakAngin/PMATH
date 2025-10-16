@@ -18,6 +18,13 @@ class VolumeControlMainViewModel(private val repository: MainRepository) : ViewM
     private val _allVolumeControlWithDetail = MutableLiveData<List<AnalisaVolumeControlWithDetail>>()
     val allVolumeControlWithDetail : LiveData<List<AnalisaVolumeControlWithDetail>> =  _allVolumeControlWithDetail
 
+    private var _isLoading : MutableLiveData<Boolean> = MutableLiveData(false)
+    val isLoading : LiveData<Boolean> = _isLoading
+
+    fun loadingStatus(isLoading : Boolean){
+        _isLoading.value = isLoading
+    }
+
     init {
         loadAllData()
     }

@@ -11,10 +11,12 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.icu.util.Calendar
 import android.os.Build
+import android.text.BoringLayout
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Gravity
 import android.view.Window
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -27,6 +29,8 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import androidx.core.net.toUri
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import com.syamsudinnoor.aft.aviation.pertamina.R
 import com.syamsudinnoor.aft.aviation.pertamina.ui.main.LoginActivity
 
@@ -143,6 +147,36 @@ fun textWatcherWithNumber(textInputEditText : TextInputEditText, onTextHolder : 
         }
     }
 }
+fun textWatcherWithNumber(textInputEditText : AutoCompleteTextView, onTextHolder : (String) -> Unit = {}) : TextWatcher {
+    return object : TextWatcher {
+        private var current = ""
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+        override fun afterTextChanged(s: Editable?) {
+            onTextHolder(s.toString())
+
+            if (s.toString() != current) {
+                textInputEditText.removeTextChangedListener(this)
+
+                val cleanString = s.toString().replace(".", "") // hapus titik biar raw value
+                if (cleanString.isNotEmpty()) {
+                    val locale = Locale("id", "ID")
+                    val numberFormat = NumberFormat.getInstance(locale)
+                    val formatted = numberFormat.format(cleanString.toLong())
+                    current = formatted
+                    textInputEditText.setText(formatted)
+                    textInputEditText.setSelection(formatted.length) // cursor di akhir
+                }
+
+                textInputEditText.addTextChangedListener(this)
+            }
+        }
+    }
+}
+
 
 
 object TimeConverter {
@@ -319,4 +353,22 @@ fun settingDialogGlobal(title : String,massage: String,context : Context,onYesBu
     }
     dialog.show()
 }
+
+fun showLoadingCustom(owner : LifecycleOwner, context: Context, liveData: LiveData<Boolean>){
+    val dialog = Dialog(context)
+
+    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+    dialog.setContentView(R.layout.progres_bar_custom)
+    dialog.setCanceledOnTouchOutside(false)
+    dialog.show()
+    liveData.observe(owner){
+        if(it){
+            dialog.show()
+        }
+        else{
+            dialog.dismiss()
+        }
+    }
+}
+
 

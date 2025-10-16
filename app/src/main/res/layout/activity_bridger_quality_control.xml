@@ -8,6 +8,7 @@
     tools:context=".ui.density.quality_control.activity_holder.BridgerQualityControlActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:paddingTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/appBarLayout"

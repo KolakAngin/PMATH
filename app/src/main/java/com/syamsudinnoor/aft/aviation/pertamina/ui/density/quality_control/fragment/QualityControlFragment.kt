@@ -128,7 +128,7 @@ class QualityControlFragment : Fragment() {
                 }
             }
         })
-        binding.editLiter.apply { addTextChangedListener(textWatcherWithNumber(this)) }
+        binding.spinnerLiter.apply { addTextChangedListener(textWatcherWithNumber(this@apply)) }
 
         binding.buttonSave.setOnClickListener {
             val wasUpper = when{
@@ -193,16 +193,41 @@ class QualityControlFragment : Fragment() {
 
         }
 
+        binding.spinnerBridgerNo.addTextChangedListener(helperSettingEditText {
+            setupQuantity(it)
+        })
+
         return binding.root
+    }
+
+    private fun setupQuantity(noBridger : String) {
+        when(noBridger){
+            "B 9854 SFV" ->{
+                binding.spinnerLiter.setText("16.000")
+            }
+            "KB 8137 AV" ->{
+                binding.spinnerLiter.setText("24.000")
+            }
+            "B 9280 SFU" ->{
+                binding.spinnerLiter.setText("16.000")
+            }
+            "DA 8295 PZ" ->{
+                binding.spinnerLiter.setText("16.000")
+            }
+            "DA 8294 PZ" ->{
+                binding.spinnerLiter.setText("16.000")
+            }
+        }
+
     }
 
     private fun setupAllData(data : BridgerQualityControl){
 
         binding.spinnerOperatorName.setText(data.operator_name ?: "")
-        binding.editBridgerNo.setText(data.bridger_no ?: "")
+        binding.spinnerBridgerNo.setText(data.bridger_no ?: "")
         binding.buttonTimeFrom.setText(TimeConverter.toReadableTime(data.dateTime ?: System.currentTimeMillis()))
         binding.editBpp.setText(data.bpp ?: "")
-        binding.editLiter.setText(data.volume_liter?.toInt()?.toString() ?: "")
+        binding.spinnerLiter.setText(data.volume_liter?.toInt()?.toString() ?: "")
         binding.editSeal.setText(data.seal ?: "")
         binding.editTestReport.setText(data.test_report_no ?: "")
         binding.editDens15FromDistributor.setText(data.density_15_from_distributor?.toString() ?: "")
@@ -238,9 +263,9 @@ class QualityControlFragment : Fragment() {
     private fun checkInput(){
         binding.cardViewResult.setBackgroundResource(R.drawable.normal_card_background)
         operatorName = binding.spinnerOperatorName.text.toString()
-        bridgerNo = binding.editBridgerNo.text.toString()
+        bridgerNo = binding.spinnerBridgerNo.text.toString()
         BppNo = binding.editBpp.text.toString()
-        liter = binding.editLiter.text.toString().replace(".","").toDoubleOrNull()
+        liter = binding.spinnerLiter.text.toString().replace(".","").toDoubleOrNull()
         sealOrSegel = binding.editSeal.text.toString()
         testReportNo = binding.editTestReport.text.toString()
 
@@ -347,14 +372,22 @@ class QualityControlFragment : Fragment() {
         super.onResume()
         val resouceOperator = resources.getStringArray(R.array.operator_choice)
         val resourceTank = resources.getStringArray(R.array.tangks_choice)
+        val numBridger = resources.getStringArray(R.array.bridger_choice)
+        val arrayQuantity = resources.getStringArray(R.array.bridger_quantity_choice)
 
         val adapterOperator =
             ArrayAdapter(requireContext(), R.layout.spinner_item_holder, resouceOperator)
         val adapterTank =
             ArrayAdapter(requireContext(), R.layout.spinner_item_holder, resourceTank)
+        val adapterBridger =
+            ArrayAdapter(requireContext(),R.layout.spinner_item_holder,numBridger)
+        val adapterQuantity =
+            ArrayAdapter(requireContext(),R.layout.spinner_item_holder,arrayQuantity)
 
         binding.spinnerOperatorName.setAdapter(adapterOperator)
         binding.spinnerTankQc.setAdapter(adapterTank)
+        binding.spinnerBridgerNo.setAdapter(adapterBridger)
+        binding.spinnerLiter.setAdapter(adapterQuantity)
     }
 
     override fun onDestroyView() {

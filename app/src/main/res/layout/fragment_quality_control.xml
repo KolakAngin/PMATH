@@ -41,17 +41,17 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_bridger_no"
+                <AutoCompleteTextView
+                    android:id="@+id/spinner_bridger_no"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Bridger No"
-                    android:inputType="textCapWords"
-                />
+                    android:hint="No Polisi"
+                    android:inputType="textCapWords"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -72,6 +72,7 @@
                 android:layout_marginTop="24dp">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    style=""
                     android:id="@+id/edit_bpp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -82,15 +83,16 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_liter"
+                <AutoCompleteTextView
+                    android:id="@+id/spinner_liter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Liter"
+                    android:hint="Liter Kuantitas"
                     android:inputType="numberDecimal"/>
 
             </com.google.android.material.textfield.TextInputLayout>

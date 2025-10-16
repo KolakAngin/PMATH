@@ -5,7 +5,7 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 tools:context=".ui.density.volume_control.fragment.DataHolderVolumeControlFragment">
-
+    
 <LinearLayout
     android:id="@+id/button_holder"
     android:layout_width="match_parent"
@@ -40,6 +40,14 @@ tools:context=".ui.density.volume_control.fragment.DataHolderVolumeControlFragme
         android:textColor="@color/white" />
 </LinearLayout>
 
+    <ProgressBar
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/recycle_view_data_holder"

@@ -96,7 +96,7 @@ class DataQualityControlFragment : Fragment() {
                 binding.buttonSave.setBackgroundResource(android.R.color.darker_gray)
             }else{
                 binding.buttonSave.isEnabled = true
-                binding.buttonSave.isEnabled = true
+                binding.buttonFilter.isEnabled = true
                 binding.buttonSave.setBackgroundResource(R.color.colorPrimary)
                 binding.buttonFilter.setBackgroundResource(R.color.colorPrimary)
                 binding.recycleViewDataHolder.visibility = View.VISIBLE

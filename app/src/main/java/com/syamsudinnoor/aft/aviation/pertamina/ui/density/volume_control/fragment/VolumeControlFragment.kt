@@ -33,6 +33,7 @@ import com.syamsudinnoor.aft.aviation.pertamina.ui.density.viewmodel.VolumeContr
 import com.syamsudinnoor.aft.aviation.pertamina.ui.density.viewmodel.VolumeControlViewModel
 import com.syamsudinnoor.aft.aviation.pertamina.utility.DialogHolder.dateDialog
 import com.syamsudinnoor.aft.aviation.pertamina.utility.TimeConverter
+import com.syamsudinnoor.aft.aviation.pertamina.utility.helperSettingEditText
 import com.syamsudinnoor.aft.aviation.pertamina.utility.numberFormatter
 import com.syamsudinnoor.aft.aviation.pertamina.utility.settingDialogGlobal
 import com.syamsudinnoor.aft.aviation.pertamina.utility.textWatcherWithNumber
@@ -114,8 +115,14 @@ class VolumeControlFragment : Fragment() {
         binding.kompartemen1.buttonSearchKompartemen.setOnClickListener {
             checkValidation("Depan",binding.kompartemen1)
         }
-        binding.editHargaAvtur.apply { addTextChangedListener ( textWatcherWithNumber(binding.editHargaAvtur) ) }
-        binding.editKuantitas.apply { addTextChangedListener ( textWatcherWithNumber(binding.editKuantitas)) }
+        binding.editHargaAvtur.apply { addTextChangedListener ( textWatcherWithNumber(this@apply) ) }
+        binding.spinnerKuantitas.apply { addTextChangedListener ( textWatcherWithNumber(this@apply) ) }
+
+        binding.spinnerNoPolisi.apply { addTextChangedListener(helperSettingEditText {
+            if (it.isNotEmpty()){
+                setMMFilled(it)
+            }
+        }) }
 
         binding.kompartemen1.buttonNextKompartemen.setOnClickListener {
             settingDialogGlobal("Konfirmasi Tambah Data Kompartemen",
@@ -168,14 +175,46 @@ class VolumeControlFragment : Fragment() {
         return binding.root
     }
 
+    private fun setMMFilled(noBridger : String){
+
+        when(noBridger){
+            "B 9854 SFV" ->{
+                binding.kompartemen1.spinnerRMmIKompartemen.setText(0.205.toString())
+                binding.kompartemen2.spinnerRMmIKompartemen.setText(0.35.toString())
+                binding.spinnerKuantitas.setText("16.000")
+            }
+            "KB 8137 AV" ->{
+                binding.kompartemen1.spinnerRMmIKompartemen.setText(0.25.toString())
+                binding.kompartemen2.spinnerRMmIKompartemen.setText(0.25.toString())
+                binding.kompartemen3.spinnerRMmIKompartemen.setText(0.25.toString())
+                binding.spinnerKuantitas.setText("24.000")
+            }
+            "B 9280 SFU" ->{
+                binding.kompartemen1.spinnerRMmIKompartemen.setText(0.3.toString())
+                binding.kompartemen2.spinnerRMmIKompartemen.setText(0.3.toString())
+                binding.spinnerKuantitas.setText("16.000")
+            }
+            "DA 8295 PZ" ->{
+                binding.kompartemen1.spinnerRMmIKompartemen.setText(0.305.toString())
+                binding.kompartemen2.spinnerRMmIKompartemen.setText(0.34.toString())
+                binding.spinnerKuantitas.setText("16.000")
+            }
+            "DA 8294 PZ" ->{
+                binding.kompartemen1.spinnerRMmIKompartemen.setText(0.305.toString())
+                binding.kompartemen2.spinnerRMmIKompartemen.setText(0.34.toString())
+                binding.spinnerKuantitas.setText("16.000")
+            }
+        }
+    }
+
     private fun checkMainInput() {
         aft = binding.spinnerAft.text.toString()
         supplyPoint = binding.spinnerSupplyPoint.text.toString()
         transportir = binding.spinnerTransportir.text.toString()
-        noPolisi = binding.editNoPolisi.text.toString()
-        kuantitas = binding.editKuantitas.text.toString().replace(".","").toIntOrNull()
+        noPolisi = binding.spinnerNoPolisi.text.toString()
+        kuantitas = binding.spinnerKuantitas.text.toString().replace(".","").toIntOrNull()
         hargaAvtur = binding.editHargaAvtur.text.toString().replace(".","").toDoubleOrNull()
-        spvRsd = binding.editSpvRsd.text.toString()
+        spvRsd = binding.spinnerSpvRsd.text.toString()
         sopirBridger1 = binding.editSopirBridger1.text.toString()
         sopirBridger2 = binding.editSopirBridger2.text.toString()
 
@@ -246,10 +285,10 @@ class VolumeControlFragment : Fragment() {
         binding.spinnerAft.setText(data.analisaVolumeControl.aft ?: "")
         binding.spinnerSupplyPoint.setText(data.analisaVolumeControl.supply_point ?: "")
         binding.spinnerTransportir.setText(data.analisaVolumeControl.transportir ?: "")
-        binding.editNoPolisi.setText(data.analisaVolumeControl.no_polisi ?: "")
-        binding.editKuantitas.setText(data.analisaVolumeControl.kuantitas?.toString() ?: "")
+        binding.spinnerNoPolisi.setText(data.analisaVolumeControl.no_polisi ?: "")
+        binding.spinnerKuantitas.setText(data.analisaVolumeControl.kuantitas?.toString() ?: "")
         binding.editHargaAvtur.setText(data.analisaVolumeControl.harga_avtur?.toInt()?.toString() ?: "")
-        binding.editSpvRsd.setText(data.analisaVolumeControl.spv_rsd ?: "")
+        binding.spinnerSpvRsd.setText(data.analisaVolumeControl.spv_rsd ?: "")
         binding.editSopirBridger1.setText(data.analisaVolumeControl.sopir_bridger_1 ?: "")
         binding.editSopirBridger2.setText(data.analisaVolumeControl.sopir_bridger_2 ?: "")
 
@@ -289,7 +328,7 @@ class VolumeControlFragment : Fragment() {
         arrayUkuranDppu[numerator] = kompartemenHolder.editUkuranDppuKompartemen.text.toString().toIntOrNull()
         arrayDensityObs[numerator] = kompartemenHolder.editDensityObsKompartemen.text.toString().toDoubleOrNull()
         arrayTempObs[numerator] = kompartemenHolder.editTempObsKompartemen.text.toString().toIntOrNull()
-        kuantitas = binding.editKuantitas.text.toString().replace(".","").toIntOrNull()
+        kuantitas = binding.spinnerKuantitas.text.toString().replace(".","").toIntOrNull()
         
         if (arrayKompartemen[numerator] != null && 
             (arrayTera[numerator] != null || arrayUkuranSupplyPoint[numerator] != null) &&
@@ -422,16 +461,26 @@ class VolumeControlFragment : Fragment() {
         val arrayAft = arrayOf("AFT. Syamsudin Noor")
         val arraySupplyPoint = arrayOf("IT Banjarmasin")
         val arrayTransportir = arrayOf("PT. Pertamina Patra Niaga")
-        val rMMArray = arrayOf(0.305,0.34)
+        val rMMArray = arrayOf(0.305,0.34,0.25,0.295,0.3)
+        val arrayNoPolisiBridger = resources.getStringArray(R.array.bridger_choice)
+        val arraySpvRsd = resources.getStringArray(R.array.spv_rsd_choice)
+        val arrayQuantityBridger = resources.getStringArray(R.array.bridger_quantity_choice)
+
 
         val adapterAft = ArrayAdapter(requireContext(), R.layout.spinner_item_holder, arrayAft)
         val adapterSupplyPoint = ArrayAdapter(requireContext(), R.layout.spinner_item_holder, arraySupplyPoint)
         val adapterTransportir = ArrayAdapter(requireContext(), R.layout.spinner_item_holder, arrayTransportir)
         val adapterRMM = ArrayAdapter(requireContext(),R.layout.spinner_item_holder,rMMArray)
+        val adapterNoPolisiBridger = ArrayAdapter(requireContext(),R.layout.spinner_item_holder,arrayNoPolisiBridger)
+        val adapterSpvRsd = ArrayAdapter(requireContext(),R.layout.spinner_item_holder,arraySpvRsd)
+        val adapterQuantityBridger = ArrayAdapter(requireContext(),R.layout.spinner_item_holder,arrayQuantityBridger)
 
         binding.spinnerAft.setAdapter(adapterAft)
         binding.spinnerSupplyPoint.setAdapter(adapterSupplyPoint)
         binding.spinnerTransportir.setAdapter(adapterTransportir)
+        binding.spinnerNoPolisi.setAdapter(adapterNoPolisiBridger)
+        binding.spinnerKuantitas.setAdapter(adapterQuantityBridger)
+        binding.spinnerSpvRsd.setAdapter(adapterSpvRsd)
 
         binding.kompartemen1.spinnerRMmIKompartemen.setAdapter(adapterRMM)
         binding.kompartemen2.spinnerRMmIKompartemen.setAdapter(adapterRMM)

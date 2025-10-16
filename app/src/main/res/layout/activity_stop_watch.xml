@@ -66,34 +66,34 @@ tools:context=".ui.stopwatch.StopWatchActivity">
     app:layout_constraintTop_toBottomOf="@id/tvStatus"
     tools:listitem="@layout/stopwatch_lap_item_layout" />
 
-<com.google.android.material.floatingactionbutton.FloatingActionButton
-    android:id="@+id/btnLapReset"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="32dp"
-    android:src="@drawable/ic_flag"
-    app:backgroundTint="#E0E0E0"
-    app:elevation="4dp"
-    app:fabSize="normal"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toStartOf="@+id/btnStartStop"
-    app:layout_constraintHorizontal_chainStyle="packed"
-    app:layout_constraintStart_toStartOf="parent"
-    app:tint="#555555" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnLapReset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="88dp"
+        android:src="@drawable/ic_flag"
+        app:backgroundTint="#E0E0E0"
+        app:elevation="4dp"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnStartStop"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tint="#555555" />
 
-<com.google.android.material.floatingactionbutton.FloatingActionButton
-    android:id="@+id/btnStartStop"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="80dp"
-    android:layout_marginBottom="32dp"
-    android:src="@drawable/ic_play"
-    app:backgroundTint="#D1E8FF"
-    app:elevation="4dp"
-    app:fabSize="normal"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toEndOf="@+id/btnLapReset"
-    app:tint="#005CB3" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnStartStop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginBottom="88dp"
+        android:src="@drawable/ic_play"
+        app:backgroundTint="#D1E8FF"
+        app:elevation="4dp"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnLapReset"
+        app:tint="#005CB3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

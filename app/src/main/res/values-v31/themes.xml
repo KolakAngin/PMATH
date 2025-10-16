@@ -24,5 +24,11 @@
         <!-- Tema utama setelah splash -->
         <item name="postSplashScreenTheme">@style/Base.Theme.PMATH</item>
         <item name="popupMenuStyle">@style/PopupMenuStyle</item>
+
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+
     </style>
 </resources>

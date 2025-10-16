@@ -42,7 +42,7 @@ class BridgerQualityAdapter(
             binding.txtLiterHolder.text = formatterNumber(item.volume_liter)
             binding.txtSealHolder.text = item.seal?.uppercase()
             binding.operator.text = item.operator_name?.uppercase()
-            binding.timeDataQuilty.text = TimeConverter.toReadableDateTime(item.dateTime!!)
+            binding.timeDataQuilty.text = TimeConverter.toReadableDateTime(item.dateTime ?: System.currentTimeMillis())
             binding.txtTangki.text = item.tangki?.uppercase()
         }
     }

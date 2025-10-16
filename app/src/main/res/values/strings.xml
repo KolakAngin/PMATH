@@ -122,6 +122,28 @@
         <item>M4</item>
     </string-array>
 
+    <string-array name="bridger_choice">
+        <item>B 9854 SFV</item>
+        <item>KB 8137 AV</item>
+        <item>B 9280 SFU</item>
+        <item>DA 8295 PZ</item>
+        <item>DA 8294 PZ</item>
+    </string-array>
+
+
+    <string-array name="spv_rsd_choice">
+        <item>Achmad Nur Karim</item>
+        <item>May Stevan Pujianto</item>
+        <item>Kamarud Zaman</item>
+
+    </string-array>
+
+    <string-array name="bridger_quantity_choice">
+        <item>16.000</item>
+        <item>8.000</item>
+        <item>24.000</item>
+    </string-array>
+
 
         <string name="privacy_policy_title">Kebijakan Privasi</string>
 

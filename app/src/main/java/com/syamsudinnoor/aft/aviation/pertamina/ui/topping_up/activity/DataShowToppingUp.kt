@@ -37,8 +37,12 @@ class DataShowToppingUp : AppCompatActivity() {
         supportActionBar?.title = APP_NAME
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        setupData(reportData!!)
-
+        if (reportData == null){
+            Toast.makeText(this, "Data Tidak Ditemukan", Toast.LENGTH_SHORT).show()
+            finish()
+        }else {
+            setupData(reportData!!)
+        }
     }
 
     private fun setupData(data : ToppingUp) {

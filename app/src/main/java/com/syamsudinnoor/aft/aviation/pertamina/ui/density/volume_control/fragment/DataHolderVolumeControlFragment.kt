@@ -20,6 +20,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.syamsudinnoor.aft.aviation.pertamina.R
 import com.syamsudinnoor.aft.aviation.pertamina.adapter.VolumeControlAdapter
@@ -36,6 +37,10 @@ import com.syamsudinnoor.aft.aviation.pertamina.utility.AnalisaVolumeControlPdfG
 import com.syamsudinnoor.aft.aviation.pertamina.utility.DialogHolder.dateDialog
 import com.syamsudinnoor.aft.aviation.pertamina.utility.DialogHolder.timeDialog
 import com.syamsudinnoor.aft.aviation.pertamina.utility.TimeConverter
+import com.syamsudinnoor.aft.aviation.pertamina.utility.showLoadingCustom
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Date
 
 
@@ -117,18 +122,33 @@ class DataHolderVolumeControlFragment : Fragment() {
 
 
     private fun startPdfGeneration() {
-        // Ganti ini dengan data asli dari Room
         val sampleData = dataReport
 
-        val pdfGenerator = AnalisaVolumeControlPdfGenerator()
-        val pdfUri = pdfGenerator.generatePdf(requireContext(), sampleData)
+        binding.buttonSave.isEnabled = false
+        showLoadingCustom(viewLifecycleOwner,requireContext(),viewModel.isLoading)
 
-        if (pdfUri != null) {
-            Toast.makeText(requireContext(), "PDF berhasil disimpan di folder Download!", Toast.LENGTH_SHORT).show()
-            // Langsung panggil fungsi share
-            sharePdf(pdfUri)
-        } else {
-            Toast.makeText(requireContext(), "Gagal membuat PDF.", Toast.LENGTH_SHORT).show()
+        viewLifecycleOwner.lifecycleScope.launch {
+            try {
+                viewModel.loadingStatus(true)
+                val pdfToUri = withContext(Dispatchers.IO){
+                    val pdfGenerator = AnalisaVolumeControlPdfGenerator()
+                    pdfGenerator.generatePdf(requireContext(), sampleData)
+                }
+                if (pdfToUri != null) {
+                    Toast.makeText(requireContext(), "PDF berhasil disimpan di folder Download!", Toast.LENGTH_SHORT).show()
+                    sharePdf(pdfToUri)
+                }
+                binding.buttonSave.isEnabled = true
+                viewModel.loadingStatus(false)
+            }catch (e : Exception){
+                Toast.makeText(requireContext(), "Gagal membuat PDF : ${e.message}.", Toast.LENGTH_SHORT).show()
+                binding.buttonSave.isEnabled = true
+                viewModel.loadingStatus(false)
+            }finally {
+                binding.buttonSave.isEnabled = true
+                viewModel.loadingStatus(false)
+                false
+            }
         }
     }
 
