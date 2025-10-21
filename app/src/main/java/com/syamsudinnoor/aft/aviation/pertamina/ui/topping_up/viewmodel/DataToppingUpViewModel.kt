@@ -25,6 +25,13 @@ class DataToppingUpViewModel(private val repository: MainRepository) : ViewModel
         }
     }
 
+    private val _isLoading : MutableLiveData<Boolean> = MutableLiveData(false)
+    val isLoading : LiveData<Boolean> = _isLoading
+
+    fun statusLoading(status : Boolean){
+        _isLoading.value = status
+    }
+
     fun insert(toppingUp: ToppingUp) {
         viewModelScope.launch {
             repository.insertToppingUp(toppingUp)

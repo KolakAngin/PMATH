@@ -20,6 +20,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.syamsudinnoor.aft.aviation.pertamina.R
 import com.syamsudinnoor.aft.aviation.pertamina.adapter.ToppingUpAdapter
@@ -37,6 +38,10 @@ import com.syamsudinnoor.aft.aviation.pertamina.utility.BridgerQualityPDFGenerat
 import com.syamsudinnoor.aft.aviation.pertamina.utility.DialogHolder.dateDialog
 import com.syamsudinnoor.aft.aviation.pertamina.utility.DialogHolder.timeDialog
 import com.syamsudinnoor.aft.aviation.pertamina.utility.TimeConverter
+import com.syamsudinnoor.aft.aviation.pertamina.utility.showLoadingCustom
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Date
 
 
@@ -113,16 +118,35 @@ class DataHolderToppingUpFragment : Fragment() {
         // Ganti ini dengan data asli dari Room
         val sampleData = dataReport
 
-        val pdfGenerator = ToppingUpPdfGenerator()
-        val pdfUri = pdfGenerator.generatePdf(requireContext(), sampleData)
+        binding.buttonSave.isEnabled = false
+        showLoadingCustom(viewLifecycleOwner,requireContext(),viewmodel.isLoading)
 
-        if (pdfUri != null) {
-            Toast.makeText(requireContext(), "PDF berhasil disimpan di folder Download!", Toast.LENGTH_SHORT).show()
-            // Langsung panggil fungsi share
-            sharePdf(pdfUri)
-        } else {
-            Toast.makeText(requireContext(), "Gagal membuat PDF.", Toast.LENGTH_SHORT).show()
+        viewLifecycleOwner.lifecycleScope.launch {
+            try {
+                viewmodel.statusLoading(true)
+                val pdfUri = withContext(Dispatchers.IO) {
+                    val pdfGenerator = ToppingUpPdfGenerator()
+                    pdfGenerator.generatePdf(requireContext(), sampleData)
+                }
+
+                if (pdfUri != null) {
+                    Toast.makeText(
+                        requireContext(), "PDF berhasil disimpan di folder Download!", Toast.LENGTH_SHORT).show()
+                    sharePdf(pdfUri)
+                }
+                binding.buttonSave.isEnabled = true
+                viewmodel.statusLoading(false)
+            }catch (e : Exception){
+                Toast.makeText(requireContext(), "Gagal membuat PDF : ${e.message}.", Toast.LENGTH_SHORT).show()
+                binding.buttonSave.isEnabled = true
+                viewmodel.statusLoading(false)
+            }finally {
+                binding.buttonSave.isEnabled = true
+                viewmodel.statusLoading(false)
+                false
+            }
         }
+
     }
 
     // FUNGSI BARU untuk share

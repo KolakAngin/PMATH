@@ -20,6 +20,13 @@ class QualityControlViewModel(private val mainRepository: MainRepository) : View
         loadAllData()
     }
 
+    private val _isLoading : MutableLiveData<Boolean> = MutableLiveData(false)
+    val isLoading : LiveData<Boolean> = _isLoading
+
+    fun statusLoading(status : Boolean){
+        _isLoading.value = status
+    }
+
     fun loadAllData() {
         Log.d("myDebug","Masuk loadData")
         viewModelScope.launch {

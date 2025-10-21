@@ -30,9 +30,12 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+import androidx.core.graphics.scale
 
 
 class AnalisaVolumeControlPdfGenerator {
+
+    private val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale("id", "ID"))
 
     fun generatePdf(context: Context, listData: List<AnalisaVolumeControlWithDetail>): Uri? {
         val fileName = "AnalisaVolumeControlReport_${System.currentTimeMillis()}.pdf"
@@ -79,6 +82,7 @@ class AnalisaVolumeControlPdfGenerator {
             document.add(mainTable)
             addKlaimSection(document, data)
             addFooterContent(document, data.analisaVolumeControl)
+            document.flush()
         }
 
         document.close()
@@ -105,8 +109,10 @@ class AnalisaVolumeControlPdfGenerator {
         try {
             val drawable = ContextCompat.getDrawable(context, R.drawable.logo_pertamina) // Pastikan nama file logo benar
             val bitmap = (drawable as BitmapDrawable).bitmap
+            val resizedBitmap = getResizedFormat(bitmap, 100)
             val stream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            //bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            resizedBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
             val imageData = ImageDataFactory.create(stream.toByteArray())
             val logo = Image(imageData).scaleToFit(150f, 150f)
             logoCell.add(logo)
@@ -118,7 +124,6 @@ class AnalisaVolumeControlPdfGenerator {
 
         val subHeaderTable = Table(UnitValue.createPercentArray(floatArrayOf(1.5f, 0.2f, 4f, 2.5f, 0.2f, 4f)))
             .setWidth(UnitValue.createPercentValue(100f)).setMarginTop(10f).setFontSize(9f)
-        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale("id", "ID"))
         val tanggal = analisa.tanggal?.let { dateFormat.format(Date(it)) } ?: ""
 
         val ritNumber = pageIndex + 1
@@ -333,5 +338,18 @@ class AnalisaVolumeControlPdfGenerator {
     }
     private fun createBorderlessCell(text: String, alignment: TextAlignment = TextAlignment.LEFT): Cell {
         return Cell().add(Paragraph(text).setTextAlignment(alignment)).setBorder(null)
+    }
+
+
+    private fun getResizedFormat(bitmap : Bitmap, newWidth : Int) : Bitmap{
+        val originalWidth = bitmap.width
+        val originalHeight = bitmap.height
+
+        if (originalHeight <= newWidth) return bitmap
+
+        val aspectRatio = originalHeight.toFloat() / originalWidth.toFloat()
+        val newHeight = (newWidth * aspectRatio).toInt()
+        return bitmap.scale(newWidth, newHeight, true)
+
     }
 }
