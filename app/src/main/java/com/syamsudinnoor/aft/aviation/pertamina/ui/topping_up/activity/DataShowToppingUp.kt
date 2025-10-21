@@ -7,6 +7,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
 import com.syamsudinnoor.aft.aviation.pertamina.R
 import com.syamsudinnoor.aft.aviation.pertamina.databinding.ActivityDataShowToppingUpBinding
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.ToppingUp
@@ -21,8 +23,16 @@ class DataShowToppingUp : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //enableEdgeToEdge()
+
         binding = ActivityDataShowToppingUpBinding.inflate(layoutInflater)
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        window.statusBarColor = android.graphics.Color.TRANSPARENT
+        val insetsController = WindowCompat.getInsetsController(window, window.decorView)
+        insetsController.isAppearanceLightStatusBars = false
+        binding.topAppBar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
+
+        setSupportActionBar(binding.topAppBar)
         setContentView(binding.root)
 
         reportData = if (Build.VERSION.SDK_INT >= 33){

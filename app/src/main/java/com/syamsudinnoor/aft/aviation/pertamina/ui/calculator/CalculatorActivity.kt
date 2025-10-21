@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import com.syamsudinnoor.aft.aviation.pertamina.R
 import com.syamsudinnoor.aft.aviation.pertamina.databinding.ActivityCalculatorBinding
@@ -16,6 +18,13 @@ class CalculatorActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCalculatorBinding.inflate(layoutInflater)
+
+        WindowCompat.setDecorFitsSystemWindows(window,false)
+        window.statusBarColor = android.graphics.Color.TRANSPARENT
+        val insetsController = WindowCompat.getInsetsController(window,window.decorView)
+        insetsController.isAppearanceLightStatusBars = false
+        binding.topAppBar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
+
         setContentView(binding.root)
         setupClickListeners()
 

@@ -10,12 +10,13 @@
     <com.google.android.material.appbar.AppBarLayout
 
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="wrap_content"
         android:id="@+id/appBarLayout"
         app:layout_constraintStart_toStartOf="parent"
         android:background="@color/colorPrimary"
         app:layout_constraintTop_toTopOf="parent"
-        android:theme="@style/ThemeOverlay.MyPopUpTheme">
+        android:theme="@style/ThemeOverlay.MyPopUpTheme"
+        android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.MaterialToolbar
 

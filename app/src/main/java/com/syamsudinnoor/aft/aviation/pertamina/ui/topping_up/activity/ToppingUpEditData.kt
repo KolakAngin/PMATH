@@ -1,12 +1,14 @@
 package com.syamsudinnoor.aft.aviation.pertamina.ui.topping_up.activity
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import com.syamsudinnoor.aft.aviation.pertamina.R
 import com.syamsudinnoor.aft.aviation.pertamina.databinding.ActivityToppingUpBinding
@@ -19,9 +21,14 @@ class ToppingUpEditData : AppCompatActivity() {
     private lateinit var  binding : ActivityToppingUpEditDataBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //enableEdgeToEdge()
         binding = ActivityToppingUpEditDataBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        WindowCompat.setDecorFitsSystemWindows(window,false)
+        window.statusBarColor = Color.TRANSPARENT
+        val insetsController = WindowCompat.getInsetsController(window, window.decorView)
+        insetsController.isAppearanceLightStatusBars = false
+        binding.topAppBar.setBackgroundResource(R.color.colorPrimary)
 
         setSupportActionBar(binding.topAppBar)
         supportActionBar?.title = "Edit Data Topping Up"

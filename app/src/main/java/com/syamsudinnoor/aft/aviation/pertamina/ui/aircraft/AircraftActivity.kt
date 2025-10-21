@@ -12,7 +12,9 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.syamsudinnoor.aft.aviation.pertamina.R
@@ -29,11 +31,13 @@ class AircraftActivity : AppCompatActivity() {
         //enableEdgeToEdge()
         binding = ActivityAircraftBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+
+        WindowCompat.setDecorFitsSystemWindows(window,false)
+        window.statusBarColor = android.graphics.Color.TRANSPARENT
+        val insetsController = WindowCompat.getInsetsController(window,window.decorView)
+        insetsController.isAppearanceLightStatusBars = false
+        binding.topAppBar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
+
 
         viewModel = ViewModelProvider(this )[AircraftViewModel::class.java]
         //basic setting actionbar

@@ -6,6 +6,8 @@ import android.os.Looper
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -41,6 +43,12 @@ class StopWatchActivity : AppCompatActivity() {
         //enableEdgeToEdge()
         binding = ActivityStopWatchBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        WindowCompat.setDecorFitsSystemWindows(window,false)
+        window.statusBarColor = android.graphics.Color.TRANSPARENT
+        val insetsController = WindowCompat.getInsetsController(window,window.decorView)
+        insetsController.isAppearanceLightStatusBars = false
+        binding.topAppBar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
 
         setSupportActionBar(binding.topAppBar)
         supportActionBar?.title = "Stopwatch"

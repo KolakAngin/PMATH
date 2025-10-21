@@ -7,8 +7,10 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.content.IntentCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.tabs.TabLayout
@@ -43,11 +45,12 @@ class DensityActivity : AppCompatActivity() {
         //enableEdgeToEdge()
         binding = ActivityDensityBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+
+        WindowCompat.setDecorFitsSystemWindows(window,false)
+        window.statusBarColor = android.graphics.Color.TRANSPARENT
+        val insetsController = WindowCompat.getInsetsController(window,window.decorView)
+        insetsController.isAppearanceLightStatusBars = false
+        binding.topAppBar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
         setSupportActionBar(binding.topAppBar)
         supportActionBar?.title = "Penerimaan Bridger"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

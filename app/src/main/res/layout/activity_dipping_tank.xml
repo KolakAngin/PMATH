@@ -14,7 +14,8 @@ tools:context=".ui.dipping_tank.DippingTankActivity">
     android:id="@+id/appBarLayout"
     app:layout_constraintStart_toStartOf="parent"
     android:background="@color/colorPrimary"
-    app:layout_constraintTop_toTopOf="parent">
+    app:layout_constraintTop_toTopOf="parent"
+    android:fitsSystemWindows="true">
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
         app:titleTextColor="@color/white"

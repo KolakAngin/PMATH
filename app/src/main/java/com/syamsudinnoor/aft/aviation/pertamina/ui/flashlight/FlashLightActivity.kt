@@ -2,6 +2,7 @@ package com.syamsudinnoor.aft.aviation.pertamina.ui.flashlight
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.hardware.camera2.CameraAccessException
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
@@ -14,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import com.syamsudinnoor.aft.aviation.pertamina.R
 import com.syamsudinnoor.aft.aviation.pertamina.databinding.ActivityFlashLightBinding
@@ -37,8 +39,13 @@ class FlashLightActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFlashLightBinding.inflate(layoutInflater)
-        //enableEdgeToEdge()
         setContentView(binding.root)
+
+        WindowCompat.setDecorFitsSystemWindows(window,false)
+        window.statusBarColor = Color.TRANSPARENT
+        val insetsController = WindowCompat.getInsetsController(window,window.decorView)
+        insetsController.isAppearanceLightStatusBars = false
+        binding.topAppBar.setBackgroundResource(R.color.colorPrimary)
 
         setSupportActionBar(binding.topAppBar)
         supportActionBar?.title = "Flashlight"
