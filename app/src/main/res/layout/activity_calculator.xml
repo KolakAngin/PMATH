@@ -5,629 +5,201 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".ui.calculator.CalculatorActivity">
+
+    <!-- APP BAR -->
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/appBarLayout"
-        app:layout_constraintStart_toStartOf="parent"
         android:background="@color/colorPrimary"
-        app:layout_constraintTop_toTopOf="parent"
-        android:fitsSystemWindows="true"
-        >
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/topAppBar"
-            app:titleTextColor="@color/white"
-            app:navigationIconTint="@color/white"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:menu="@menu/help_menu"
-            app:iconTint="@color/white"
+            app:title="Kalkulator"
+            app:titleTextColor="@android:color/white"
+            app:navigationIconTint="@android:color/white"
             android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
-            app:title="@string/app_name" />
+            app:menu="@menu/help_menu" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
+    <!-- LAYAR DISPLAY -->
+    <LinearLayout
+        android:id="@+id/displayContainer"
+        android:layout_width="0dp"
         android:layout_height="0dp"
+        android:orientation="vertical"
+        android:padding="12dp"
+        app:layout_constraintTop_toBottomOf="@id/appBarLayout"
+        app:layout_constraintBottom_toTopOf="@id/scrollButtons"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-        app:layout_constraintBottom_toBottomOf="parent">
-        <RelativeLayout
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/idTVSecondary"
             android:layout_width="match_parent"
-            android:layout_height="0dp">
+            android:layout_height="wrap_content"
+            android:gravity="bottom|end"
+            android:textSize="15sp"
+            android:layout_weight="1"
+            android:textColor="@android:color/darker_gray"
+            android:maxLines="1"
+            android:text="" />
 
+        <TextView
+            android:id="@+id/idTVprimary"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:autoSizeMaxTextSize="50sp"
+            android:autoSizeMinTextSize="24sp"
+            android:autoSizeTextType="uniform"
+            android:gravity="bottom|end"
+            android:hint="0"
+            android:textColor="@android:color/black"
+            android:textSize="48sp" />
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/idTVSecondary"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:background="@color/white"
-                android:gravity="bottom"
-                android:maxLines="1"
-                android:padding="10dp"
-                android:paddingTop="30dp"
-                android:text=""
-                android:textAlignment="viewEnd"
-                android:textSize="15sp"
-                tools:ignore="RtlCompat" />
+    <!-- GRID TOMBOL -->
+    <ScrollView
+        android:id="@+id/scrollButtons"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/displayContainer"
+       >
 
-            <TextView
-                android:id="@+id/idTVprimary"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_below="@id/idTVSecondary"
-                android:background="@color/white"
-                android:gravity="bottom"
-                android:maxLines="3"
-                android:autoSizeTextType="uniform"
-                android:autoSizeMinTextSize="24sp"
-                android:autoSizeMaxTextSize="50sp"
-                android:autoSizeStepGranularity="2sp"
-                android:padding="10dp"
-                android:text=""
-                android:hint="0"
-                android:textAlignment="viewEnd"
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="5"
+            android:alignmentMode="alignMargins"
+            android:padding="8dp"
+            android:useDefaultMargins="true">
 
-                android:textSize="50sp"
-                tools:ignore="RtlCompat" />
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
+            <!-- Gunakan atribut style langsung -->
+            <!-- Baris 1 -->
+            <Button
+                android:id="@+id/bac"
+                android:text="AC"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/idTVprimary"
-                android:background="@color/white"
-                app:cardCornerRadius="4dp"
-                app:cardElevation="2dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="7"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:weightSum="7">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="70dp"
-                                android:paddingStart="5dp"
-                                android:paddingEnd="5dp"
-                                android:orientation="horizontal"
-                                android:weightSum="4">
-
-                                <Button
-                                    android:id="@+id/bac"
-                                    android:foreground="?attr/selectableItemBackground"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="3dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/radio_selected_tangki"
-                                    android:padding="6dp"
-                                    android:text="AC"
-                                    android:textColor="@color/white"
-                                    android:textSize="15sp" />
-
-                                <Button
-                                    android:foreground="?attr/selectableItemBackground"
-                                    android:id="@+id/bc"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="3dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/radio_normal"
-                                    android:padding="6dp"
-                                    android:text="C"
-                                    android:textColor="@color/white"
-                                    android:textSize="15sp" />
-
-                                <Button
-                                    android:foreground="?attr/selectableItemBackground"
-                                    android:id="@+id/bbrac1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="3dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/radio_normal"
-                                    android:padding="6dp"
-                                    android:text="("
-                                    android:textColor="@color/white"
-                                    android:textSize="15sp" />
-
-                                <Button
-                                    android:foreground="?attr/selectableItemBackground"
-                                    android:id="@+id/bbrac2"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="3dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/radio_normal"
-                                    android:padding="6dp"
-                                    android:text=")"
-                                    android:textColor="@color/white"
-                                    android:textSize="15sp" />
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="70dp"
-                                android:paddingStart="5dp"
-                                android:paddingEnd="5dp"
-                                android:orientation="horizontal"
-                                android:weightSum="5">
-
-                                <Button
-                                    android:foreground="?attr/selectableItemBackground"
-                                    android:id="@+id/bsin"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="3dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/radio_normal"
-                                    android:padding="6dp"
-                                    android:text="sin"
-                                    android:textAllCaps="false"
-                                    android:textColor="@color/white"
-                                    android:textSize="15sp" />
-
-                                <Button
-                                    android:foreground="?attr/selectableItemBackground"
-                                    android:id="@+id/bcos"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="3dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/radio_normal"
-                                    android:padding="6dp"
-                                    android:text="cos"
-                                    android:textAllCaps="false"
-                                    android:textColor="@color/white"
-                                    android:textSize="15sp" />
-
-                                <Button
-                                    android:foreground="?attr/selectableItemBackground"
-                                    android:id="@+id/btan"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="3dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/radio_normal"
-                                    android:padding="6dp"
-                                    android:text="tan"
-                                    android:textAllCaps="false"
-                                    android:textColor="@color/white"
-                                    android:textSize="15sp" />
-
-                                <Button
-                                    android:foreground="?attr/selectableItemBackground"
-                                    android:id="@+id/blog"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="3dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/radio_normal"
-                                    android:padding="6dp"
-                                    android:text="log"
-                                    android:textAllCaps="false"
-                                    android:textColor="@color/white"
-                                    android:textSize="15sp" />
-
-                                <Button
-                                    android:foreground="?attr/selectableItemBackground"
-                                    android:id="@+id/bln"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="3dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/radio_normal"
-                                    android:padding="6dp"
-                                    android:text="ln"
-                                    android:textAllCaps="false"
-                                    android:textColor="@color/white"
-                                    android:textSize="15sp" />
-
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="70dp"
-                                android:paddingStart="5dp"
-                                android:paddingEnd="5dp"
-                                android:orientation="horizontal"
-                                android:weightSum="5">
-
-                                <Button
-                                    android:id="@+id/bfact"
-                                    android:foreground="?attr/selectableItemBackground"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="3dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/radio_normal"
-                                    android:padding="6dp"
-                                    android:text="x!"
-                                    android:textAllCaps="false"
-                                    android:textColor="@color/white"
-                                    android:textSize="15sp" />
-
-                                <Button
-                                    android:foreground="?attr/selectableItemBackground"
-                                    android:id="@+id/bsquare"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="3dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/radio_normal"
-                                    android:padding="6dp"
-                                    android:text="x²"
-                                    android:textAllCaps="false"
-                                    android:textColor="@color/white"
-                                    android:textSize="15sp" />
-
-                                <Button
-                                    android:foreground="?attr/selectableItemBackground"
-                                    android:id="@+id/bsqrt"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="3dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/radio_normal"
-                                    android:padding="6dp"
-                                    android:text="√"
-                                    android:textColor="@color/white"
-                                    android:textSize="15sp" />
-
-                                <Button
-                                    android:foreground="?attr/selectableItemBackground"
-                                    android:id="@+id/binv"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="3dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/radio_normal"
-                                    android:padding="6dp"
-                                    android:text="1/x"
-                                    android:textAllCaps="false"
-                                    android:textColor="@color/white"
-                                    android:textSize="15sp" />
-
-                                <Button
-                                    android:foreground="?attr/selectableItemBackground"
-                                    android:id="@+id/bdiv"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="3dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/radio_normal"
-                                    android:padding="6dp"
-                                    android:text="÷"
-                                    android:textColor="@color/white"
-                                    android:textSize="15sp" />
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="70dp"
-                                android:paddingStart="5dp"
-                                android:paddingEnd="5dp"
-                                android:orientation="horizontal"
-                                android:weightSum="4">
-
-                                <Button
-                                    android:foreground="?attr/selectableItemBackground"
-                                    android:id="@+id/b7"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="3dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/radio_normal"
-                                    android:padding="6dp"
-                                    android:text="7"
-                                    android:textColor="#fff"
-                                    android:textSize="15sp" />
-
-                                <Button
-                                    android:foreground="?attr/selectableItemBackground"
-                                    android:id="@+id/b8"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="3dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/radio_normal"
-                                    android:padding="6dp"
-                                    android:text="8"
-                                    android:textColor="#fff"
-                                    android:textSize="15sp" />
-
-                                <Button
-                                    android:foreground="?attr/selectableItemBackground"
-                                    android:id="@+id/b9"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="3dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/radio_normal"
-                                    android:padding="6dp"
-                                    android:text="9"
-                                    android:textColor="#fff"
-                                    android:textSize="15sp" />
-
-                                <Button
-                                    android:foreground="?attr/selectableItemBackground"
-                                    android:id="@+id/bmul"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="3dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/radio_normal"
-                                    android:padding="6dp"
-                                    android:text="×"
-                                    android:textColor="@color/white"
-                                    android:textSize="15sp" />
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="70dp"
-                                android:paddingStart="5dp"
-                                android:paddingEnd="5dp"
-                                android:orientation="horizontal"
-                                android:weightSum="4">
-
-                                <Button
-                                    android:foreground="?attr/selectableItemBackground"
-                                    android:id="@+id/b4"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="3dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/radio_normal"
-                                    android:padding="6dp"
-                                    android:text="4"
-                                    android:textColor="#fff"
-                                    android:textSize="15sp" />
-
-                                <Button
-                                    android:foreground="?attr/selectableItemBackground"
-                                    android:id="@+id/b5"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="3dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/radio_normal"
-                                    android:padding="6dp"
-                                    android:text="5"
-                                    android:textColor="#fff"
-                                    android:textSize="15sp" />
-
-                                <Button
-                                    android:foreground="?attr/selectableItemBackground"
-                                    android:id="@+id/b6"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="3dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/radio_normal"
-                                    android:padding="6dp"
-                                    android:text="6"
-                                    android:textColor="#fff"
-                                    android:textSize="15sp" />
-
-                                <Button
-                                    android:foreground="?attr/selectableItemBackground"
-                                    android:id="@+id/bminus"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="3dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/radio_normal"
-                                    android:padding="6dp"
-                                    android:text="-"
-                                    android:textColor="@color/white"
-                                    android:textSize="15sp" />
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="70dp"
-                                android:paddingStart="5dp"
-                                android:paddingEnd="5dp"
-                                android:orientation="horizontal"
-                                android:weightSum="4">
-
-                                <Button
-                                    android:foreground="?attr/selectableItemBackground"
-                                    android:id="@+id/b1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="3dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/radio_normal"
-                                    android:padding="6dp"
-                                    android:text="1"
-                                    android:textColor="#fff"
-                                    android:textSize="15sp" />
-
-                                <Button
-                                    android:foreground="?attr/selectableItemBackground"
-                                    android:id="@+id/b2"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="3dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/radio_normal"
-                                    android:padding="6dp"
-                                    android:text="2"
-                                    android:textColor="#fff"
-                                    android:textSize="15sp" />
-
-                                <Button
-                                    android:foreground="?attr/selectableItemBackground"
-                                    android:id="@+id/b3"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="3dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/radio_normal"
-                                    android:padding="6dp"
-                                    android:text="3"
-                                    android:textColor="#fff"
-                                    android:textSize="15sp" />
-
-                                <Button
-                                    android:foreground="?attr/selectableItemBackground"
-                                    android:id="@+id/bplus"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="3dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/radio_normal"
-                                    android:padding="6dp"
-                                    android:text="+"
-                                    android:textColor="@color/white"
-                                    android:textSize="15sp" />
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="70dp"
-                                android:paddingStart="5dp"
-                                android:paddingEnd="5dp"
-                                android:orientation="horizontal"
-                                android:weightSum="4">
-
-                                <Button
-                                    android:foreground="?attr/selectableItemBackground"
-                                    android:id="@+id/bpi"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="3dp"
-                                    android:layout_weight="1"
-                                    android:background="@color/blac_shade_1"
-                                    android:padding="6dp"
-                                    android:text="π"
-                                    android:textColor="#fff"
-                                    android:textSize="15sp" />
-
-                                <Button
-                                    android:foreground="?attr/selectableItemBackground"
-                                    android:id="@+id/b0"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="3dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/radio_normal"
-                                    android:padding="6dp"
-                                    android:text="0"
-                                    android:textColor="#fff"
-                                    android:textSize="15sp" />
-
-                                <Button
-                                    android:foreground="?attr/selectableItemBackground"
-                                    android:id="@+id/bdot"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="3dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/radio_normal"
-                                    android:padding="6dp"
-                                    android:text="."
-                                    android:textColor="#fff"
-                                    android:textSize="15sp" />
-
-                                <Button
-                                    android:foreground="?attr/selectableItemBackground"
-                                    android:id="@+id/bequal"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="3dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/radio_normal"
-                                    android:padding="6dp"
-                                    android:text="="
-                                    android:textColor="@color/white"
-                                    android:textSize="15sp" />
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-        </RelativeLayout>
+                android:layout_columnWeight="1"
+                android:backgroundTint="@color/colorPrimary"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:padding="8dp" />
+
+            <Button
+                android:id="@+id/bc"
+                android:text="C"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:backgroundTint="@color/colorPrimary"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:padding="8dp" />
+
+            <Button
+                android:id="@+id/bbrac1"
+                android:text="("
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:backgroundTint="@color/colorPrimary"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:padding="8dp" />
+
+            <Button
+                android:id="@+id/bbrac2"
+                android:text=")"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:backgroundTint="@color/colorPrimary"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:padding="8dp" />
+
+            <Button
+                android:id="@+id/bdiv"
+                android:text="÷"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:backgroundTint="@color/colorPrimary"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:padding="8dp" />
+
+            <!-- Baris 2 -->
+            <Button android:id="@+id/bsin" android:text="sin" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" android:backgroundTint="@color/colorPrimary" android:textColor="@android:color/white"/>
+            <Button android:id="@+id/bcos" android:text="cos" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" android:backgroundTint="@color/colorPrimary" android:textColor="@android:color/white"/>
+            <Button android:id="@+id/btan" android:text="tan" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" android:backgroundTint="@color/colorPrimary" android:textColor="@android:color/white"/>
+            <Button android:id="@+id/blog" android:text="log" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" android:backgroundTint="@color/colorPrimary" android:textColor="@android:color/white"/>
+            <Button android:id="@+id/bln" android:text="ln" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" android:backgroundTint="@color/colorPrimary" android:textColor="@android:color/white"/>
+
+            <!-- Baris 3 -->
+            <Button android:id="@+id/bfact" android:text="x!" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" android:backgroundTint="@color/colorPrimary" android:textColor="@android:color/white"/>
+            <Button android:id="@+id/bsquare" android:text="x²" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" android:backgroundTint="@color/colorPrimary" android:textColor="@android:color/white"/>
+            <Button android:id="@+id/bsqrt" android:text="√" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" android:backgroundTint="@color/colorPrimary" android:textColor="@android:color/white"/>
+            <Button android:id="@+id/binv" android:text="1/x" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" android:backgroundTint="@color/colorPrimary" android:textColor="@android:color/white"/>
+            <Button android:id="@+id/bmul" android:text="×" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" android:backgroundTint="@color/colorPrimary" android:textColor="@android:color/white"/>
+
+            <!-- Baris 4 -->
+            <Button android:id="@+id/b7" android:text="7" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" android:backgroundTint="@color/grayOf" android:textColor="@android:color/black"/>
+            <Button android:id="@+id/b8" android:text="8" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" android:backgroundTint="@color/grayOf" android:textColor="@android:color/black"/>
+            <Button android:id="@+id/b9" android:text="9" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" android:backgroundTint="@color/grayOf" android:textColor="@android:color/black"/>
+            <Button android:id="@+id/bminus" android:text="-" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" android:backgroundTint="@color/colorPrimary" android:textColor="@android:color/white"/>
+            <Button android:id="@+id/bplus" android:text="+" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" android:backgroundTint="@color/colorPrimary" android:textColor="@android:color/white"/>
+
+            <!-- Baris 5 -->
+            <Button android:id="@+id/b4" android:text="4" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" android:backgroundTint="@color/grayOf" android:textColor="@android:color/black"/>
+            <Button android:id="@+id/b5" android:text="5" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" android:backgroundTint="@color/grayOf" android:textColor="@android:color/black"/>
+            <Button android:id="@+id/b6" android:text="6" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" android:backgroundTint="@color/grayOf" android:textColor="@android:color/black"/>
+            <Button android:id="@+id/bpi" android:text="π" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" android:backgroundTint="@color/colorPrimary" android:textColor="@android:color/white"/>
+            <Button android:id="@+id/bequal" android:text="=" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" android:backgroundTint="@color/colorPrimary" android:textColor="@android:color/white"/>
+
+            <!-- Baris 6 -->
+            <Button android:id="@+id/b1" android:text="1" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" android:backgroundTint="@color/grayOf" android:textColor="@android:color/black"/>
+            <Button android:id="@+id/b2" android:text="2" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" android:backgroundTint="@color/grayOf" android:textColor="@android:color/black"/>
+            <Button android:id="@+id/b3" android:text="3" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" android:backgroundTint="@color/grayOf" android:textColor="@android:color/black"/>
+            <Button android:id="@+id/b0" android:text="0" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" android:backgroundTint="@color/grayOf" android:textColor="@android:color/black"/>
+            <Button android:id="@+id/bdot" android:text="." android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" android:backgroundTint="@color/grayOf" android:textColor="@android:color/black"/>
+        </GridLayout>
     </ScrollView>
-
-    
-    
 
 </androidx.constraintlayout.widget.ConstraintLayout>

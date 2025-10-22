@@ -1,58 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:orientation="vertical"
-android:gravity="center"
-android:background="@drawable/bck_baru"
-tools:context=".ui.main.LoginActivity">
-
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bck_baru"
+    tools:context=".ui.main.LoginActivity">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="351dp"
+        android:id="@+id/loginCard"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
         app:cardCornerRadius="30dp"
         app:cardElevation="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.526">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/costum_edit_text"
             android:orientation="vertical"
+            android:background="@drawable/costum_edit_text"
             android:padding="24dp">
-
 
             <TextView
                 android:id="@+id/loginText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="40dp"
+                android:layout_marginBottom="32dp"
                 android:text="Login PMATH"
                 android:textAlignment="center"
                 android:textColor="@color/colorPrimary"
-                android:textSize="36sp"
+                android:textSize="32sp"
                 android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp">
+                android:layout_marginBottom="12dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/colorPrimary"
                     android:hint="Username"
                     android:inputType="textCapWords" />
 
@@ -71,7 +65,6 @@ tools:context=".ui.main.LoginActivity">
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword" />
-
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
@@ -81,13 +74,15 @@ tools:context=".ui.main.LoginActivity">
                 android:layout_marginTop="16dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:text="Belum punya akun? hubungi administrator atau SPV RSD sekarang!" />
+                android:text="Belum punya akun? Hubungi administrator atau SPV RSD sekarang!"
+                android:textAlignment="center"
+                android:textSize="14sp" />
 
             <Button
                 android:id="@+id/loginButton"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="30dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="24dp"
                 android:backgroundTint="@color/colorPrimary"
                 android:text="Login"
                 android:textSize="18sp"
@@ -96,14 +91,14 @@ tools:context=".ui.main.LoginActivity">
             <Button
                 android:id="@+id/sosButton"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="56dp"
                 android:layout_marginTop="10dp"
                 android:backgroundTint="@android:color/holo_red_dark"
-                android:text="SOS Flaslight"
+                android:text="SOS Flashlight"
                 android:textSize="18sp"
                 app:cornerRadius="20dp" />
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
