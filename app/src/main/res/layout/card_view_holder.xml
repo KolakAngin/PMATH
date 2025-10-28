@@ -165,6 +165,16 @@
 
         </TableLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lorem Ipsum Dolor sit Amet"
+            android:textSize="20sp"
+            android:id="@+id/txt_explain"
+            android:textStyle="bold"
+            android:visibility="gone"/>
+
+
         <ImageView
             android:layout_width="wrap_content"
             android:id="@+id/img_result_icon"

@@ -41,6 +41,7 @@
     import androidx.core.view.size
     import androidx.core.view.get
     import com.itextpdf.kernel.colors.Color
+    import com.syamsudinnoor.aft.aviation.pertamina.ui.stadis.StadisActivity
 
     class MainActivity : AppCompatActivity() {
         private lateinit var binding: ActivityMainBinding
@@ -139,6 +140,10 @@
                     }
                     "Call Developer" -> openWhatsApp(this,"6285173005241","Halo Developer Saya Ingin Tambah Fitur Baru")
 
+                    "Calculator Dopping Stadis" -> {
+                        val intent = Intent(this, StadisActivity::class.java)
+                        startActivity(intent)
+                    }
                 }
 
             }

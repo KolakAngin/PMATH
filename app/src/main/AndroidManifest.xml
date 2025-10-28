@@ -21,9 +21,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApp.Splash">
         <activity
+            android:name=".ui.stadis.StadisActivity"
+            android:exported="false"
+            android:theme="@style/Base.Theme.PMATH"/>
+        <activity
             android:name=".ui.main.PrivacyPolicyActivity"
-            android:theme="@style/Base.Theme.PMATH"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Base.Theme.PMATH" />
         <activity
             android:name=".ui.density.volume_control.activity_holder.VolumeControlEditDataActivity"
             android:exported="false"
