@@ -20,6 +20,7 @@ data class AnalisaVolumeControlQuality(
     var harga_avtur : Double?,
     var spv_rsd : String?,
     var sopir_bridger_1 : String?,
-    var sopir_bridger_2 : String?
+    var sopir_bridger_2 : String?,
+    var catatan : String?
 
 ) : Parcelable

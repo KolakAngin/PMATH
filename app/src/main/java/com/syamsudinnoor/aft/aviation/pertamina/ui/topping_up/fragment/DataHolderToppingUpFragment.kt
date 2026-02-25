@@ -42,6 +42,7 @@ import com.syamsudinnoor.aft.aviation.pertamina.utility.showLoadingCustom
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Calendar
 import java.util.Date
 
 
@@ -58,6 +59,7 @@ class DataHolderToppingUpFragment : Fragment() {
         MainViewModelFactory(repository)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()){
         isGranted : Boolean ->
         if (isGranted){
@@ -68,7 +70,7 @@ class DataHolderToppingUpFragment : Fragment() {
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.N)
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -77,21 +79,34 @@ class DataHolderToppingUpFragment : Fragment() {
         _binding = FragmentDataHolderToppingUpBinding.inflate(inflater, container, false)
         setupRecyclerView()
 
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            viewmodel.toppingUpList.observe(viewLifecycleOwner){
+//                adapter.submitList(it)
+//                dataReport = it
+//                if (it.isEmpty()){
+//                    binding.buttonSave.isEnabled = false
+//                    binding.buttonSave.setBackgroundResource(android.R.color.darker_gray)
+//                    binding.recycleViewDataHolder.visibility = View.GONE
+//                    binding.txtNoData.visibility = View.VISIBLE
+//                }else{
+//                    binding.buttonSave.isEnabled = true
+//                    binding.buttonSave.setBackgroundResource(R.color.colorPrimary)
+//                    binding.recycleViewDataHolder.visibility = View.VISIBLE
+//                    binding.txtNoData.visibility = View.GONE
+//                }
+//            }
+//        }
         viewmodel.toppingUpList.observe(viewLifecycleOwner){
             adapter.submitList(it)
             dataReport = it
             if (it.isEmpty()){
                 binding.buttonSave.isEnabled = false
-                binding.buttonFilter.isEnabled = false
                 binding.buttonSave.setBackgroundResource(android.R.color.darker_gray)
-                binding.buttonFilter.setBackgroundResource(android.R.color.darker_gray)
                 binding.recycleViewDataHolder.visibility = View.GONE
                 binding.txtNoData.visibility = View.VISIBLE
             }else{
                 binding.buttonSave.isEnabled = true
-                binding.buttonFilter.isEnabled = true
                 binding.buttonSave.setBackgroundResource(R.color.colorPrimary)
-                binding.buttonFilter.setBackgroundResource(R.color.colorPrimary)
                 binding.recycleViewDataHolder.visibility = View.VISIBLE
                 binding.txtNoData.visibility = View.GONE
             }
@@ -100,13 +115,22 @@ class DataHolderToppingUpFragment : Fragment() {
         binding.buttonFilter.setOnClickListener {
             settingDialogFilter()
         }
-
         binding.buttonSave.setOnClickListener {
+
             checkPermissionAndGeneratePdf()
         }
 
         binding.fabAdd.setOnClickListener {
-            viewmodel.loadData()
+
+            val startTime = Calendar.getInstance().apply {
+                set(Calendar.HOUR_OF_DAY, 1)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }.timeInMillis
+
+            val endTime = Calendar.getInstance().timeInMillis
+            viewmodel.filterDataByDate(startTime,endTime)
             Toast.makeText(requireContext(), "Refreshing...", Toast.LENGTH_SHORT).show()
         }
 
@@ -114,6 +138,7 @@ class DataHolderToppingUpFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun startPdfGeneration() {
         // Ganti ini dengan data asli dari Room
         val sampleData = dataReport
@@ -160,6 +185,7 @@ class DataHolderToppingUpFragment : Fragment() {
         startActivity(Intent.createChooser(shareIntent, "Bagikan PDF melalui..."))
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun checkPermissionAndGeneratePdf() {
         // Hanya perlu cek permission untuk Android 9 ke bawah
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
@@ -245,7 +271,12 @@ class DataHolderToppingUpFragment : Fragment() {
                 year = yearDialog.toString()
                 month = (monthDialog + 1).toString()
                 day = dayOfMonthDialog.toString()
-                localBinding.buttonDate.text = "$day:$month:$year"
+                val calendar = Calendar.getInstance().apply {
+                    set(Calendar.YEAR, yearDialog)
+                    set(Calendar.MONTH, monthDialog)
+                    set(Calendar.DAY_OF_MONTH, dayOfMonthDialog)
+                }
+                localBinding.buttonDate.text = TimeConverter.toReadableDate(calendar.timeInMillis)
             }
         }
 
@@ -297,6 +328,20 @@ class DataHolderToppingUpFragment : Fragment() {
 
         dialog.show()
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val cal = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 1)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+
+        val startTime = cal.timeInMillis
+        val endTime = Calendar.getInstance().timeInMillis
+        viewmodel.filterDataByDate(startTime,endTime)
     }
 
 

@@ -34,7 +34,7 @@ abstract class SnoorRoomDatabase : RoomDatabase() {
                         context,
                         SnoorRoomDatabase::class.java,
                         "aft_syamsudin_noor_utility"
-                    ).createFromAsset("databases/aft_syamsudin_noor_utility_6.db").build()
+                    ).createFromAsset("databases/aft_syamsudin_noor_utility_7.db").build()
                     INSTANCE = instance
                     return  instance
                 }

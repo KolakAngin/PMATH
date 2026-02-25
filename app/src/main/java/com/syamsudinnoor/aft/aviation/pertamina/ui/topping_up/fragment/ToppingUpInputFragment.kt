@@ -4,11 +4,14 @@ import android.app.AlertDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
+import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.util.TypedValue
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +20,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.NumberPicker
+import android.widget.TextView
 import android.widget.TimePicker
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -45,6 +49,7 @@ import com.syamsudinnoor.aft.aviation.pertamina.utility.formatterNumber
 import com.syamsudinnoor.aft.aviation.pertamina.utility.helperSettingEditText
 import com.syamsudinnoor.aft.aviation.pertamina.utility.textWatcherWithNumber
 import java.sql.Time
+import java.util.Calendar
 import java.util.Date
 import kotlin.getValue
 import kotlin.math.min
@@ -62,6 +67,7 @@ class ToppingUpInputFragment : Fragment() {
 
     private var statusLiterBefore : Double = 0.0
     private var statusLiterAfter : Double = 0.0
+
 
     private val viewModel: ToppingUpViewModel by viewModels {
         val database = SnoorRoomDatabase.getDatabase(requireContext())
@@ -88,6 +94,10 @@ class ToppingUpInputFragment : Fragment() {
     private var totalisatorAkhir : String? = ""
     private var tangki : String? = ""
     private var operator : String? = ""
+    private var note : String? = null
+
+
+
 
     private var minuteStart : Long? = null
     @RequiresApi(Build.VERSION_CODES.N)
@@ -184,6 +194,7 @@ class ToppingUpInputFragment : Fragment() {
         totalisatorAkhir = toppingUp.totalisator_akhir
         tangki = toppingUp.tanki
         operator = toppingUp.operator
+        note = toppingUp.catatan
         binding.buttonSearch2.isEnabled = true
 
 
@@ -192,13 +203,21 @@ class ToppingUpInputFragment : Fragment() {
 
 
     private fun insertData(){
+
+        val topping = binding.editToppingVolume.text.toString()
+        if (topping == "" || hourStart == null || hourEnd == null || duration == null){
+            Toast.makeText(requireContext(), "Data tidak lengkap", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         tangki = binding.spinnerTankQc.text.toString()
         operator = binding.spinnerOperatorName.text.toString()
         salesRef = binding.editRef.text.toString().toIntOrNull()
-        jumlahTopping = binding.editToppingVolume.text.toString().replace(".","").`toInt`()
+        jumlahTopping = binding.editToppingVolume.text.toString().replace(".","").toInt()
         totalisatorAwal = binding.editTotalisatorAwal.text.toString()
         totalisatorAkhir = binding.editTotalisatorAkhir.text.toString()
         mVariabel = binding.spinnerM.text.toString()
+        note = binding.editCatatan.text.toString()
 
 
         val data = ToppingUp(
@@ -214,7 +233,9 @@ class ToppingUpInputFragment : Fragment() {
             totalisator_awal = totalisatorAwal,
             tanki = tangki,
             operator = operator,
-            totalisator_akhir = totalisatorAkhir
+            totalisator_akhir = totalisatorAkhir,
+            catatan = note,
+            status = STATUS
             )
 
 
@@ -236,13 +257,16 @@ class ToppingUpInputFragment : Fragment() {
                 totalisator_awal = totalisatorAwal,
                 tanki = tangki,
                 operator = operator,
-                totalisator_akhir = totalisatorAkhir
+                totalisator_akhir = totalisatorAkhir,
+                catatan = note,
+                status =  STATUS
             )
             toppingUpViewModel.updateToppingUp(dataToUpdate)
             Toast.makeText(requireContext(), "Data berhasil diupdate", Toast.LENGTH_SHORT).show()
             activity?.finish()
         }
         binding.buttonSave.isEnabled = false
+
     }
 
 
@@ -257,8 +281,16 @@ class ToppingUpInputFragment : Fragment() {
         minutePicker.minValue = 0
         minutePicker.maxValue = 60
 
+        val titleView = TextView(requireContext()).apply {
+            text = "Total Waktu Pengisian"
+            gravity = Gravity.CENTER
+            setPadding(32, 32, 32, 32)
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
+            setTypeface(typeface, Typeface.BOLD)
+        }
+
         AlertDialog.Builder(context)
-            .setTitle("Total Waktu Pengisian")
+            .setCustomTitle(titleView)
             .setView(dialogView)
             .setPositiveButton("OK"){_,_ ->
 
@@ -545,6 +577,11 @@ class ToppingUpInputFragment : Fragment() {
             binding.spinnerM.setAdapter(adapterM)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     companion object {
 
         fun newInstance(toppings : ToppingUp?) = ToppingUpInputFragment().apply {
@@ -556,6 +593,8 @@ class ToppingUpInputFragment : Fragment() {
         const val APP_NAME = "APP_NAME"
         private const val CONST_17_21_22 = 24500.0
         private const val CONST_19_20 = 25000.0
+
+        private const val STATUS = "topping up"
 
     }
 

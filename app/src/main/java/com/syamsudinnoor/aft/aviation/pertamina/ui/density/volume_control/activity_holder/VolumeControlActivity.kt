@@ -1,5 +1,6 @@
 package com.syamsudinnoor.aft.aviation.pertamina.ui.density.volume_control.activity_holder
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
@@ -59,15 +60,20 @@ class VolumeControlActivity : AppCompatActivity() {
         }.attach()
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        menuInflater.inflate(R.menu.help_menu, menu)
-//        return super.onCreateOptionsMenu(menu)
-//    }
-//
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.quality_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId){
             android.R.id.home -> {
                 finish()
+                true
+            }
+            R.id.total_data ->{
+                val intent = Intent(this, TotalVolumeControlActivity::class.java)
+                startActivity(intent)
                 true
             }
             else -> {

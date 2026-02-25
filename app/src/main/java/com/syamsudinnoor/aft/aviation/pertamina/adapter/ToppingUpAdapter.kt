@@ -6,8 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.syamsudinnoor.aft.aviation.pertamina.R
 import com.syamsudinnoor.aft.aviation.pertamina.databinding.HolderQualityControlBinding
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.ToppingUp
+import com.syamsudinnoor.aft.aviation.pertamina.ui.topping_up.fragment.KonsinyasiFragment
 import com.syamsudinnoor.aft.aviation.pertamina.utility.TimeConverter
 import com.syamsudinnoor.aft.aviation.pertamina.utility.formatterNumber
 
@@ -46,6 +48,10 @@ class ToppingUpAdapter(private val onItemClicked: (ToppingUp) -> Unit,
             binding.txtTangki.text = item.tanki ?: ""
             binding.operator.text = item.operator ?: ""
             binding.timeDataQuilty.text = TimeConverter.toReadableDateTime(item.start_time ?: System.currentTimeMillis())
+
+            if (item.status == KonsinyasiFragment.STATUS){
+                binding.holderCardViewQualityControl.setBackgroundResource(R.color.warning_2)
+            }
         }
     }
 }

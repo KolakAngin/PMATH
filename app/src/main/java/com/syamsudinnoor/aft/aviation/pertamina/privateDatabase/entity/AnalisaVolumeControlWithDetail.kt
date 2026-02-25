@@ -14,3 +14,11 @@ data class AnalisaVolumeControlWithDetail(
     )
     val detailKompartemen: List<DetailKompartemen>
 ) : Parcelable
+
+
+@Parcelize
+data class SumOfQualityControlData(val tanggal : Long, val total_kuantitas : Int) : Parcelable
+
+
+@Parcelize
+data class AnalyticsDataVolumeControl(val Tanggal : Long, val Selisih : Double, val Total_Bridger : Int) : Parcelable

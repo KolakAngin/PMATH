@@ -17,22 +17,24 @@ import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.ToppingUp
 @Database(entities = [BridgerQualityControl::class, ToppingUp::class,
     AnalisaVolumeControlQuality::class, DetailKompartemen::class], version = 1)
 @TypeConverters(Converters::class)
-abstract class MainDatabase : RoomDatabase(){
+abstract class MainDatabase : RoomDatabase() {
     abstract fun getDao(): MainDao
-    companion object{
+
+    companion object {
         @Volatile
         private var INSTANCE: MainDatabase? = null
 
         fun getDatabase(context: Context): MainDatabase {
             val tempInstance = INSTANCE
-            if(tempInstance != null){
-             return tempInstance
-            }else{
-                synchronized(this){
+            if (tempInstance != null) {
+                return tempInstance
+            } else {
+                synchronized(this) {
                     val instance = Room.databaseBuilder(
                         context.applicationContext,
                         MainDatabase::class.java,
-                        "main_database")
+                        "main_database"
+                    )
                         .build()
 
                     INSTANCE = instance

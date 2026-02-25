@@ -87,15 +87,21 @@ class ToppingUpActivity : AppCompatActivity() {
 
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        menuInflater.inflate(R.menu.help_menu, menu)
-//        return super.onCreateOptionsMenu(menu)
-//    }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.quality_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId){
             android.R.id.home -> {
                 finish()
+                true
+            }
+
+            R.id.total_data -> {
+                val intent = Intent(this, KonsinyasiActivity::class.java)
+                startActivity(intent)
                 true
             }
             else -> {

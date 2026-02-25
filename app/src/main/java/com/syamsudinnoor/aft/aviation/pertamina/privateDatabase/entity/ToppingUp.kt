@@ -53,5 +53,11 @@ data class ToppingUp(
     val tanki : String?,
 
     @ColumnInfo("operator")
-    val operator : String?
+    val operator : String?,
+
+    @ColumnInfo("catatan")
+    val catatan : String?,
+
+    @ColumnInfo("status")
+    val status : String?
 ): Parcelable

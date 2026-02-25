@@ -25,8 +25,6 @@
             app:navigationIconTint="@android:color/white"/>
     </com.google.android.material.appbar.AppBarLayout>
 
-
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -206,71 +204,81 @@
                 layout="@layout/card_view_holder" />
 
 
-            <TextView
+            <LinearLayout
+                android:id="@+id/ln_holder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:visibility="gone"
-                tools:visibility="visible"
-                android:id="@+id/txt_target_cu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Dopping Stadis"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp"/>
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                tools:visibility="visible">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_volume_liter_stadis"
+                <TextView
                     android:visibility="gone"
-                    tools:visibility="visible"
+                    android:id="@+id/txt_target_cu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Estimasi Volume (Liter)"
-                    android:inputType="numberDecimal" />
+                    android:text="Dopping Stadis"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"/>
 
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_target_cu"
-                    android:visibility="gone"
-                    tools:visibility="visible"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Target CU"
-                    android:inputType="numberDecimal" />
+                    android:layout_marginBottom="15dp">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_volume_liter_stadis"
+                        tools:visibility="visible"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Estimasi Volume (Liter)"
+                        android:inputType="numberDecimal" />
 
-            <Button
-                android:visibility="gone"
-                tools:visibility="visible"
-                android:foreground="?attr/selectableItemBackground"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/button_hitung_CU"
-                android:background="@drawable/radio_normal"
-                android:text="Lihat Hasil"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <include
-                tools:visibility = "visible"
-                android:visibility="gone"
-                android:id="@+id/card_view_kebutuhan_dopping"
-                layout="@layout/card_view_holder" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp">
 
-            <include
-                tools:visibility = "visible"
-                android:visibility="gone"
-                android:id="@+id/card_view_result_kebutuhan_dopping"
-                layout="@layout/card_view_holder" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_target_cu"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Target CU"
+                        android:inputType="numberDecimal" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/button_hitung_CU"
+                    android:background="@drawable/radio_normal"
+                    android:text="Lihat Hasil"/>
+
+                <include
+                    tools:visibility = "visible"
+                    android:visibility="gone"
+                    android:id="@+id/card_view_kebutuhan_dopping"
+                    layout="@layout/card_view_holder" />
+
+                <include
+                    tools:visibility = "visible"
+                    android:visibility="gone"
+                    android:id="@+id/card_view_result_kebutuhan_dopping"
+                    layout="@layout/card_view_holder" />
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

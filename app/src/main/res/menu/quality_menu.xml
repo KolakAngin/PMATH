@@ -3,15 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_save"
-        android:title="Save"
-        android:icon="@drawable/ic_save_file"
-        app:showAsAction="ifRoom"
-        android:iconTint="@android:color/white"
-        />
-    <item
-        android:id="@+id/menu_time_filter"
-        android:title="Time Filter"
+        android:id="@+id/total_data"
+        android:title="Total Data"
         android:icon="@drawable/ic_time_filter"
         app:showAsAction="always"
         android:iconTint="@android:color/white"

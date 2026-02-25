@@ -75,6 +75,7 @@ class BridgerDataShowActivty : AppCompatActivity() {
         binding.row20Body.text = data.tangki ?: ""
         binding.row21Body.text = data.operator_name ?: ""
         binding.row24Body.text = formatterNumberDecimal(data.diff_from_density_distributor ?: 0.0,6)
+        binding.row22Body.text = data.catatan ?: ""
 
     }
 

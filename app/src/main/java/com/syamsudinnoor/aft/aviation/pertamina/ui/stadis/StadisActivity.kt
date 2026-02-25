@@ -127,6 +127,7 @@ class StadisActivity : AppCompatActivity() {
             binding.editVolumeLiterStadis.visibility = View.GONE
             binding.editTargetCu.visibility = View.GONE
             binding.cardViewResultKebutuhanDopping.cardViewResult.visibility = View.GONE
+            binding.lnHolder.visibility = View.GONE
 
 
 
@@ -137,6 +138,8 @@ class StadisActivity : AppCompatActivity() {
             binding.cardViewStatusDopping.row1Body.text = blendResult.toInt().toString()
             binding.cardViewStatusDopping.row2Header.text = "Status"
             binding.cardViewStatusDopping.row2Body.text = "NOT OK"
+
+            binding.lnHolder.visibility = View.VISIBLE
 
             binding.txtTargetCu.visibility = View.VISIBLE
             binding.editTargetCu.visibility = View.VISIBLE
@@ -171,8 +174,9 @@ class StadisActivity : AppCompatActivity() {
         binding.cardViewKebutuhanDopping.cardViewResult.visibility = View.VISIBLE
         binding.cardViewKebutuhanDopping.imgResultIcon.visibility = View.GONE
         binding.cardViewKebutuhanDopping.tableViewResult.visibility = View.VISIBLE
+        binding.cardViewKebutuhanDopping.txtTitle.visibility = View.VISIBLE
 
-
+        binding.cardViewKebutuhanDopping.txtTitle.setText("Hasil Kalkulator")
         binding.cardViewKebutuhanDopping.row1Header.text = "Selisih"
         binding.cardViewKebutuhanDopping.row1Body.text = diffCU.toInt().toString()
         binding.cardViewKebutuhanDopping.row2Header.text = "Vol STADIS 2"
@@ -190,8 +194,9 @@ class StadisActivity : AppCompatActivity() {
         binding.cardViewResultKebutuhanDopping.cardViewResult.visibility = View.VISIBLE
         binding.cardViewResultKebutuhanDopping.tableViewResult.visibility = View.VISIBLE
         binding.cardViewResultKebutuhanDopping.imgResultIcon.visibility = View.GONE
+        binding.cardViewResultKebutuhanDopping.txtTitle.visibility = View.VISIBLE
 
-
+        binding.cardViewResultKebutuhanDopping.txtTitle.setText("REKOMENDASI DOPPING")
         binding.cardViewResultKebutuhanDopping.row1Header.text = "Vol. Avtur"
         binding.cardViewResultKebutuhanDopping.row1Body.text = formatterNumber(litersEstimationStadis)
 

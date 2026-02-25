@@ -22,6 +22,18 @@
 
         android:layout_margin="20dp">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lorem Ipsum Dolor sit Amet"
+            android:textSize="20sp"
+            android:id="@+id/txt_title"
+            tools:visibility="visible"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:visibility="gone"/>
+
 
         <TableLayout
             android:id="@+id/table_view_result"
@@ -172,6 +184,9 @@
             android:textSize="20sp"
             android:id="@+id/txt_explain"
             android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            tools:visibility="visible"
             android:visibility="gone"/>
 
 

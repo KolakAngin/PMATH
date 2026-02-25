@@ -19,6 +19,15 @@ class DensityViewModel(private val repository: SNoorRepository) : ViewModel() {
         densityParams.value = Pair(density, temperature)
     }
 
+    val densityParamsDoc = MutableLiveData<Pair<Double, Double>>()
+
+    val densityResultDoc : LiveData<Density_15?> = densityParamsDoc.switchMap {
+        params -> repository.getResultDensity(params.first,params.second)
+    }
+    fun searchDensityDoc(density : Double, temperature : Double) {
+        densityParamsDoc.value = Pair(density, temperature)
+    }
+
     // Gunakan underscore untuk MutableLiveData privat
     private val _isDensityValid = MutableLiveData<Boolean>()
     val isDensityValid: LiveData<Boolean> = _isDensityValid

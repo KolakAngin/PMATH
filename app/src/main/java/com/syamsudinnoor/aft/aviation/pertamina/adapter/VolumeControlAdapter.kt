@@ -23,7 +23,9 @@ open class VolumeControlDiffCallback : DiffUtil.ItemCallback<AnalisaVolumeContro
     override fun areContentsTheSame(
         oldItem: AnalisaVolumeControlWithDetail,
         newItem: AnalisaVolumeControlWithDetail
-    ): Boolean = oldItem == newItem
+    ) : Boolean {
+        return newItem.hashCode() == oldItem.hashCode()
+    }
 
 }
 
@@ -60,7 +62,6 @@ class VolumeControlAdapter (private val onClickAction : (AnalisaVolumeControlWit
             binding.txtSealHolder.text = item.analisaVolumeControl.spv_rsd
             binding.operator.text = item.analisaVolumeControl.sopir_bridger_1
             binding.txtTangki.text = item.analisaVolumeControl.sopir_bridger_2
-
 
         }
     }

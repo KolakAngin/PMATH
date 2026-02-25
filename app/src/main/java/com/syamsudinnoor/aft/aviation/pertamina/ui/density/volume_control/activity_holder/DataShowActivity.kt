@@ -71,6 +71,7 @@ class DataShowActivity : AppCompatActivity() {
         binding.row8Body.text = data.analisaVolumeControl.spv_rsd ?: ""
         binding.row9Body.text = data.analisaVolumeControl.sopir_bridger_1 ?: ""
         binding.row10Body.text = data.analisaVolumeControl.sopir_bridger_2 ?: ""
+        binding.row11Body.text = data.analisaVolumeControl.catatan ?: ""
     }
 
 

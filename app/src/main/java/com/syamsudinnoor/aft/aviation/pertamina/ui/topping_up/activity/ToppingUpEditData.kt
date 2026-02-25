@@ -14,6 +14,7 @@ import com.syamsudinnoor.aft.aviation.pertamina.R
 import com.syamsudinnoor.aft.aviation.pertamina.databinding.ActivityToppingUpBinding
 import com.syamsudinnoor.aft.aviation.pertamina.databinding.ActivityToppingUpEditDataBinding
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.ToppingUp
+import com.syamsudinnoor.aft.aviation.pertamina.ui.topping_up.fragment.KonsinyasiFragment
 import com.syamsudinnoor.aft.aviation.pertamina.ui.topping_up.fragment.ToppingUpInputFragment
 
 class ToppingUpEditData : AppCompatActivity() {
@@ -41,10 +42,19 @@ class ToppingUpEditData : AppCompatActivity() {
             intent.getParcelableExtra("UPDATE_DATA")
         }
 
-        supportFragmentManager
-            .beginTransaction()
-            .replace(binding.fragmentHolder.id, ToppingUpInputFragment.newInstance(updateData))
-            .commit()
+        if (updateData?.status == KonsinyasiFragment.STATUS){
+            supportActionBar?.title = "Edit Data Konsinyasi"
+            supportFragmentManager
+                .beginTransaction()
+                .replace(binding.fragmentHolder.id, KonsinyasiFragment.newInstance(updateData))
+                .commit()
+        }else{
+            supportFragmentManager
+                .beginTransaction()
+                .replace(binding.fragmentHolder.id, ToppingUpInputFragment.newInstance(updateData))
+                .commit()
+        }
+
     }
 
 

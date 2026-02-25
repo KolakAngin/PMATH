@@ -90,20 +90,18 @@ class DataQualityControlFragment : Fragment() {
 
         binding.recycleViewDataHolder.layoutManager = LinearLayoutManager(requireContext())
         binding.recycleViewDataHolder.adapter = adapter
+
         mainViewModel.qualityControlList.observe(viewLifecycleOwner){
+            //Toast.makeText(requireContext(),"Saya adalah observe dengan panjang data : ${it.size}", Toast.LENGTH_LONG).show()
             adapter.submitList(it)
             if (it.isEmpty()){
                 binding.recycleViewDataHolder.visibility = View.GONE
                 binding.txtNoData.visibility = View.VISIBLE
                 binding.buttonSave.isEnabled = false
-                binding.buttonFilter.isEnabled = false
-                binding.buttonFilter.setBackgroundResource(android.R.color.darker_gray)
                 binding.buttonSave.setBackgroundResource(android.R.color.darker_gray)
             }else{
                 binding.buttonSave.isEnabled = true
-                binding.buttonFilter.isEnabled = true
                 binding.buttonSave.setBackgroundResource(R.color.colorPrimary)
-                binding.buttonFilter.setBackgroundResource(R.color.colorPrimary)
                 binding.recycleViewDataHolder.visibility = View.VISIBLE
                 binding.txtNoData.visibility = View.GONE
                 dataReport = it
@@ -122,8 +120,17 @@ class DataQualityControlFragment : Fragment() {
         }
 
         binding.fabAdd.setOnClickListener {
-            mainViewModel.loadAllData()
             Toast.makeText(requireContext(), "Refreshing...", Toast.LENGTH_SHORT).show()
+
+            val startTime = Calendar.getInstance().apply {
+                set(Calendar.HOUR_OF_DAY, 1)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }.timeInMillis
+
+            val endTime = Calendar.getInstance().timeInMillis
+            mainViewModel.filterDataByDate(startTime,endTime)
         }
 
         return binding.root
@@ -250,7 +257,13 @@ class DataQualityControlFragment : Fragment() {
                 year = yearDialog.toString()
                 month = (monthDialog + 1).toString()
                 day = dayOfMonthDialog.toString()
-                localBinding.buttonDate.text = getString(R.string.date_container, day, month, year)
+
+                val calendar = Calendar.getInstance().apply {
+                    set(Calendar.YEAR, yearDialog)
+                    set(Calendar.MONTH, monthDialog)
+                    set(Calendar.DAY_OF_MONTH, dayOfMonthDialog)
+                }
+                localBinding.buttonDate.text = TimeConverter.toReadableDate(calendar.timeInMillis)
             }
         }
 
@@ -303,6 +316,19 @@ class DataQualityControlFragment : Fragment() {
 
         dialog.show()
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val startTime = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 1)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.timeInMillis
+
+        val endTime = Calendar.getInstance().timeInMillis
+        mainViewModel.filterDataByDate(startTime,endTime)
     }
 
     override fun onDestroy() {

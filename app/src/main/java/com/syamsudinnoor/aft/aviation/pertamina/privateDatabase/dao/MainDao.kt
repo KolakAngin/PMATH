@@ -10,8 +10,10 @@ import androidx.room.Transaction
 import androidx.room.Update
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.AnalisaVolumeControlQuality
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.AnalisaVolumeControlWithDetail
+import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.AnalyticsDataVolumeControl
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.BridgerQualityControl
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.DetailKompartemen
+import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.SumOfQualityControlData
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.ToppingUp
 import kotlinx.coroutines.flow.Flow
 
@@ -44,7 +46,7 @@ interface MainDao {
     @Query("DELETE FROM topping_up where id = :id")
     suspend fun deleteToppingUp(id : Int)
 
-    @Query("SELECT * FROM topping_up WHERE start_time BETWEEN :startTime AND :endTime")
+    @Query("SELECT * FROM topping_up WHERE start_time BETWEEN :startTime AND :endTime ORDER BY start_time DESC")
     fun getToppingUpByDate(startTime: Long, endTime: Long): Flow<List<ToppingUp>>
 
 
@@ -101,5 +103,12 @@ interface MainDao {
     }
 
 
+    @Query("Select tanggal, SUM(kuantitas) as total_kuantitas from analisa_volume_control_quality  where tanggal BETWEEN :startTime AND :endTime group by date(tanggal/1000,'unixepoch','localtime')")
+    fun getSumQualityControl(startTime: Long, endTime: Long) : Flow<List<SumOfQualityControlData>>
 
+
+    @Query(
+        "SELECT a.tanggal as Tanggal, sum(d.liter_15) as Selisih, count(distinct a.idAnalisa) as Total_Bridger from analisa_volume_control_quality a join volume_control_quality_detail d on a.idAnalisa = d.idAnalisa where a.tanggal BETWEEN :startTime AND :endTime group by date(a.tanggal/1000,'unixepoch','localtime')"
+    )
+    fun getAnalyticsVolumeControl(startTime: Long, endTime: Long) : Flow<List<AnalyticsDataVolumeControl>>
 }

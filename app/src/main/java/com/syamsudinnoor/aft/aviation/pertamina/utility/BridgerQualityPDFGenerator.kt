@@ -76,7 +76,7 @@ class BridgerQualityPDFGenerator {
         addHeaderContent(document, context)
         val mainTable = createDataTable(data)
         document.add(mainTable)
-        addFooterContent(document)
+        addFooterContent(document,data)
         document.close()
     }
 
@@ -156,7 +156,7 @@ class BridgerQualityPDFGenerator {
 
             // Grup 3
             table.addCell(createDataCell(item.afrn_no ?: ""))
-            table.addCell(createDataCell(item.density_obsd_rec_document?.toString() ?: ""))
+            table.addCell(createDataCell(formatterNumberDecimal(item.density_obsd_rec_document, scale = 6) ?: ""))
             table.addCell(createDataCell(item.temp_rec_document?.toString() ?: ""))
             table.addCell(createDataCell(item.density_15_result_rec_document?.toString() ?: ""))
 
@@ -166,7 +166,7 @@ class BridgerQualityPDFGenerator {
             table.addCell(createDataCell(item.density_15_calculation?.toString() ?: ""))
 
             // Grup 5
-            table.addCell(createDataCell(item.diff_from_density_distributor?.toString() ?: ""))
+            table.addCell(createDataCell(formatterNumberDecimal(item.diff_from_density_distributor, scale = 8)?: ""))
             table.addCell(createDataCell(item.app_star ?: ""))
             table.addCell(createDataCell(item.cu_psm?.toInt().toString()))
 
@@ -234,7 +234,7 @@ class BridgerQualityPDFGenerator {
     }
 
 
-    private fun addFooterContent(document: Document) {
+    private fun addFooterContent(document: Document,data: List<BridgerQualityControl>) {
         document.add(Paragraph("REMARK...").setBold().setMarginTop(10f))
 
         // Tabel utama untuk footer, dibagi 2 kolom: Penjelasan dan Persetujuan
@@ -252,10 +252,10 @@ class BridgerQualityPDFGenerator {
 
         // Kolom Kanan: Persetujuan
         val rightCell = createBorderlessCell("").setTextAlignment(TextAlignment.LEFT)
-        rightCell.add(Paragraph("Prepared by,").setFontSize(9f))
-        rightCell.add(Paragraph("Checked by,").setFontSize(9f).setMarginTop(10f))
-        rightCell.add(Paragraph("Approved by,").setFontSize(9f).setMarginTop(10f))
-        footerTable.addCell(rightCell.setVerticalAlignment(VerticalAlignment.BOTTOM))
+        //rightCell.add(Paragraph("Prepared by,").setFontSize(9f))
+        //rightCell.add(Paragraph("Checked by,").setFontSize(9f).setMarginTop(10f))
+        //rightCell.add(Paragraph("Approved by,").setFontSize(9f).setMarginTop(10f))
+        //footerTable.addCell(rightCell.setVerticalAlignment(VerticalAlignment.BOTTOM))
 
         document.add(footerTable)
 
@@ -265,9 +265,14 @@ class BridgerQualityPDFGenerator {
             .setMarginTop(10f)
 
         // Baris Jabatan
-        nameTable.addCell(createBorderlessCell("QC Bridger").setTextAlignment(TextAlignment.CENTER))
-        nameTable.addCell(createBorderlessCell("SPV. Aviobridge").setTextAlignment(TextAlignment.CENTER))
+
+        nameTable.addCell(createBorderlessCell("Prepared by")).setTextAlignment(TextAlignment.CENTER)
+        nameTable.addCell(createBorderlessCell("Checked by")).setTextAlignment(TextAlignment.CENTER)
+        nameTable.addCell(createBorderlessCell("Approved by")).setTextAlignment(TextAlignment.CENTER)
+
         nameTable.addCell(createBorderlessCell("Operator").setTextAlignment(TextAlignment.CENTER))
+        nameTable.addCell(createBorderlessCell("Jr. Spv RSD").setTextAlignment(TextAlignment.CENTER))
+        nameTable.addCell(createBorderlessCell("Spv RSD").setTextAlignment(TextAlignment.CENTER))
 
         // Baris kosong untuk area tanda tangan
         nameTable.addCell(createBorderlessCell(" ").setHeight(50f))

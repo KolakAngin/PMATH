@@ -73,6 +73,7 @@ class DataShowToppingUp : AppCompatActivity() {
         binding.row12Body.text = data.totalisator_akhir ?: ""
         binding.row13Body.text = data.tanki ?: ""
         binding.row14Body.text = data.operator ?: ""
+        binding.row15Body.text = data.catatan ?: ""
     }
 
 

@@ -72,6 +72,8 @@ class VolumeControlFragment : Fragment() {
     private var sopirBridger1 : String? = null
     private var sopirBridger2 : String? = null
 
+    private var note : String? = null
+
     private val arrayKompartemen : MutableList<String?> = mutableListOf("","","")
     private val arrayTera : MutableList<Int?> = mutableListOf(0, 0, 0)
     private val arrayUkuranSupplyPoint : MutableList<Int?> = mutableListOf(0, 0, 0)
@@ -90,6 +92,7 @@ class VolumeControlFragment : Fragment() {
     private lateinit var kompartemenView : Array<KompartemenHolderBinding>
     private lateinit var searcHolderView : Array<CardViewHolderBinding>
     private var updateData : AnalisaVolumeControlWithDetail? = null
+
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
@@ -217,6 +220,7 @@ class VolumeControlFragment : Fragment() {
         spvRsd = binding.spinnerSpvRsd.text.toString()
         sopirBridger1 = binding.editSopirBridger1.text.toString()
         sopirBridger2 = binding.editSopirBridger2.text.toString()
+        note = binding.editCatatan.text.toString()
 
 
 
@@ -230,7 +234,8 @@ class VolumeControlFragment : Fragment() {
             harga_avtur = hargaAvtur,
             spv_rsd = spvRsd,
             sopir_bridger_1 = sopirBridger1,
-            sopir_bridger_2 = sopirBridger2
+            sopir_bridger_2 = sopirBridger2,
+            catatan = note
         )
 
         val detail = mutableListOf<DetailKompartemen>()
@@ -265,7 +270,8 @@ class VolumeControlFragment : Fragment() {
                 harga_avtur = hargaAvtur,
                 spv_rsd = spvRsd,
                 sopir_bridger_1 = sopirBridger1,
-                sopir_bridger_2 = sopirBridger2
+                sopir_bridger_2 = sopirBridger2,
+                catatan = note
             )
 
             volumeViewModel.updateVolumeControlWithDetail(volumeControlToUpdate, detail)
@@ -291,6 +297,7 @@ class VolumeControlFragment : Fragment() {
         binding.spinnerSpvRsd.setText(data.analisaVolumeControl.spv_rsd ?: "")
         binding.editSopirBridger1.setText(data.analisaVolumeControl.sopir_bridger_1 ?: "")
         binding.editSopirBridger2.setText(data.analisaVolumeControl.sopir_bridger_2 ?: "")
+        binding.editCatatan.setText(data.analisaVolumeControl.catatan ?: "")
 
         var index = 0
         for (i in data.detailKompartemen){

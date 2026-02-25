@@ -6,8 +6,10 @@ import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.MainDatabase
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.dao.MainDao
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.AnalisaVolumeControlQuality
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.AnalisaVolumeControlWithDetail
+import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.AnalyticsDataVolumeControl
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.BridgerQualityControl
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.DetailKompartemen
+import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.SumOfQualityControlData
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.ToppingUp
 import kotlinx.coroutines.flow.Flow
 
@@ -74,6 +76,14 @@ class MainRepository(private val dao: MainDao) {
 
     suspend fun updateVolumeControl(analisaVolumeControl: AnalisaVolumeControlQuality, details: List<DetailKompartemen>){
         dao.updateAnalisaWithDetails(analisaVolumeControl,details)
+    }
+
+    fun getSumOfVolumeControl(startTime: Long, endTime: Long) : Flow<List<SumOfQualityControlData>>{
+        return  dao.getSumQualityControl(startTime,endTime)
+    }
+
+    fun getAnalyticsVolumeControl(startTime: Long, endTime: Long) : Flow<List<AnalyticsDataVolumeControl>>{
+        return dao.getAnalyticsVolumeControl(startTime,endTime)
     }
 
 }

@@ -75,4 +75,7 @@ data class BridgerQualityControl(
     @ColumnInfo(name = "operator_name")
     val operator_name : String?,
 
+    @ColumnInfo(name = "catatan")
+    val catatan : String?
+
 ) : Parcelable

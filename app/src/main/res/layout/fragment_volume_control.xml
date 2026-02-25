@@ -173,6 +173,20 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_catatan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Catata (Opsional)"
+                    android:inputType="textCapWords" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
             <TextView
                 android:id="@+id/txt_kompartemen_1"
                 android:layout_width="match_parent"

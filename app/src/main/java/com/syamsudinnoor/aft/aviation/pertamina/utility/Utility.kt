@@ -32,6 +32,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import com.syamsudinnoor.aft.aviation.pertamina.R
+import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.MainDatabase
 import com.syamsudinnoor.aft.aviation.pertamina.ui.main.LoginActivity
 
 
@@ -176,8 +177,6 @@ fun textWatcherWithNumber(textInputEditText : AutoCompleteTextView, onTextHolder
         }
     }
 }
-
-
 
 object TimeConverter {
 

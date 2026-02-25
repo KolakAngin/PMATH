@@ -76,6 +76,7 @@ class QualityControlFragment : Fragment() {
     private var appmNo : String? = null
     private var cuPSM : String? = null
     private var toTank : String? = null
+    private var note : String? = null
 
     private var dataUpdate : BridgerQualityControl? = null
 
@@ -154,7 +155,8 @@ class QualityControlFragment : Fragment() {
                 app_star = appmNo,
                 cu_psm = cuPSM?.toDoubleOrNull(),
                 tangki = toTank,
-                operator_name = operatorName
+                operator_name = operatorName,
+                catatan = note
             )
 
 
@@ -182,7 +184,8 @@ class QualityControlFragment : Fragment() {
                     app_star = appmNo,
                     cu_psm = cuPSM?.toDoubleOrNull(),
                     tangki = toTank,
-                    operator_name = operatorName
+                    operator_name = operatorName,
+                    catatan = note
                 )
                 mainViewModel.update(reportDataToUpdate)
                 Toast.makeText(requireContext(), "Data berhasil diupdate", Toast.LENGTH_SHORT).show()
@@ -240,6 +243,7 @@ class QualityControlFragment : Fragment() {
         binding.editApp.setText(data.app_star ?: "")
         binding.editCuPsm.setText(data.cu_psm?.toInt()?.toString() ?: "")
         binding.spinnerTankQc.setText(data.tangki ?: "")
+        binding.txtCatatan.setText(data.catatan ?: "")
 
         currentTime = data.dateTime
         bridgerNo = data.bridger_no
@@ -258,6 +262,7 @@ class QualityControlFragment : Fragment() {
         cuPSM = data.cu_psm.toString()
         toTank = data.tangki
         operatorName = data.operator_name
+        note = data.catatan
     }
 
     private fun checkInput(){
@@ -284,6 +289,7 @@ class QualityControlFragment : Fragment() {
         appmNo = binding.editApp.text.toString()
         cuPSM = binding.editCuPsm.text.toString()
         toTank = binding.spinnerTankQc.text.toString()
+        note = binding.txtCatatan.text.toString()
 
         val cuPSM = binding.editCuPsm.text.toString().toDoubleOrNull()
         val cu = when(cuPSM != null){
@@ -291,6 +297,9 @@ class QualityControlFragment : Fragment() {
             false -> 0.0
         }
 
+        if (densityOBDSDocument != null && temperatureDocument != null){
+            searchDensityDoc()
+        }
 
         if (densityFromDistributor != null && densityOBDS != null && temperature != null && cu in 50.0..800.0) {
 
@@ -302,7 +311,6 @@ class QualityControlFragment : Fragment() {
             Toast.makeText(requireContext(), "Data tidak lengkap", Toast.LENGTH_SHORT).show()
             viewModel.onJoinChecking(false)
         }
-
     }
 
     private fun searchDensity() {
@@ -313,6 +321,19 @@ class QualityControlFragment : Fragment() {
             viewModel.searchDensity(density, temperature)
         }
     }
+
+    private fun searchDensityDoc() {
+        val densityDoc = binding.editDensityRecDoc.text.toString().toDoubleOrNull()
+        val temperature = binding.editTempRecDoc.text.toString().toDoubleOrNull()
+        if (densityDoc != null && temperature != null) {
+            viewModel.searchDensityDoc(densityDoc, temperature)
+        }
+
+        viewModel.densityResultDoc.observe(viewLifecycleOwner){
+            binding.editResultDensityRecDoc.setText(it?.result.toString())
+        }
+    }
+
     private fun setupDensity() {
 
         viewModel.densityResult.observe(viewLifecycleOwner) { result ->

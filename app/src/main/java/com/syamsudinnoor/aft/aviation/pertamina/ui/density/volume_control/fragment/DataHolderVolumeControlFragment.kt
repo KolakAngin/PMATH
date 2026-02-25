@@ -29,6 +29,7 @@ import com.syamsudinnoor.aft.aviation.pertamina.databinding.FragmentDataHolderVo
 import com.syamsudinnoor.aft.aviation.pertamina.factoryviewmodel.MainViewModelFactory
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.MainDatabase
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.AnalisaVolumeControlWithDetail
+import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.DetailKompartemen
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.entity.ToppingUp
 import com.syamsudinnoor.aft.aviation.pertamina.privateDatabase.repository.MainRepository
 import com.syamsudinnoor.aft.aviation.pertamina.ui.density.viewmodel.VolumeControlMainViewModel
@@ -37,10 +38,12 @@ import com.syamsudinnoor.aft.aviation.pertamina.utility.AnalisaVolumeControlPdfG
 import com.syamsudinnoor.aft.aviation.pertamina.utility.DialogHolder.dateDialog
 import com.syamsudinnoor.aft.aviation.pertamina.utility.DialogHolder.timeDialog
 import com.syamsudinnoor.aft.aviation.pertamina.utility.TimeConverter
+import com.syamsudinnoor.aft.aviation.pertamina.utility.numberFormatter
 import com.syamsudinnoor.aft.aviation.pertamina.utility.showLoadingCustom
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Calendar
 import java.util.Date
 
 
@@ -82,29 +85,36 @@ class DataHolderVolumeControlFragment : Fragment() {
             settingDialog("Apakah anda yakin ingin menghapus data ini?", it)
 
         }
-        binding.recycleViewDataHolder.adapter = adapter
         binding.recycleViewDataHolder.layoutManager = LinearLayoutManager(requireContext())
+        binding.recycleViewDataHolder.adapter = adapter
+
+
         viewModel.allVolumeControlWithDetail.observe(viewLifecycleOwner){
             adapter.submitList(it)
+            //modelingAnalyticsData(it)
             dataReport = it
             if (it.isEmpty()){
                 binding.buttonSave.isEnabled = false
-                binding.buttonFilter.isEnabled = false
                 binding.buttonSave.setBackgroundResource(android.R.color.darker_gray)
-                binding.buttonFilter.setBackgroundResource(android.R.color.darker_gray)
                 binding.recycleViewDataHolder.visibility = View.GONE
                 binding.txtNoData.visibility = View.VISIBLE
             }else{
                 binding.buttonSave.isEnabled = true
-                binding.buttonFilter.isEnabled = true
                 binding.buttonSave.setBackgroundResource(R.color.colorPrimary)
-                binding.buttonFilter.setBackgroundResource(R.color.colorPrimary)
                 binding.recycleViewDataHolder.visibility = View.VISIBLE
                 binding.txtNoData.visibility = View.GONE
             }
         }
         binding.fabAdd.setOnClickListener {
-            viewModel.loadAllData()
+            val startTime = Calendar.getInstance().apply {
+                set(Calendar.HOUR_OF_DAY, 1)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }.timeInMillis
+
+            val endTime = Calendar.getInstance().timeInMillis
+            viewModel.selectFilterVolumeData(startTime,endTime)
             Toast.makeText(requireContext(), "Refreshing...", Toast.LENGTH_SHORT).show()
         }
 
@@ -236,7 +246,13 @@ class DataHolderVolumeControlFragment : Fragment() {
                 year = yearDialog.toString()
                 month = (monthDialog + 1).toString()
                 day = dayOfMonthDialog.toString()
-                localBinding.buttonDate.text = "$day:$month:$year"
+
+                val calendar = Calendar.getInstance().apply {
+                    set(Calendar.YEAR, yearDialog)
+                    set(Calendar.MONTH, monthDialog)
+                    set(Calendar.DAY_OF_MONTH, dayOfMonthDialog)
+                }
+                localBinding.buttonDate.text = TimeConverter.toReadableDate(calendar.timeInMillis)
             }
         }
 
@@ -290,6 +306,39 @@ class DataHolderVolumeControlFragment : Fragment() {
 
     }
 
+//    private fun modelingAnalyticsData(data : List<AnalisaVolumeControlWithDetail>){
+//
+//        var sumOfLost : Double = 0.0
+//        val totalBridger : Int = data.size
+//
+//        for(i in data){
+//            sumOfLost += i.detailKompartemen.sumOf { it.liter_15 ?: 0.0 }
+//        }
+//
+//        binding.txtJumlahBridger.text = totalBridger.toString()ƒ
+//        if (sumOfLost >= 0){
+//            binding.imgPlusTotal.setImageResource(R.drawable.up_arrow)
+//        }else{
+//            binding.imgPlusTotal.setImageResource(R.drawable.down_arrow)
+//        }
+//
+//        binding.txtPlusTotal.text = numberFormatter(sumOfLost)
+//
+//    }
+
+    override fun onStart() {
+        super.onStart()
+        val startTime = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 1)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.timeInMillis
+
+        val endTime = Calendar.getInstance().timeInMillis
+        viewModel.selectFilterVolumeData(startTime,endTime)
+    }
+
 
 
     override fun onDestroyView() {
@@ -299,3 +348,5 @@ class DataHolderVolumeControlFragment : Fragment() {
     }
 
 }
+
+

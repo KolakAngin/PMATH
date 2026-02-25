@@ -10,22 +10,27 @@
 
     <!-- APP BAR -->
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/appBarLayout"
+        app:layout_constraintStart_toStartOf="parent"
         android:background="@color/colorPrimary"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:fitsSystemWindows="true"
+        >
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/topAppBar"
+            app:titleTextColor="@color/white"
+            app:navigationIconTint="@color/white"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:title="Kalkulator"
-            app:titleTextColor="@android:color/white"
-            app:navigationIconTint="@android:color/white"
+            app:menu="@menu/help_menu"
+            app:iconTint="@color/white"
             android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
-            app:menu="@menu/help_menu" />
+            app:title="@string/app_name" />
     </com.google.android.material.appbar.AppBarLayout>
+
 
     <!-- LAYAR DISPLAY -->
     <LinearLayout
